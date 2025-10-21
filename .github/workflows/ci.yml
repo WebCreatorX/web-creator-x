@@ -1,0 +1,48 @@
+# 워크플로우의 이름
+name: CI Pipeline
+
+# 워크플로우 실행 조건
+on:
+  pull_request:
+    branches: ["main", "dev"]
+
+  push:
+    branches: ["main", "dev", "feature/*"]
+
+# 실행될 작업(Job)들
+jobs:
+  # 빌드 및 테스트를 담당하는 메인 작업
+  build:
+    # 가상 환경 지정
+    runs-on: ubuntu-latest
+
+    # 작업 단계(Step)들
+    steps:
+      # 1. 레포지토리 코드 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      # 2. Node.js 환경 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22" # 중요! -> 프로젝트에 맞는 Node.js 버전 지정
+
+      # 3. NPM 의존성 캐싱 (2단계 Dependency Install 최적화)
+      # - node_modules 폴더를 캐싱하여 매번 새로 설치하는 시간 절약
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 4. 의존성 설치 (2단계 Dependency Install)
+      # - CI 환경에서는 'npm ci'를 사용하는 것이 더 빠르고 안정적.
+      - name: Install Dependencies
+        run: npm ci
+
+      # 5. 빌드 유효성 검사 (3단계 Build Validation)
+      - name: Run Build
+        run: npm run build

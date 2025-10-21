@@ -1,0 +1,54 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js and Cache
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          # npm install 속도 향상을 위한 캐시 (Optional)
+          cache: "npm"
+
+      - name: Install Dependencies & Build Project
+        run: |
+          touch .env
+          echo NEXT_PUBLIC_SUPABASE_URL=${{secrets.NEXT_PUBLIC_SUPABASE_URL}} >> .env
+          echo NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=${{secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY}} >> .env
+          echo SUPABASE_DATABASE_PASSWORD=${{secrets.SUPABASE_DATABASE_PASSWORD}} >> .env
+          npm install
+          npm run build
+          ls -al
+
+      # 🚨 핵심: 빌드 결과물을 압축
+      - name: zip file
+        run: |
+          zip -r artifact.zip ./.next ./package.json ./package-lock.json ./.env ./scripts ./appspec.yml
+
+      - name: AWS configure credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./artifact.zip s3://webcreator-deploy-bucket/deploy/
+
+      - name: deploy with AWS codeDeploy
+        run: aws deploy create-deployment
+          --application-name webCreator-code-deploy
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name GROUP
+          --s3-location bucket=webcreator-deploy-bucket,bundleType=zip,key=deploy/artifact.zip
