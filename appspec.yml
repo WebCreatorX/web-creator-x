@@ -1,0 +1,29 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/application
+    overwrite: yes
+
+permissions:
+  - object: /home/ubuntu
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  AfterInstall:
+    # 1. 새 버전의 코드 의존성 설치
+    - location: scripts/after_install.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStart:
+    # 2. 새 버전(그린)을 새로운 포트에 실행
+    - location: scripts/start_server.sh
+      timeout: 300
+      runas: ubuntu
+  ValidateService:
+    # 3. 그린 서버 검증 -> 트래픽 전환 -> 구버전(블루) 정리
+    - location: scripts/validate_and_switch_and_cleanup.sh
+      timeout: 90
+      runas: ubuntu
