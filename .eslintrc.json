@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "next/core-web-vitals", // Next.js App Router의 핵심 웹 바이탈 규칙 포함
+    "plugin:@typescript-eslint/recommended" // TypeScript 권장 규칙 추가
+  ],
+  "parser": "@typescript-eslint/parser", // ESLint가 TS 코드를 파싱하도록 지정
+  "plugins": ["@typescript-eslint", "immutable"],
+  "rules": {
+    // 1. Next.js 13+ App Router 환경에서 필요 없는 규칙 끄기
+    // Next.js 파일 이름 규칙에 위배되는 ESLint 규칙을 끕니다.
+    "react/react-in-jsx-scope": "off",
+
+    // 2. TS 환경에서 흔히 발생하는 오류 해결 규칙 추가
+    // TypeScript가 타입 체크를 하므로, ESLint의 일부 JS 규칙을 끄는 것
+    "no-unused-vars": "off", // JS 기본 규칙을 끄고
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_" }
+    ], // TS 규칙으로 대체
+
+    // 3. TS에서 any 사용을 제한하는 규칙
+    "no-explicit-any": "error",
+    "immutable/no-mutation": "error" // 상태 직접 수정을 오류로 처리
+
+    // 여기에 다른 규칙들을 추가합니다.
+  }
+}
