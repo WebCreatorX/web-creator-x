@@ -1,0 +1,222 @@
+{
+  "nodes": [
+    {
+      "id": 1001,
+      "page_id": 201,
+      "parent_id": null,
+      "type": "Hero",
+      "position": 0,
+      "props": {
+        "heading": "WebCreator-X에 오신 것을 환영합니다",
+        "subheading": "세상에 하나뿐인 당신의 웹사이트를 만들어보세요.",
+        "button": { "text": "시작하기", "link": "/signup" },
+        "backgroundImage": {
+          "url": "https://images.example.com/hero-bg.jpg",
+          "alt": "추상적인 배경 이미지"
+        }
+      },
+      "style": {
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "alignItems": "center",
+          "justifyContent": "center",
+          "gap": "20px"
+        },
+        "dimensions": { "minHeight": "500px", "padding": "80px 24px" },
+        "background": {
+          "backgroundColor": "#111827",
+          "backgroundSize": "cover",
+          "backgroundPosition": "center"
+        },
+        "typography": { "color": "#FFFFFF", "textAlign": "center" },
+        "className": "hero-container-main"
+      },
+      "created_at": "2025-11-13T06:18:00Z"
+    },
+    {
+      "id": 1002,
+      "page_id": 201,
+      "parent_id": null,
+      "type": "Container",
+      "position": 1,
+      "props": {},
+      "style": {
+        "layout": { "display": "block" },
+        "dimensions": {
+          "padding": "50px 24px",
+          "maxWidth": "1200px",
+          "margin": "0 auto"
+        },
+        "background": { "backgroundColor": "#FFFFFF" },
+        "className": "content-section"
+      },
+      "created_at": "2025-11-13T06:20:00Z"
+    },
+    {
+      "id": 1003,
+      "page_id": 201,
+      "parent_id": 1002,
+      "type": "Heading",
+      "position": 0,
+      "props": {
+        "text": "주요 기능 소개",
+        "level": "h2"
+      },
+      "style": {
+        "typography": {
+          "color": "#111827",
+          "fontSize": "36px",
+          "textAlign": "center"
+        },
+        "dimensions": { "marginBottom": "30px" }
+      },
+      "created_at": "2025-11-13T06:21:00Z"
+    },
+    {
+      "id": 1004,
+      "page_id": 201,
+      "parent_id": 1002,
+      "type": "Text",
+      "position": 1,
+      "props": {
+        "text": "직관적인 드래그 앤 드롭 인터페이스로 코딩 없이 웹사이트를 완성하세요. 모든 컴포넌트는 사용자가 원하는 대로 커스터마이징할 수 있습니다."
+      },
+      "style": {
+        "typography": {
+          "color": "#374151",
+          "fontSize": "18px",
+          "lineHeight": 1.6,
+          "textAlign": "center"
+        },
+        "dimensions": { "maxWidth": "800px", "margin": "0 auto" }
+      },
+      "created_at": "2025-11-13T06:22:00Z"
+    },
+    {
+      "id": 1005,
+      "page_id": 201,
+      "parent_id": null,
+      "type": "Container",
+      "position": 2,
+      "props": { "id": "gallery" },
+      "style": {
+        "layout": {
+          "display": "grid",
+          "gridTemplateColumns": "1fr 1fr",
+          "gap": "20px"
+        },
+        "dimensions": {
+          "padding": "50px 24px",
+          "maxWidth": "1200px",
+          "margin": "0 auto"
+        },
+        "background": { "backgroundColor": "#F9FAFB" },
+        "className": "gallery-section"
+      },
+      "created_at": "2025-11-13T06:23:00Z"
+    },
+    {
+      "id": 1006,
+      "page_id": 201,
+      "parent_id": 1005,
+      "type": "Image",
+      "position": 0,
+      "props": {
+        "src": "https://images.example.com/gallery-1.jpg",
+        "alt": "갤러리 이미지 1"
+      },
+      "style": {
+        "dimensions": {
+          "width": "100%",
+          "height": "300px",
+          "objectFit": "cover"
+        },
+        "effects": { "borderRadius": "8px" }
+      },
+      "created_at": "2025-11-13T06:24:00Z"
+    },
+    {
+      "id": 1007,
+      "page_id": 201,
+      "parent_id": 1005,
+      "type": "Image",
+      "position": 1,
+      "props": {
+        "src": "https://images.example.com/gallery-2.jpg",
+        "alt": "갤러리 이미지 2"
+      },
+      "style": {
+        "dimensions": {
+          "width": "100%",
+          "height": "300px",
+          "objectFit": "cover"
+        },
+        "effects": { "borderRadius": "8px" }
+      },
+      "created_at": "2025-11-13T06:25:00Z"
+    },
+    {
+      "id": 1008,
+      "page_id": 201,
+      "parent_id": 1005,
+      "type": "Text",
+      "position": 2,
+      "props": {
+        "text": "이미지 설명 1"
+      },
+      "style": {
+        "typography": {
+          "textAlign": "center",
+          "fontSize": "14px",
+          "color": "#6B7280"
+        },
+        "dimensions": { "marginTop": "10px" }
+      },
+      "created_at": "2025-11-13T06:26:00Z"
+    },
+    {
+      "id": 1009,
+      "page_id": 201,
+      "parent_id": 1005,
+      "type": "Text",
+      "position": 3,
+      "props": {
+        "text": "이미지 설명 2"
+      },
+      "style": {
+        "typography": {
+          "textAlign": "center",
+          "fontSize": "14px",
+          "color": "#6B7280"
+        },
+        "dimensions": { "marginTop": "10px" }
+      },
+      "created_at": "2025-11-13T06:27:00Z"
+    },
+    {
+      "id": 1010,
+      "page_id": 201,
+      "parent_id": null,
+      "type": "Button",
+      "position": 3,
+      "props": {
+        "text": "더 알아보기",
+        "link": "/features"
+      },
+      "style": {
+        "layout": { "display": "block", "margin": "40px auto" },
+        "dimensions": { "padding": "15px 30px", "width": "200px" },
+        "background": { "backgroundColor": "#3B82F6" },
+        "typography": {
+          "color": "#FFFFFF",
+          "fontSize": "16px",
+          "fontWeight": "bold",
+          "textAlign": "center"
+        },
+        "effects": { "borderRadius": "5px", "cursor": "pointer" }
+      },
+      "created_at": "2025-11-13T06:28:00Z"
+    }
+  ]
+}
