@@ -1,4 +1,4 @@
-import { NodeComponentProps } from "@editor/types/component";
+import { NodeComponentProps } from "@/packages/editor/types/component";
 import { HeadingNode } from "../types/nodes";
 import applyStyles from "../nodeRenerder/applyStyles";
 
