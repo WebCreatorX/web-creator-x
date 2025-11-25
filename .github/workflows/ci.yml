@@ -4,10 +4,10 @@ name: CI Pipeline
 # 워크플로우 실행 조건
 on:
   pull_request:
-    branches: ["main", "dev"]
+    branches: ["main", "develop"]
 
   push:
-    branches: ["main", "dev", "feature/*"]
+    branches: ["main", "develop", "feature/*"]
 
 # 실행될 작업(Job)들
 jobs:
