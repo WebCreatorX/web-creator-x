@@ -4,7 +4,7 @@ NVM_BIN_PATH="/home/ubuntu/.nvm/versions/node/v22.21.0/bin"
 
 export PATH="$NVM_BIN_PATH:$PATH"
 
-cd /home/ubuntu/application || exit 1
+cd /home/ubuntu/application/apps/editor || exit 1
 
 
 if [ ! -f /etc/nginx/conf.d/proxy_pass.inc ]; then
