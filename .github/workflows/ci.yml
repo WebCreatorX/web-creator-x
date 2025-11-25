@@ -25,9 +25,6 @@ jobs:
       # 1. pnpm 설치 (모노레포 필수)
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
-          run_install: false
 
       # 2. Node.js 환경 설정
       - name: Setup Node.js
