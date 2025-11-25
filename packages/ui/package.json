@@ -4,6 +4,9 @@
   "exports": {
     "./renderer": "./src/renderer/NodeRenderer.tsx"
   },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
   "peerDependencies": {
     "next": "15.5.6",
     "react": "19.1.0"

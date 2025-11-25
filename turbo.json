@@ -1,10 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "dev": {
+      "cache": false
+    },
+    "type-check": {
+      "dependsOn": ["^build"],
       "cache": false
     },
 
