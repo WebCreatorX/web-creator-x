@@ -18,15 +18,22 @@ jobs:
 
     # 작업 단계(Step)들
     steps:
-      # 1. 레포지토리 코드 체크아웃
+      # 0. 레포지토리 코드 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      # 1. pnpm 설치 (모노레포 필수)
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
 
       # 2. Node.js 환경 설정
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: "22" # 중요! -> 프로젝트에 맞는 Node.js 버전 지정
+          cache: "pnpm"
 
       # 3. NPM 의존성 캐싱 (2단계 Dependency Install 최적화)
       # - node_modules 폴더를 캐싱하여 매번 새로 설치하는 시간 절약
@@ -41,10 +48,9 @@ jobs:
       # 4. 의존성 설치 (2단계 Dependency Install)
       # - CI 환경에서는 'npm ci'를 사용하는 것이 더 빠르고 안정적.
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # 5. 빌드 유효성 검사 (3단계 Build Validation)
       - name: Run Build
-        run: npx turbo run build --filter=editor
+        run: pnpm turbo run build --filter=editor
         # run: npm run build
-      

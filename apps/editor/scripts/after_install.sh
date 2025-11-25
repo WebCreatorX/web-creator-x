@@ -5,4 +5,4 @@ export PATH="$NVM_BIN_PATH:$PATH"
 
 cd /home/ubuntu/application || exit 1
 
-npm install
+pnpm install
