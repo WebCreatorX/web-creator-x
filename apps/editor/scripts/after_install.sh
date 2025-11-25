@@ -22,5 +22,9 @@ else
 fi
 
 
-echo ">>> Installing dependencies in $(pwd)..."
-pnpm install --production
+# echo ">>> Installing dependencies in $(pwd)..."
+# pnpm install --production
+
+
+
+echo ">>> Skipping install (Standalone build includes dependencies)."

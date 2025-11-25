@@ -26,6 +26,7 @@ export default function HeroComponent({
           href={button && button.link}
           style={inlineStyles}
           onClick={handleLinkClick}
+          //백그라운드 사진 렌더링 필요
         ></a>
       )}
     </div>
