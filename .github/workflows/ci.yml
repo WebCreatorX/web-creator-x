@@ -24,26 +24,17 @@ jobs:
 
       # 1. pnpm 설치 (모노레포 필수)
       - name: Install pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
+          run_install: false
 
       # 2. Node.js 환경 설정
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "22" # 중요! -> 프로젝트에 맞는 Node.js 버전 지정
+          node-version: "20"
           cache: "pnpm"
-
-      # 3. NPM 의존성 캐싱 (2단계 Dependency Install 최적화)
-      # - node_modules 폴더를 캐싱하여 매번 새로 설치하는 시간 절약
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       # 4. 의존성 설치 (2단계 Dependency Install)
       # - CI 환경에서는 'npm ci'를 사용하는 것이 더 빠르고 안정적.

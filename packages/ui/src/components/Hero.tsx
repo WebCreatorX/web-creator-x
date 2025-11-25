@@ -8,7 +8,6 @@ export default function HeroComponent({
   props,
   style,
 }: NodeComponentProps<HeroNode>) {
-  //모드주입???
   const { mode } = useBuilderMode(); //현재 모드 확인
   const { heading, subHeading, button, backgroundImage } = props;
   const inlineStyles = applyStyles(style);
