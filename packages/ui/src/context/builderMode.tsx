@@ -26,6 +26,7 @@ export const useBuilderMode = () => useContext(BuilderContext);
  * 에디터 캔버스 컴포넌트를 감싸야 합니다.
  *
  * 에디터 캔버스 컴포넌트의 최상위에서 현재 모드의 컨텍스트를 주입합니다.
+ * apps의 에디터 최상단에서 사용됩니다.
  */
 export function BuilderProvider({ children, value }: BuilderProviderProps) {
   return (

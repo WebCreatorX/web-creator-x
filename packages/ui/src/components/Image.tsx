@@ -1,5 +1,5 @@
 import Image from "next/image";
-import applyStyles from "../nodeRenerder/applyStyles";
+import applyStyles from "../utils/applyStyles";
 import { NodeComponentProps } from "../types/component";
 import { ImageNode } from "../types/nodes";
 

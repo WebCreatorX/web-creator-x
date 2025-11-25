@@ -1,13 +1,14 @@
-import { useBuilderMode } from "@/providers/builderProvider";
-import applyStyles from "../nodeRenerder/applyStyles";
+import applyStyles from "../utils/applyStyles";
 import { NodeComponentProps } from "../types/component";
 import { HeroNode } from "../types/nodes";
+import { useBuilderMode } from "context/builderMode";
 
 export default function HeroComponent({
   node,
   props,
   style,
 }: NodeComponentProps<HeroNode>) {
+  //모드주입???
   const { mode } = useBuilderMode(); //현재 모드 확인
   const { heading, subHeading, button, backgroundImage } = props;
   const inlineStyles = applyStyles(style);

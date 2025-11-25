@@ -21,6 +21,7 @@ export default function applyStyles(
     //카테고리별로 중첩된 스타일 데이터를 평탄화 시킴.
     if (key !== "className" && typeof styleData[key] === "object") {
       Object.assign(combinedStyles, styleData[key]);
+      //스프레드 연산자 오버헤드 위험
     }
   }
 

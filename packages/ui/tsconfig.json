@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    // "jsx": "preserve",
+    "jsx": "react-jsx", // Next.js 환경에서 JSX를 사용해야 하므로 필수
+    "incremental": true,
+    "types": ["react", "react-dom", "node"],
+
+    "baseUrl": "./src", // UI 패키지 내부 임포트 기준 경로 설정
+
+    // Next.js 전용 플러그인 제거
+    "plugins": [],
+
+    // 프로젝트 특정 경로 제거 (모노레포의 공통 라이브러리에는 필요 없음)
+    "paths": {}
+  },
+
+  // UI 패키지의 소스 코드만 포함하도록 지정
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+
+  // node_modules는 제외
+  "exclude": ["node_modules"]
+}

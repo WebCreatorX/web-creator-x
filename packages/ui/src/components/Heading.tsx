@@ -1,6 +1,6 @@
-import { NodeComponentProps } from "@/packages/editor/types/component";
+import { NodeComponentProps } from "../types";
 import { HeadingNode } from "../types/nodes";
-import applyStyles from "../nodeRenerder/applyStyles";
+import applyStyles from "../utils/applyStyles";
 
 export default function HeadingComponent({
   node,

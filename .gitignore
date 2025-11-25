@@ -10,6 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
+node_modules
+.pnpm-store
+.turbo
 # testing
 /coverage
 
@@ -39,3 +42,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 앱별 빌드 결과물 무시
+apps/*/out
+apps/*/.next
+apps/*/dist

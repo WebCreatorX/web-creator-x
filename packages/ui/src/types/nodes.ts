@@ -1,4 +1,4 @@
-import * as componentProps from "@/packages/editor/types/componentProps";
+import * as componentProps from "./componentProps";
 import { NodeStyle } from "./styles";
 
 //노드의 타입별로 Props의 Json구조가 달라진다. 이를 추론하기 위해 기본 노드 타입인 BaseNode를 상속받아

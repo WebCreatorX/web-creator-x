@@ -45,4 +45,6 @@ jobs:
 
       # 5. 빌드 유효성 검사 (3단계 Build Validation)
       - name: Run Build
-        run: npm run build
+        run: npx turbo run build --filter=editor
+        # run: npm run build
+      
