@@ -42,8 +42,13 @@ jobs:
           mkdir deploy_package
           cp -r apps/editor/.next/standalone/* deploy_package/
           mkdir -p deploy_package/.next/static
+          mkdir -p deploy_package/public
           cp -r apps/editor/.next/static/* deploy_package/.next/static/
-          cp -r apps/editor/public deploy_package/public
+
+          if [ -d apps/editor/public ]; then
+          cp -r apps/editor/public/* deploy_package/public/
+          fi
+
           cp apps/editor/appspec.yml deploy_package/
           cp -r apps/editor/scripts deploy_package/scripts
           cp apps/editor/.env deploy_package/
