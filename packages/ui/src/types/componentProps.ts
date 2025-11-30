@@ -8,7 +8,9 @@ export interface HeroProps {
     text: string;
     link: string;
   };
-  backgroundImage?: {
+
+  //만약 사진이 없다면 null을 입력 해야합니다.
+  image?: {
     url: string;
     alt?: string;
   };

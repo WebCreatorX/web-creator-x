@@ -1,7 +1,7 @@
 //참고 자료->https://www.notion.so/Object-assign-2b175c9287fa8077b766de146b87a7e2?source=copy_link
 //추후 성능 개선 필요(메모이제이션)
 import { CSSProperties } from "react";
-import { NodeStyle } from "../types/styles";
+import { ElementStyle } from "../types/styles";
 
 /**
  *
@@ -12,7 +12,7 @@ import { NodeStyle } from "../types/styles";
  *
  */
 export default function applyStyles(
-  styleData: NodeStyle,
+  styleData: ElementStyle,
 ): CSSProperties | undefined {
   if (!styleData) return;
 

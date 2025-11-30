@@ -9,7 +9,8 @@ type ElementStyleKey =
   | "typography" //폰트 관련 CSS
   | "background" //배경
   | "effects"; // boxShadow, opacity, borderRadius 등
-export interface ElementStyle extends Record<ElementStyleKey, CSSProperties> {
+export interface ElementStyle
+  extends Partial<Record<ElementStyleKey, CSSProperties>> {
   // 2. HTML 클래스 (Tailwind 유틸리티 등) -> 추후 바이브 코딩의 결과물을 받았을때 사용될 속성입니다.
   className?: string;
 
@@ -18,14 +19,15 @@ export interface ElementStyle extends Record<ElementStyleKey, CSSProperties> {
   [key: string]: CSSProperties | string | undefined;
 }
 
-type NodeStyleKey =
+export type NodeStyleKey =
   | "root" //필수: 최상위 컨테이너
   | "button" // 옵션: 제목
   | "heading" // 옵션: 부제목
   | "subHeading" // 옵션: 버튼
   | "image"; // 옵션: 이미지
 
-// 컴포넌트 전체 스타일: 부위별(Key)로 ElementStyle을 가짐
-export interface NodeStyle extends Record<NodeStyleKey, ElementStyle> {
+// 2. 컴포넌트 전체 스타일: 부위별(Key)로 ElementStyle을 가짐
+
+export interface NodeStyle extends Partial<Record<NodeStyleKey, ElementStyle>> {
   [key: string]: ElementStyle | undefined;
 }
