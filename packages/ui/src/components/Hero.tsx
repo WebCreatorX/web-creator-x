@@ -1,8 +1,7 @@
-import { NodeComponentProps } from "../types/component";
-import { HeroNode } from "../types/nodes";
 import { useBuilderMode } from "context/builderMode";
 import Image from "next/image";
-import processNodeStyles from "../utils/style";
+import processNodeStyles from "../utils/processNodeStyles";
+import { HeroNode, NodeComponentProps } from "types";
 
 export default function HeroComponent({
   node,
@@ -29,12 +28,20 @@ export default function HeroComponent({
     //TODO - 노드들이 드래그 앤 드롭될때 위치가 자유롭게 변하게 할 수 있어야한다.
     <section
       data-component-id={node.id}
-      className={`${style.className} flex h-full w-full flex-col items-center justify-center gap-2 overflow-hidden`}
-      style={nodeStyleObj.root}
+      className={`${style.root?.className || ""} flex h-full w-full flex-col items-center justify-center gap-2 overflow-hidden`}
+      style={{
+        ...nodeStyleObj.root,
+        // ⚠️ 안전 장치: style 객체에 크기 정보가 있어도 무시하고 강제로 100%로 덮어씁니다.
+        width: "100%",
+        height: "100%",
+      }}
     >
       {/* 배경 이미지 영역 */}
       {image?.url && (
-        <div className={`absolute inset-0 z-0`} style={nodeStyleObj.image}>
+        <div
+          className={`${style.image?.className || ""} absolute inset-0 z-0`}
+          style={nodeStyleObj.image}
+        >
           <Image
             fill={true}
             className={"object-cover"}
@@ -51,15 +58,25 @@ export default function HeroComponent({
         className={"relative top-0 left-0 z-10 flex flex-col items-center p-4"}
       >
         <h1
+          className={style.heading?.className || ""}
           style={nodeStyleObj.heading} // heading 스타일 적용 (폰트 크기, 색상)
         >
           {heading}
         </h1>
-        {subHeading && <p style={nodeStyleObj.subHeading}>{subHeading}</p>}
+
+        {subHeading && (
+          <p
+            className={style.subHeading?.className || ""}
+            style={nodeStyleObj.subHeading}
+          >
+            {subHeading}
+          </p>
+        )}
         {button && (
           <a
             href={button.link || "#"}
             style={nodeStyleObj.button}
+            className={style.button?.className || ""}
             onClick={handleLinkClick}
             //백그라운드 사진 렌더링 필요
           >
