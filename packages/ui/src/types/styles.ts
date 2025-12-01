@@ -10,6 +10,7 @@ type ElementStyleKey =
   | "background" //배경
   | "effects"; // boxShadow, opacity, borderRadius 등
 export interface ElementStyle
+  //FIXME - root 스타일은 크기(dimensions),레이아웃(layout)을 제외한 나머지(배경, 테두리, 패딩)만 담당하도록 수정해야한다.
   extends Partial<Record<ElementStyleKey, CSSProperties>> {
   // 2. HTML 클래스 (Tailwind 유틸리티 등) -> 추후 바이브 코딩의 결과물을 받았을때 사용될 속성입니다.
   className?: string;
@@ -20,11 +21,12 @@ export interface ElementStyle
 }
 
 export type NodeStyleKey =
-  | "root" //필수: 최상위 컨테이너
+  | "root" //필수: 최상위 컨테이너 -> 항상 최상위 컨테이너 스타일은 root로 지정
   | "button" // 옵션: 제목
   | "heading" // 옵션: 부제목
   | "subHeading" // 옵션: 버튼
-  | "image"; // 옵션: 이미지
+  | "image" // 옵션: 이미지
+  | "text"; // 옵션: 텍스트
 
 // 2. 컴포넌트 전체 스타일: 부위별(Key)로 ElementStyle을 가짐
 
