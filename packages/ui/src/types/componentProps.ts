@@ -36,6 +36,11 @@ export interface ButtonProps {
   target?: "_blank" | "_self";
 }
 
+export interface TextProps {
+  text: string;
+  level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+}
+
 // 5. Container 컴포넌트 Props (보통 비어있거나 ID 정도만 가짐)
 export interface ContainerProps {
   id?: string;
