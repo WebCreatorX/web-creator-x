@@ -39,6 +39,10 @@ export interface HeadingNode extends BaseNode {
   type: "Heading";
   props: componentProps.HeadingProps;
 }
+export interface TextNode extends BaseNode {
+  type: "Text";
+  props: componentProps.TextProps;
+}
 
 export interface ButtonNode extends BaseNode {
   type: "Button";
@@ -57,4 +61,5 @@ export type WcxNode =
   | ImageNode
   | HeadingNode
   | ButtonNode
-  | ContainerNode;
+  | ContainerNode
+  | TextNode;
