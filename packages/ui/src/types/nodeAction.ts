@@ -16,8 +16,3 @@ export interface NodeAction {
   mutationType?: "increment" | "setText" | "toggle"; // 구체적인 변경 방식
   value?: any; // 변경할 값
 }
-
-export interface ButtonProps {
-  text: string;
-  action?: NodeAction;
-}
