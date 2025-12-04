@@ -2,7 +2,7 @@
 
 import { useRuntimeState } from "context/runtimeContext";
 import { useRouter } from "next/router";
-import { NodeAction } from "types/props";
+import { NodeAction } from "types/nodeAction";
 
 export function useActionHandler(action?: NodeAction) {
   const router = useRouter();
@@ -41,6 +41,10 @@ export function useActionHandler(action?: NodeAction) {
       case "link":
         if (action.payload) router.push(action.payload);
         break;
+
+      //TODO-추후 필요한 기능 추가 예정(API 호출 등등...)
     }
   }
+
+  return excute;
 }
