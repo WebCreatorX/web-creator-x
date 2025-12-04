@@ -22,9 +22,9 @@ export interface ElementStyle
 
 export type NodeStyleKey =
   | "root" //필수: 최상위 컨테이너 -> 항상 최상위 컨테이너 스타일은 root로 지정
-  | "button" // 옵션: 제목
-  | "heading" // 옵션: 부제목
-  | "subHeading" // 옵션: 버튼
+  | "button" // 옵션: 버튼
+  | "heading" // 옵션: 제목
+  | "subHeading" // 옵션: 부제목
   | "image" // 옵션: 이미지
   | "text"; // 옵션: 텍스트
 

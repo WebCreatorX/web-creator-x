@@ -54,6 +54,11 @@ export interface ContainerNode extends BaseNode {
   props: componentProps.ContainerProps;
 }
 
+export interface ModalNode extends BaseNode {
+  type: "Modal";
+  props: componentProps.ModalProps;
+}
+
 // 3. 통합 노드 타입
 // 이제 WcxNode 타입을 쓰면 type 체크 시 props가 자동 추론.
 export type WcxNode =
@@ -62,4 +67,5 @@ export type WcxNode =
   | HeadingNode
   | ButtonNode
   | ContainerNode
-  | TextNode;
+  | TextNode
+  | ModalNode;
