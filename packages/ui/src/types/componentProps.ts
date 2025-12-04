@@ -46,3 +46,14 @@ export interface ContainerProps {
   id?: string;
   tagName?: "div" | "section" | "article";
 }
+
+export interface ModalProps {
+  //모달의 제목
+  title?: string;
+
+  //닫기 버튼 렌더링 여부
+  showCloseButton?: boolean;
+
+  //백그라운드 클릭시 닫기 여부
+  closeOnOverlayClick?: boolean;
+}
