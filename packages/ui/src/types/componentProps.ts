@@ -57,6 +57,4 @@ export interface ModalProps {
   closeOnOverlayClick?: boolean;
   // 애니메이션 프리셋
   animation?: "fade" | "slide-up" | "slide-left";
-
-  children: WcxNode[]; //모달 내부의 컨텐츠들
 }
