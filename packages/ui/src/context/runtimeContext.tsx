@@ -8,31 +8,27 @@
 
 import { createContext, ReactNode, useContext, useState } from "react";
 
-// 런타임에 변경된 노드들의 상태를 저장하는 객체
-// 예: { "node-123": { text: "11" }, "modal-456": { isOpen: true } }
-type RuntimeState = Record<string, any>;
-
 interface RuntimeContextType {
-  state: RuntimeState;
-  updateNodeState: (id: string, newState: any) => void;
+  activeModalId: string | null;
+  openModal: (id: string) => void;
+  closeModal: () => void;
 }
 
-const RuntimeContext = createContext<RuntimeContextType | null>(null);
+const RuntimeContext = createContext<RuntimeContextType>(null);
 
 //TODO-빠른 구현을 위해 Context를 사용했지만 하나의 상태가 바뀌더라도 해당 context를 구독하는 다른 노드들도 리렌더링이 발생하는 위험이 존재합니다. 꼭 추후에 상태 관리 방식을 리팩토링 해야합니다.
+// -> ModalHost를 도입해서 괜찮을듯?
 export function RuntimeProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<RuntimeState>({});
+  const [activeModalId, setActiveModalId] = useState<string | null>(null);
 
-  function updateNodeState(id: string, partial: any) {
-    setState((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], ...partial },
-    }));
-  }
+  const openModal = (id: string) => setActiveModalId(id);
+
+  const closeModal = () => setActiveModalId(null);
 
   const contextValue = {
-    state,
-    updateNodeState,
+    activeModalId,
+    openModal,
+    closeModal,
   };
 
   return (
