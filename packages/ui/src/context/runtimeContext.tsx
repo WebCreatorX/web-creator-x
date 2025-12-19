@@ -14,7 +14,7 @@ interface RuntimeContextType {
   closeModal: () => void;
 }
 
-const RuntimeContext = createContext<RuntimeContextType>(null);
+const RuntimeContext = createContext<RuntimeContextType | null>(null);
 
 //TODO-빠른 구현을 위해 Context를 사용했지만 하나의 상태가 바뀌더라도 해당 context를 구독하는 다른 노드들도 리렌더링이 발생하는 위험이 존재합니다. 꼭 추후에 상태 관리 방식을 리팩토링 해야합니다.
 // -> ModalHost를 도입해서 괜찮을듯?
