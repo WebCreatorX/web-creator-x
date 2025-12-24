@@ -1,9 +1,30 @@
-import { useBuilderMode } from "context/builderMode";
-import { useRuntimeState } from "context/runtimeContext";
 import { ModalNode, NodeComponentProps } from "types";
 import processNodeStyles from "utils/processNodeStyles";
+import { motion } from "framer-motion";
 
-//TODO-모달 IsOpen상태 관리를 어떻게 최적화 할 수 있을까?
+const animationVariants = {
+  fade: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 },
+  },
+  "slide-up": {
+    hidden: { opacity: 0, y: 100 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 100 },
+  },
+  "slide-right": {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 100 },
+  },
+  // 기본값 (Zoom In)
+  default: {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 },
+  },
+};
 
 /**
  *
@@ -14,67 +35,30 @@ import processNodeStyles from "utils/processNodeStyles";
  */
 export default function Modal({
   node,
-  props,
   style,
   children, //모달안에 들어갈 버튼, 텍스트 등이 children으로 올 수 있습니다.
 }: NodeComponentProps<ModalNode>) {
-  // Hooks & state
-  const { mode } = useBuilderMode();
   const curNodeId = node.id;
-  const {
-    alignment,
-    overlayColor = "",
-    closeOnOverlayClick = "",
-    animation = "",
-  } = props;
-
-  //Context를 통한 상태 구독
-  //TODO-만약 context의 형태가 context API에서 zustand로 바뀐다면 해당 로직도 수정되야 합니다.
-
-  
-  const {  closeModal } = useRuntimeState();
-
-  // 위치 프리셋에 따른 CSS 클래스 매핑
-  const alignmentStyles = {
-    center: "items-center justify-center",
-    top: "items-start justify-center pt-10",
-    bottom: "items-end justify-center pb-0", // 바텀 시트 스타일
-    left: "items-center justify-start h-full", // 사이드바
-    right: "items-center justify-end h-full", // 사이드바
-  };
-
-  const positionClass = alignmentStyles[alignment] || alignmentStyles.center;
+  const animationType = node.props.animation || "default";
 
   //스타일 변환
   const nodeStyleObj = processNodeStyles(style);
 
-  //닫기 핸들러
-  function closeHandler(e?: React.MouseEvent) {
-    if (mode === "editor") return;
-    e?.stopPropagation();
-    closeModal();
-  }
-
-  function overlayClickHandler(e?: React.MouseEvent<HTMLDivElement>) {
-    if (closeOnOverlayClick === false) return;
-    closeHandler(e);
-  }
-
   return (
-    <div
-      className={`bg-opacity-50 fixed inset-0 z-50 flex ${positionClass} ${overlayColor || `bg-black`}`}
-      onClick={(e) => overlayClickHandler(e)}
+    <motion.div
+      data-component-id={curNodeId}
+      key={curNodeId}
+      onClick={(e) => e.stopPropagation()}
+      className={`${style.root?.className || ""} pointer-events-auto relative bg-white shadow-2xl`}
+      style={nodeStyleObj.root}
+      variants={animationVariants[animationType as keyof typeof animationVariants] || animationVariants.default}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      transition={{ duration: 0.2, ease: "easeOut" }}
     >
-      {/* 실제 모달 컨테이너 */}
-      <div
-        data-component-id={curNodeId}
-        onClick={(e) => e.stopPropagation()}
-        className={`${style.root?.className || ""} pointer-events-auto bg-white shadow-2xl`}
-        style={nodeStyleObj.root}
-      >
-        {/* [Body] 자식 노드들(버튼, 이미지, 텍스트)이 여기에 렌더링 됨 */}
-        <div className="p-4">{children}</div>
-      </div>
-    </div>
+      {/* [Body] 자식 노드들(버튼, 이미지, 텍스트)이 여기에 렌더링 됨 */}
+      <div className="p-4">{children}</div>
+    </motion.div>
   );
 }
