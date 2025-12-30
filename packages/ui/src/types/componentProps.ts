@@ -1,6 +1,7 @@
 //노드의 타입별로 달라지는 props의 타입을 정의.
 
 import { NodeAction } from "./nodeAction";
+import { WcxNode } from "./nodes";
 
 // 1. Hero 컴포넌트 Props
 export interface HeroProps {
@@ -49,12 +50,11 @@ export interface ContainerProps {
 }
 
 export interface ModalProps {
-  //모달의 제목
-  title?: string;
-
-  //닫기 버튼 렌더링 여부
-  showCloseButton?: boolean;
-
-  //백그라운드 클릭시 닫기 여부
+  // 위치 프리셋 (핵심)
+  alignment: "center" | "top" | "bottom" | "left" | "right";
+  // 오버레이 설정
+  overlayColor?: string; // "bg-black/50"
   closeOnOverlayClick?: boolean;
+  // 애니메이션 프리셋
+  animation?: "fade" | "slide-up" | "slide-left";
 }
