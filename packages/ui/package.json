@@ -2,7 +2,8 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "exports": {
-    "./renderer": "./src/renderer/NodeRenderer.tsx"
+    "./renderer": "./src/renderer/NodeRenderer.tsx",
+    "./*": "./src/*"
   },
   "scripts": {
     "type-check": "tsc --noEmit"
@@ -18,6 +19,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "framer-motion": "^12.23.26"
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.26",
+    "react-rnd": "^10.5.2"
   }
 }
