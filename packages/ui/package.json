@@ -2,7 +2,9 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "exports": {
-    "./renderer": "./src/renderer/NodeRenderer.tsx"
+    "./renderer": "./src/renderer/NodeRenderer.tsx",
+    "./types/*": "./src/types/*.ts",
+    "./components/*": "./src/components/*.tsx"
   },
   "scripts": {
     "type-check": "tsc --noEmit"
