@@ -3,7 +3,7 @@ export type ActionType =
   | "scroll" // 3. 스크롤 이동
   | "alert" // 2. 알림창
   | "modal" // 4. 모달 열기
-  | "mutation"; // 1. 데이터 변경 (핵심!)
+  | "mutation"; // 1. 데이터 변경 (핵심!) -> 무시
 
 export interface NodeAction {
   type: ActionType;
