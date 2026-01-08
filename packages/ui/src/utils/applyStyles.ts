@@ -16,17 +16,36 @@ export default function applyStyles(
 ): CSSProperties | undefined {
   if (!styleData) return;
 
-  const combinedStyles = {};
+  const combinedStyles: Record<string, any> = {};
+
+  // Wrapper(부모)가 제어해야 할 레이아웃 속성 목록 (블랙리스트)
+  const LAYOUT_PROPERTIES = new Set([
+    "width",
+    "height",
+    "position",
+    "top",
+    "bottom",
+    "left",
+    "right",
+    "zIndex",
+    "transform",
+    "margin", // 마진도 레이아웃에 영향을 주므로 제외하는 것이 안전함
+  ]);
+
   for (const key in styleData) {
     //카테고리별로 중첩된 스타일 데이터를 평탄화 시킴.
     //⭐️ className은 평탄화 작업에서 안전하게 제외합니다.
     if (key !== "className" && typeof styleData[key] === "object") {
-      Object.assign(combinedStyles, styleData[key]);
-      //스프레드 연산자 오버헤드 위험
+      const categoryStyles = styleData[key] as Record<string, any>;
+      
+      for (const styleKey in categoryStyles) {
+        // 레이아웃 속성이면 건너뜀 (Wrapper가 담당)
+        if (LAYOUT_PROPERTIES.has(styleKey)) continue;
+        
+        combinedStyles[styleKey] = categoryStyles[styleKey];
+      }
     }
   }
-
-  // ... (다른 특수 CSS 속성 변환 로직 추후 구현) ...
 
   return combinedStyles;
 }
