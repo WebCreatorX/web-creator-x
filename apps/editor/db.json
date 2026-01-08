@@ -1,11 +1,12 @@
 {
   "nodes": [
     {
-      "id": 1001,
+      "id": "1001",
       "page_id": 201,
       "parent_id": null,
       "type": "Hero",
       "position": 0,
+      "layout": { "x": 0, "y": 0, "width": 1440, "height": 600, "zIndex": 1 },
       "props": {
         "heading": "WebCreator-X에 오신 것을 환영합니다",
         "subheading": "세상에 하나뿐인 당신의 웹사이트를 만들어보세요.",
@@ -35,11 +36,12 @@
       "created_at": "2025-11-13T06:18:00Z"
     },
     {
-      "id": 1002,
+      "id": "1002",
       "page_id": 201,
       "parent_id": null,
       "type": "Container",
       "position": 1,
+      "layout": { "x": 0, "y": 600, "width": 1440, "height": 800, "zIndex": 1 },
       "props": {},
       "style": {
         "layout": { "display": "block" },
@@ -54,11 +56,12 @@
       "created_at": "2025-11-13T06:20:00Z"
     },
     {
-      "id": 1003,
+      "id": "1003",
       "page_id": 201,
-      "parent_id": 1002,
+      "parent_id": "1002",
       "type": "Heading",
       "position": 0,
+      "layout": { "x": 100, "y": 50, "width": 1200, "height": 100, "zIndex": 2 },
       "props": {
         "text": "주요 기능 소개",
         "level": "h2"
@@ -74,11 +77,12 @@
       "created_at": "2025-11-13T06:21:00Z"
     },
     {
-      "id": 1004,
+      "id": "1004",
       "page_id": 201,
-      "parent_id": 1002,
+      "parent_id": "1002",
       "type": "Text",
       "position": 1,
+      "layout": { "x": 100, "y": 150, "width": 800, "height": 200, "zIndex": 2 },
       "props": {
         "text": "직관적인 드래그 앤 드롭 인터페이스로 코딩 없이 웹사이트를 완성하세요. 모든 컴포넌트는 사용자가 원하는 대로 커스터마이징할 수 있습니다."
       },
@@ -94,11 +98,12 @@
       "created_at": "2025-11-13T06:22:00Z"
     },
     {
-      "id": 1005,
+      "id": "1005",
       "page_id": 201,
       "parent_id": null,
       "type": "Container",
       "position": 2,
+      "layout": { "x": 0, "y": 1400, "width": 1440, "height": 600, "zIndex": 1 },
       "props": { "id": "gallery" },
       "style": {
         "layout": {
@@ -117,11 +122,12 @@
       "created_at": "2025-11-13T06:23:00Z"
     },
     {
-      "id": 1006,
+      "id": "1006",
       "page_id": 201,
-      "parent_id": 1005,
+      "parent_id": "1005",
       "type": "Image",
       "position": 0,
+      "layout": { "x": 50, "y": 50, "width": 600, "height": 300, "zIndex": 2 },
       "props": {
         "src": "https://images.example.com/gallery-1.jpg",
         "alt": "갤러리 이미지 1"
@@ -137,11 +143,12 @@
       "created_at": "2025-11-13T06:24:00Z"
     },
     {
-      "id": 1007,
+      "id": "1007",
       "page_id": 201,
-      "parent_id": 1005,
+      "parent_id": "1005",
       "type": "Image",
       "position": 1,
+      "layout": { "x": 700, "y": 50, "width": 600, "height": 300, "zIndex": 2 },
       "props": {
         "src": "https://images.example.com/gallery-2.jpg",
         "alt": "갤러리 이미지 2"
@@ -157,11 +164,12 @@
       "created_at": "2025-11-13T06:25:00Z"
     },
     {
-      "id": 1008,
+      "id": "1008",
       "page_id": 201,
-      "parent_id": 1005,
+      "parent_id": "1005",
       "type": "Text",
       "position": 2,
+      "layout": { "x": 50, "y": 360, "width": 600, "height": 50, "zIndex": 2 },
       "props": {
         "text": "이미지 설명 1"
       },
@@ -176,11 +184,12 @@
       "created_at": "2025-11-13T06:26:00Z"
     },
     {
-      "id": 1009,
+      "id": "1009",
       "page_id": 201,
-      "parent_id": 1005,
+      "parent_id": "1005",
       "type": "Text",
       "position": 3,
+      "layout": { "x": 700, "y": 360, "width": 600, "height": 50, "zIndex": 2 },
       "props": {
         "text": "이미지 설명 2"
       },
@@ -195,11 +204,12 @@
       "created_at": "2025-11-13T06:27:00Z"
     },
     {
-      "id": 1010,
+      "id": "1010",
       "page_id": 201,
       "parent_id": null,
       "type": "Button",
       "position": 3,
+      "layout": { "x": 600, "y": 2100, "width": 200, "height": 60, "zIndex": 1 },
       "props": {
         "text": "더 알아보기",
         "link": "/features"
