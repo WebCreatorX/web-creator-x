@@ -7,6 +7,7 @@ export default function HeroComponent({
   node,
   props,
   style,
+  children,
 }: NodeComponentProps<HeroNode>) {
   const { mode } = useBuilderMode(); //현재 모드 확인
 
@@ -83,6 +84,7 @@ export default function HeroComponent({
             {button?.text}
           </a>
         )}
+        {children}
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ export default function TextComponent({
   node,
   props,
   style,
+  children,
 }: NodeComponentProps<TextNode>) {
   const { text, level = "h2" } = props;
   const Tag = level;
@@ -19,6 +20,7 @@ export default function TextComponent({
     >
       <Tag style={nodeStyleObj.text}>{text}</Tag>
       {/* TODO-만약 텍스트 컴포넌트가 사진같은 정적 파일도 렌더링 해야한다면? */}
+      {children}
     </section>
   );
 }
