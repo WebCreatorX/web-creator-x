@@ -7,7 +7,7 @@ import { CanvasState, Layer } from "types/rnd";
 interface WrapperProps {
   children: React.ReactNode;
   node: BaseNode;
-  selectedId: string;
+  selectedId: string | null;
   updateNode: (id: string, updates: Partial<Layer>) => void; //노드의 레이아웃 업데이트 함수 from editor의 스토어 액션
   selectNode: (id: string) => void;
   canvas: CanvasState;
