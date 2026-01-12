@@ -9,6 +9,7 @@ import {
 import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper.jsx";
 import NodeRenderer from "@repo/ui/core/NodeRenderer.jsx";
 import { WcxNode } from "@repo/ui/types/nodes.js";
+import React from "react";
 
 export default function Canvas() {
   const nodes = useCurNodes();
@@ -53,7 +54,7 @@ export default function Canvas() {
     // 1. 자식들의 렌더링 결과물 (JSX 배열)
     //현재 parentNode에 대해 NodeRenderer를 사용하려면 children이 필요한데, 재귀로 구해준다.
     const children = childrenObjArr.map((node) => {
-      return renderTree(node);
+      return <React.Fragment key={node.id}>{renderTree(node)}</React.Fragment>;
     });
 
     // 2. [예외 처리] Root 노드인 경우 -> 그냥 자식들만 반환 (Wrapper 없음)
@@ -75,9 +76,5 @@ export default function Canvas() {
     );
   }
 
-  return (
-    <div className="canvas-root ...추후 추가 예정 relative">
-      {renderTree({ id: null })}
-    </div>
-  );
+  return <div className="canvas-root relative">{renderTree({ id: null })}</div>;
 }
