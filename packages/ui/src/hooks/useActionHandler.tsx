@@ -6,7 +6,7 @@ import { NodeAction } from "types/nodeAction";
 
 export function useActionHandler(action?: NodeAction) {
   const router = useRouter();
-  const { state, updateNodeState } = useRuntimeState();
+  const { openModal } = useRuntimeState();
 
   function excute() {
     if (!action) return;
@@ -33,7 +33,7 @@ export function useActionHandler(action?: NodeAction) {
       //모달 띄우기 (모달 노드의 isOpen 상태를 변경)
       case "modal":
         if (action.targetId) {
-          updateNodeState(action.targetId, { isOpen: true });
+          openModal(action.targetId);
         }
         break;
 
