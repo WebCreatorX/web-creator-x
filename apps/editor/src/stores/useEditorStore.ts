@@ -43,6 +43,8 @@ const useEditorStore = create(
               }
             });
           },
+
+          //TODO-노드 상세 데이터 수정하는 액션 추가 필요
           setCanvas(updates: CanvasState) {
             set((state) => {
               state.canvas = { ...state.canvas, ...updates };
@@ -71,3 +73,5 @@ export const useUpdateNode = () => useEditorStore((store) => store.updateNode);
 export const useCanvas = () => useEditorStore((store) => store.canvas);
 
 export const useSetCanvas = () => useEditorStore((store) => store.setCanvas);
+
+//TODO-매니페스트, 현재 선택된 노드의 레이아웃 상태 구독 훅 추가 필요 -> 오른쪽 사이드 바에서 실시간으로 변경되는 x,y좌표 렌더링 할때 필요
