@@ -27,7 +27,9 @@
       "types": ["../../packages/ui/src/types"],
       "types/*": ["../../packages/ui/src/types/*"],
       "components/*": ["../../packages/ui/src/components/*"],
-      "utils/*": ["../../packages/ui/src/utils/*"]
+      "utils/*": ["../../packages/ui/src/utils/*"],
+      "context/*": ["../../packages/ui/src/context/*"],
+      "hooks/*": ["../../packages/ui/src/hooks/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
