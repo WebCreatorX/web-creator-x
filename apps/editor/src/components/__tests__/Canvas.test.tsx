@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Canvas from "../Canvas";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
@@ -22,7 +22,13 @@ vi.mock("@/stores/useEditorStore", () => ({
 
 // Mock EditorNodeWrapper (Rnd 라이브러리는 jsdom환경에서 테스트 하기에 까다롭습니다.)
 vi.mock("@repo/ui/core/EditorNodeWrapper.jsx", () => ({
-  default: ({ children, node }: any) => (
+  default: ({
+    children,
+    node,
+  }: {
+    children: React.ReactNode;
+    node: { id: string };
+  }) => (
     <div data-testid={`wrapper-${node.id}`} className="mock-wrapper">
       {children}
     </div>
@@ -31,7 +37,13 @@ vi.mock("@repo/ui/core/EditorNodeWrapper.jsx", () => ({
 
 // Mock NodeRenderer
 vi.mock("@repo/ui/core/NodeRenderer.jsx", () => ({
-  default: ({ children, node }: any) => (
+  default: ({
+    children,
+    node,
+  }: {
+    children: React.ReactNode;
+    node: { id: string };
+  }) => (
     <div data-testid={`renderer-${node.id}`} className="mock-renderer">
       {children}
     </div>

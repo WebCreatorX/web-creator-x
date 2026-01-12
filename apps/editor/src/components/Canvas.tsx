@@ -3,7 +3,6 @@ import {
   useCurNodes,
   useSelectedNodeId,
   useSelectNode,
-  useSetCanvas,
   useUpdateNode,
 } from "@/stores/useEditorStore";
 import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper.jsx";
@@ -17,7 +16,6 @@ export default function Canvas() {
   const selectNode = useSelectNode();
   const updateNode = useUpdateNode();
   const canvasState = useCanvas();
-  const setCanvas = useSetCanvas();
 
   //FIXME-각 노드들에 key속성 추가해주기. -> 리액트 경고 발생
   //FIXME-nodes가 비어있는 상황에서 에러발생. -> Base Condition에 Root가 들어간다.(Root는 단지 더미 노드일뿐 로직에 들어가면 안된다.)
