@@ -3,10 +3,11 @@ import { useActionHandler } from "hooks/useActionHandler";
 import { ButtonNode, NodeComponentProps } from "types";
 import processNodeStyles from "utils/processNodeStyles";
 
-export default function Button({
+export default function ButtonComponent({
   node,
   props,
   style,
+  children,
 }: NodeComponentProps<ButtonNode>) {
   const { mode } = useBuilderMode();
   const { text, action } = props;
@@ -38,6 +39,7 @@ export default function Button({
       onClick={clickHandler} //이벤트 연결
     >
       <span style={nodeStyleObj.text}>{text}</span>
+      {children}
     </button>
   );
 }
