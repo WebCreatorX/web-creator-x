@@ -23,7 +23,11 @@
       "@/*": ["src/*"],
       "@editor/*": ["src/packages/editor/*"],
       "@components/*": ["src/packages/editor/components/*"],
-      "@renderer/*": ["src/packages/editor/nodeRenderer/*"]
+      "@renderer/*": ["src/packages/editor/nodeRenderer/*"],
+      "types": ["../../packages/ui/src/types"],
+      "types/*": ["../../packages/ui/src/types/*"],
+      "components/*": ["../../packages/ui/src/components/*"],
+      "utils/*": ["../../packages/ui/src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
