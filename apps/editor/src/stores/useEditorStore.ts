@@ -25,24 +25,27 @@ const useEditorStore = create(
               state.nodes?.push(node);
             });
           },
-          deleteNode(nodeId: string) {
-            set((state) => {
-              if (!state.nodes) return;
-              const deleteNodes = [];
-              function recursionDeleteNode(nodeId: string) {
-                deleteNodes.push(nodeId);
-                const childrenNodes = state.nodes?.filter(
-                  ({ parent_id }) => parent_id === nodeId,
-                );
+          getDescendantIds(nodeId: string): string[] {
+            const nodes = get().nodes;
+            if (!nodes) return [];
 
-                if (childrenNodes?.length === 0) return;
+            const res: string[] = [];
 
-                childrenNodes?.forEach(({ id }) => recursionDeleteNode(id));
-              }
+            function recursionNode(nodeId: string) {
+              res.push(nodeId);
+              const childrenNodes = nodes?.filter(
+                ({ parent_id }) => parent_id === nodeId,
+              );
 
-              recursionDeleteNode(nodeId);
-              //TODO- 재귀 삭제 함수로 추출된 노드id는 deleteNodes에 담겨 있다. 이 데이터를 바탕으로 DB수정 시도
-            });
+              if (childrenNodes?.length === 0) return;
+
+              childrenNodes?.forEach(({ id }) => recursionNode(id));
+            }
+
+            recursionNode(nodeId);
+
+            return res;
+            //TODO- 재귀 삭제 함수로 추출된 노드id는 deleteNodes에 담겨 있다. 이 데이터를 바탕으로 DB수정 시도
           },
           selectNode(id: string) {
             set(
@@ -99,7 +102,7 @@ export const useClearNode = () => useEditorStore((store) => store.clearNode);
 
 export const useCurNodes = () => useEditorStore((store) => store.nodes);
 
-export const useUpdateNodeLayoutLayoutLayout = () =>
+export const useUpdateNodeLayout = () =>
   useEditorStore((store) => store.updateNodeLayout);
 
 export const useCanvas = () => useEditorStore((store) => store.canvas);
@@ -107,3 +110,6 @@ export const useCanvas = () => useEditorStore((store) => store.canvas);
 export const useSetCanvas = () => useEditorStore((store) => store.setCanvas);
 
 //TODO-매니페스트, 현재 선택된 노드의 레이아웃 상태 구독 훅 추가 필요 -> 오른쪽 사이드 바에서 실시간으로 변경되는 x,y좌표 렌더링 할때 필요
+
+export const useGetDescendantIds = () =>
+  useEditorStore((store) => store.getDescendantIds);
