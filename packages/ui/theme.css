@@ -1,0 +1,18 @@
+@theme {
+  /* Rnd 핸들 고유 색상 */
+  --color-rnd-handle: #0066ff;
+
+  /* CORE COLOR PALETTE _ 기본 색상 - 버튼, 텍스트, 테두리 등 주요 요소에 사용 */
+  --color-core-zinc-50: #fafafa;
+  --color-core-zinc-100: #f4f4f5;
+  --color-core-zinc-200: #e4e4e7;
+  --color-core-zinc-300: #d4d4d8;
+  --color-core-zinc-400: #a1a1aa;
+  --color-core-zinc-500: #52525b;
+
+  /* semantic Colors _ 상태 고유 색상 */
+  --color-semantic-success: #10b981;
+  --color-semantic-warning: #f59e0b;
+  --color-semantic-error: #ef4444;
+  --color-semantic-info: #3b82f6;
+}

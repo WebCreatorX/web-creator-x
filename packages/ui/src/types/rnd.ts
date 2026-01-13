@@ -4,8 +4,8 @@ export interface Layer {
   y: number;
   width: number;
   height: number;
-  fill: string;
-  content?: string;
+  fill: string; //색상
+  content?: string; //내부 글자
 }
 
 export interface CanvasState {
