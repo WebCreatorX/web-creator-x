@@ -7,6 +7,7 @@ export default function ImageComponent({
   node,
   props,
   style,
+  children,
 }: NodeComponentProps<ImageNode>) {
   const { src, alt = "사용자의 이미지", caption } = props;
   const nodeStyleObj = processNodeStyles(style);
@@ -19,6 +20,7 @@ export default function ImageComponent({
     >
       <Image src={src} alt={alt} style={nodeStyleObj.image} />
       {caption && <div>{caption}</div>}
+      {children}
     </div>
   );
 }

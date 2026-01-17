@@ -2,9 +2,7 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "exports": {
-    "./renderer": "./src/renderer/NodeRenderer.tsx",
-    "./types/*": "./src/types/*.ts",
-    "./components/*": "./src/components/*.tsx"
+    "./*": "./src/*"
   },
   "scripts": {
     "type-check": "tsc --noEmit"
@@ -14,12 +12,17 @@
     "react": "19.1.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4",
     "typescript": "^5"
   },
   "dependencies": {
-    "framer-motion": "^12.23.26"
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.26",
+    "react-rnd": "^10.5.2"
   }
 }
