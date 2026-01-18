@@ -7,6 +7,8 @@ import { NodeStyle } from "./styles";
 // 1. 공통 필드 (모든 노드가 무조건 가지는 것)
 export interface BaseNode {
   id: string; //UUID
+
+  //TODO-페이지id 타입 확실하게 정해야함
   page_id: string | number; // 소속 페이지
   parent_id: string | null; // 부모 노드
   position: number; // 정렬 순서
