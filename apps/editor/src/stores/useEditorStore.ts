@@ -93,6 +93,11 @@ const useEditorStore = create(
 );
 
 //TODO-각 커스텀훅 사용 설명 주석 달기
+
+export const useSetNode = () => useEditorStore((store) => store.setNode);
+
+export const useAddNode = () => useEditorStore((store) => store.addNode);
+
 export const useSelectedNodeId = () =>
   useEditorStore((store) => store.selectedNodeId);
 
