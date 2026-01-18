@@ -6,7 +6,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const mockUseCurNodes = vi.fn();
 const mockUseSelectedNodeId = vi.fn();
 const mockUseSelectNode = vi.fn();
-const mockUseUpdateNode = vi.fn();
+const mockUseUpdateNodeLayout = vi.fn();
 const mockUseCanvas = vi.fn();
 const mockUseSetCanvas = vi.fn();
 
@@ -15,7 +15,7 @@ vi.mock("@/stores/useEditorStore", () => ({
   useCurNodes: () => mockUseCurNodes(), //지연 실행 -> 이렇게 되면 다른 테스트에서 목함수의 반환값을 바꿔도 언제나 새롭게 해당 함수가 호출 되므로 다른 테스트의 영향을 받지 않는다.
   useSelectedNodeId: () => mockUseSelectedNodeId(),
   useSelectNode: () => mockUseSelectNode(),
-  useUpdateNode: () => mockUseUpdateNode(),
+  useUpdateNodeLayout: () => mockUseUpdateNodeLayout(),
   useCanvas: () => mockUseCanvas(),
   useSetCanvas: () => mockUseSetCanvas(),
 }));

@@ -1,9 +1,11 @@
+"use client";
+
 import {
   useCanvas,
   useCurNodes,
   useSelectedNodeId,
   useSelectNode,
-  useUpdateNode,
+  useUpdateNodeLayout,
 } from "@/stores/useEditorStore";
 import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper.jsx";
 import NodeRenderer from "@repo/ui/core/NodeRenderer.jsx";
@@ -14,7 +16,7 @@ export default function Canvas() {
   const nodes = useCurNodes();
   const selectedNodeId = useSelectedNodeId();
   const selectNode = useSelectNode();
-  const updateNode = useUpdateNode();
+  const updateNode = useUpdateNodeLayout();
   const canvasState = useCanvas();
 
   //FIXME-각 노드들에 key속성 추가해주기. -> 리액트 경고 발생
