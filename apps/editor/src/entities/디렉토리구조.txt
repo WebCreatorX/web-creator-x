@@ -1,0 +1,22 @@
+src/entities/
+├── page/                # 페이지 관련 도메인
+│   ├── model/           # 페이지의 상태 관리 및 타입
+│   │   ├── store.ts     # usePageStore (Mock 데이터 포함)
+│   │   └── types.ts     # Page 타입 정의
+│   └── index.ts         # Public API (외부에 store와 type 노출)
+│
+├── section/             # 섹션 관련 도메인
+│   ├── model/
+│   │   ├── store.ts     # useSectionStore
+│   │   └── types.ts     # Section 타입 정의
+│   └── index.ts         # Public API
+│
+└── modal/               # 모달 관련 도메인
+    ├── model/
+    │   ├── store.ts     # useModalStore
+    │   └── types.ts     # Modal 타입 정의
+    └── index.ts         # Public API
+
+
+# 아직 타입은 정의하지 않음
+# 현재 목데이터로 구성됨
