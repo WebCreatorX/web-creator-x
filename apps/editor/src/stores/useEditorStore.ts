@@ -10,7 +10,7 @@ const useEditorStore = create(
       combine(
         {
           selectedNodeId: null as string | null,
-          nodes: null as null | WcxNode[], //TODO- 추후에 현재 페이지에 해당하는 노드들을 받아오는 로직을 통해 해당 상태가 업데이트 되야 한다.
+          nodes: null as null | WcxNode[], //TODO- 추후에 현재 페이지에 해당하는 노드들을 받아오는 로직을 통해 해당 상태가 업데이트 되야 한다. -> EditorStoreInitializer컴포넌트에서 담당
           canvas: { dx: 0, dy: 0, scale: 1 },
         },
         (set, get) => ({
@@ -23,6 +23,16 @@ const useEditorStore = create(
           addNode(node: WcxNode) {
             set((state) => {
               state.nodes?.push(node);
+            });
+          },
+          deleteNode(nodeId: string) {
+            set((state) => {
+              if (!state.nodes) return;
+              const targetNodeIdx = state.nodes?.findIndex(
+                (node) => node.id === nodeId,
+              );
+              if (targetNodeIdx === -1) return;
+              state.nodes.splice(targetNodeIdx, 1);
             });
           },
           getDescendantIds(nodeId: string): string[] {
@@ -97,6 +107,8 @@ const useEditorStore = create(
 export const useSetNode = () => useEditorStore((store) => store.setNode);
 
 export const useAddNode = () => useEditorStore((store) => store.addNode);
+
+export const useDeleteNode = () => useEditorStore((store) => store.deleteNode);
 
 export const useSelectedNodeId = () =>
   useEditorStore((store) => store.selectedNodeId);
