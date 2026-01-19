@@ -1,0 +1,25 @@
+src/widgets/left-sidebar/
+├── model/                 # 위젯 전용 상태 및 데이터 관리
+│   ├── store.ts           # activeTab, isExpanded 등 UI 상태 (Zustand)
+│   ├── constants.ts       # 컴포넌트/위젯 탭에서 쓸 정적 메뉴 데이터
+│   └── types.ts           # NavTabId 등 위젯 내 공용 타입 정의
+│
+├── ui/                    # 컴포넌트의 시각적 구현
+│   ├── LeftSidebar.tsx    # [EntryPoint] NavigationBar와 SubPanel을 배치하는 메인 레이아웃
+│   ├── NavigationBar.tsx  # 좌측 아이콘 바 (탭 선택 기능)
+│   ├── SubPanel.tsx       # activeTab에 따라 각 패널을 스위칭하는 라우터
+│   │
+│   └── sub-panels/            # 5개 서브 패널 상세 구현
+│       ├── index.ts       # 배럴(Barrel) export (5개 패널을 한 번에 내보냄)
+│       ├── ComponentPanel.tsx # 정적 패널 (from constants)
+│       ├── WidgetPanel.tsx    # 정적 패널 (from constants)
+│       ├── PagePanel.tsx      # 동적 패널 (from entities/page)
+│       ├── SectionPanel.tsx   # 동적 패널 (from entities/section)
+│       ├── ModalPanel.tsx     # 동적 패널 (from entities/modal)
+│       │
+│       └── base/          # 패널 제작용 공통 부품
+│           ├── PanelBaseLayout.tsx # 공통 헤더 + 구분선 틀
+│           ├── StaticContent.tsx   # 정적 리스트용 UI 규격
+│           └── DynamicContent.tsx  # 동적 리스트용 UI 규격
+│
+└── index.ts               # Public API: 외부(Pages 등)에는 LeftSidebar만 노출
