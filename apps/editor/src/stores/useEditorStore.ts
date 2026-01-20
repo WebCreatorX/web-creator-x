@@ -57,7 +57,7 @@ const useEditorStore = create(
             return res;
             //TODO- 재귀 삭제 함수로 추출된 노드id는 deleteNodes에 담겨 있다. 이 데이터를 바탕으로 DB수정 시도
           },
-          selectNode(id: string) {
+          selectNode(id: string | null) {
             set(
               (state) => {
                 state.selectedNodeId = id;
@@ -120,7 +120,7 @@ const useEditorStore = create(
           },
 
           //TODO-노드 상세 데이터 수정하는 액션 추가 필요
-          setCanvas(updates: CanvasState) {
+          setCanvas(updates: Partial<CanvasState>) {
             set((state) => {
               state.canvas = { ...state.canvas, ...updates };
             });
