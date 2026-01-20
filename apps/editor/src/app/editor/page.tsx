@@ -9,12 +9,12 @@ export default async function EditorPage() {
   const nodes = await getNodesFromDB(pageId);
 
   return (
-    <div>
-      <h1 className="text-amber-700">에디터 페이지 입니다.</h1>
+    <div className="flex h-screen w-screen flex-col gap-10">
+      <h1 className="text-3xl text-amber-700">에디터 페이지 입니다.</h1>
       <EditorStoreInitializer initialNodes={nodes}>
         {/* 다른 에디터 관련 컴포넌트들은 이곳에서 렌더링 됩니다!(사이드바,매니패스트 수정 컴포넌트 등등...) */}
         <RuntimeProvider>
-          <div className="relative h-full w-full border-2 border-amber-950">
+          <div className="relative h-full w-full border-2">
             <Canvas />
           </div>
         </RuntimeProvider>

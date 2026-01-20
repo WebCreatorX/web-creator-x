@@ -69,16 +69,16 @@ export default function EditorNodeWrapper({
       className={clsx("group cursor-pointer", isSelected && "z-50")}
       resizeHandleClasses={{
         bottomLeft: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-left-1 -bottom-1")
+          ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-bottom-1")
           : undefined,
         bottomRight: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-right-1 -bottom-1")
+          ? clsx(selectedNodeGuideClasses.handle, "!-right-1 !-bottom-1")
           : undefined,
         topLeft: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-left-1 -top-1")
+          ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-top-1")
           : undefined,
         topRight: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-right-1 -top-1")
+          ? clsx(selectedNodeGuideClasses.handle, "!-right-1 !-top-1")
           : undefined,
       }}
     >
@@ -89,7 +89,7 @@ export default function EditorNodeWrapper({
         }}
         style={wrapperStyle}
         className={clsx(
-          "transition-shadow duration-200",
+          "h-full w-full transition-shadow duration-200",
           isSelected && selectedNodeGuideClasses.outline,
         )}
       >
