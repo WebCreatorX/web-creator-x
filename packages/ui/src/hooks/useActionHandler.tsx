@@ -1,10 +1,12 @@
-"use Rounter";
+"use client";
 
 import { useRuntimeState } from "context/runtimeContext";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+
 import { NodeAction } from "types/nodeAction";
 
 export function useActionHandler(action?: NodeAction) {
+  //FIXME-추후에 useRouter훅을 주입받아서 사용해야할까? (@repo/ui가 앱라우터로 빌드되는게 올바른가? 리액트로만 만들어도 될것같은 생각.)
   const router = useRouter();
   const { openModal } = useRuntimeState();
 

@@ -1,3 +1,4 @@
+import "../styles.css";
 import QueryProvider from "src/providers/queryProvider";
 
 export default function RootLayout({

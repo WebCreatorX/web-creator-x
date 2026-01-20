@@ -25,16 +25,14 @@ export default function EditorNodeWrapper({
 }: WrapperProps) {
   const isSelected = selectedId === node.id;
   const wrapperStyle: React.CSSProperties = {
-    // 선택되었을 때 시각적 피드백 (테두리 등)
-    outline: isSelected ? "outline outline-gray-500 outline-2" : "none",
     cursor: "move",
   };
 
   const { id } = node;
   const { width, height, x, y } = node.layout;
   const selectedNodeGuideClasses = {
-    handle: "bg-white border rounded-full border-gray-500 !w-3 !h-3",
-    outline: "ring ring-2 ring-gray-500",
+    handle: "bg-white border-2 rounded-full border-rnd-handle !w-2 !h-2 ",
+    outline: "ring ring-2 ring-rnd-handle",
   };
 
   //TODO- 노드 선택 로직 구현, 선택 ID 공유하는 zustand 스토어 구현 필요
@@ -71,16 +69,16 @@ export default function EditorNodeWrapper({
       className={clsx("group cursor-pointer", isSelected && "z-50")}
       resizeHandleClasses={{
         bottomLeft: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-left-1.5 -bottom-1.5")
+          ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-bottom-1")
           : undefined,
         bottomRight: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-right-1.5 -bottom-1.5")
+          ? clsx(selectedNodeGuideClasses.handle, "!-right-1 !-bottom-1")
           : undefined,
         topLeft: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-left-1.5 -top-1.5")
+          ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-top-1")
           : undefined,
         topRight: isSelected
-          ? clsx(selectedNodeGuideClasses.handle, "-right-1.5 -top-1.5")
+          ? clsx(selectedNodeGuideClasses.handle, "!-right-1 !-top-1")
           : undefined,
       }}
     >
@@ -91,7 +89,7 @@ export default function EditorNodeWrapper({
         }}
         style={wrapperStyle}
         className={clsx(
-          "transition-shadow duration-200",
+          "h-full w-full transition-shadow duration-200",
           isSelected && selectedNodeGuideClasses.outline,
         )}
       >
