@@ -21,7 +21,7 @@
     ],
     "paths": {
       "@/*": ["src/*"],
-      "@editor/*": ["src/packages/editor/*"],
+      "@editor/*": ["src/*"],
       "@components/*": ["src/packages/editor/components/*"],
       "@renderer/*": ["src/packages/editor/nodeRenderer/*"],
       "types": ["../../packages/ui/src/types"],
