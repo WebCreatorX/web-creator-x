@@ -9,9 +9,9 @@ const useEditorStore = create(
     immer(
       combine(
         {
-          selectedNodeId: null as string | null,
           nodes: null as null | WcxNode[], //TODO- 추후에 현재 페이지에 해당하는 노드들을 받아오는 로직을 통해 해당 상태가 업데이트 되야 한다. -> EditorStoreInitializer컴포넌트에서 담당
           canvas: { dx: 0, dy: 0, scale: 1 },
+          selectedDepthPath: [] as string[],
         },
         (set, get) => ({
           setNode(nodes: WcxNode[]) {
@@ -57,10 +57,10 @@ const useEditorStore = create(
             return res;
             //TODO- 재귀 삭제 함수로 추출된 노드id는 deleteNodes에 담겨 있다. 이 데이터를 바탕으로 DB수정 시도
           },
-          selectNode(id: string | null) {
+          selectNode(id: string) {
             set(
               (state) => {
-                state.selectedNodeId = id;
+                state.selectedDepthPath = [id];
               },
               false,
               "editorStore/selectNode",
@@ -69,7 +69,7 @@ const useEditorStore = create(
           clearNode() {
             set(
               (state) => {
-                state.selectedNodeId = null;
+                state.selectedDepthPath = [];
               },
               false,
               "editorStore/clearNode",
@@ -165,7 +165,10 @@ export const useDeleteNode = () => useEditorStore((store) => store.deleteNode);
  * 선택된 노드가 없으면 null을 반환합니다.
  */
 export const useSelectedNodeId = () =>
-  useEditorStore((store) => store.selectedNodeId);
+  useEditorStore((store) => {
+    const path = store.selectedDepthPath;
+    return path.length > 0 ? path[path.length - 1] : null;
+  });
 
 /**
  * [Action] 특정 노드를 선택(포커스)하는 함수를 반환합니다.

@@ -9,7 +9,7 @@ interface handleMouseDown {
   e: React.MouseEvent;
   isPanning: IsPanning;
   lastMousePos: LastMousePos;
-  selectNode: (id: string | null) => void;
+  clearNode: () => void;
 }
 
 interface handleMouseMove {
@@ -28,10 +28,10 @@ export function handleMouseDown({
   e,
   isPanning,
   lastMousePos,
-  selectNode,
+  clearNode,
 }: handleMouseDown) {
   if (e.button === 0) {
-    selectNode(null);
+    clearNode(); //FIXME- 해당 액션 수정 필요!
     return;
   }
   e.preventDefault();

@@ -2,6 +2,7 @@
 
 import {
   useCanvas,
+  useClearNode,
   useCurNodes,
   useSelectedNodeId,
   useSelectNode,
@@ -26,6 +27,7 @@ export default function Canvas() {
   const updateNode = useUpdateNodeLayout();
   const canvasState = useCanvas();
   const setCanvas = useSetCanvas();
+  const clearNode = useClearNode();
 
   const isPanning = useRef(false);
   const lastMousePos = useRef({ x: 0, y: 0 });
@@ -92,7 +94,7 @@ export default function Canvas() {
       className="relative h-full w-full flex-1 cursor-grab overflow-hidden bg-white active:cursor-grabbing"
       onWheel={(e) => handleWheel({ canvas: canvasState, e, setCanvas })}
       onMouseDown={(e) =>
-        handleMouseDown({ e, isPanning, lastMousePos, selectNode })
+        handleMouseDown({ e, isPanning, lastMousePos, clearNode })
       }
       onMouseMove={(e) =>
         handleMouseMove({ e, isPanning, lastMousePos, setCanvas, canvasState })
