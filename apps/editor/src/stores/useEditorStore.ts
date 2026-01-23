@@ -57,14 +57,34 @@ const useEditorStore = create(
             return res;
             //TODO- 재귀 삭제 함수로 추출된 노드id는 deleteNodes에 담겨 있다. 이 데이터를 바탕으로 DB수정 시도
           },
-          selectNode(id: string) {
-            set(
-              (state) => {
-                state.selectedDepthPath = [id];
-              },
-              false,
-              "editorStore/selectNode",
-            );
+          selectNode(targetNodeId: string) {
+            const path = get().selectedDepthPath;
+            const nodes = get().nodes;
+            if (!nodes) return;
+
+            while (true) {
+              const targetNode = nodes.find((node) => node.id === targetNodeId);
+              if (!targetNode) return;
+              const parentNodeId = targetNode.parent_id;
+
+              if (parentNodeId === null) {
+                set((state) => {
+                  state.selectedDepthPath = [targetNodeId];
+                });
+                break;
+              }
+
+              const parentPos = path.indexOf(parentNodeId);
+
+              if (parentPos !== -1) {
+                set((state) => {
+                  state.selectedDepthPath.splice(parentPos + 1);
+                  state.selectedDepthPath.push(targetNodeId);
+                });
+                break;
+              }
+              targetNodeId = parentNodeId;
+            }
           },
           clearNode() {
             set(
