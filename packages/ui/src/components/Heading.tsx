@@ -15,6 +15,7 @@ export default function HeadingComponent({
 
   return (
     <div
+      data-component-type={node.type}
       data-component-id={node.id}
       className={`${style.root?.className} flex h-full w-full items-center justify-center`}
       style={{ ...nodeStyleObj.root, width: "100%", height: "100%" }}

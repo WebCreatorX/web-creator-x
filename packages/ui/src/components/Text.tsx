@@ -14,6 +14,7 @@ export default function TextComponent({
 
   return (
     <section
+      data-component-type={node.type}
       data-component-id={node.id}
       className={style.root?.className}
       style={{ ...nodeStyleObj.root, width: "100%", height: "100%" }}

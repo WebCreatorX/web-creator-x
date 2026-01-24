@@ -91,6 +91,7 @@ export default function Canvas() {
 
   return (
     <div
+      data-component-type="canvas"
       className="relative h-full w-full flex-1 cursor-grab overflow-hidden bg-white active:cursor-grabbing"
       onWheel={(e) => handleWheel({ canvas: canvasState, e, setCanvas })}
       onMouseDown={(e) =>

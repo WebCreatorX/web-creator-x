@@ -31,7 +31,14 @@ export function handleMouseDown({
   clearNode,
 }: handleMouseDown) {
   if (e.button === 0) {
-    clearNode(); //FIXME- 해당 액션 수정 필요!
+    const target = e.target as HTMLElement;
+    const componentElement = target.closest<HTMLElement>(
+      "[data-component-type]",
+    );
+    if (!componentElement) return;
+    if (componentElement.dataset.componentType !== "canvas") return;
+    clearNode();
+
     return;
   }
   e.preventDefault();

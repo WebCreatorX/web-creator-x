@@ -14,6 +14,7 @@ export default function ImageComponent({
 
   return (
     <div
+      data-component-type={node.type}
       data-component-id={node.id}
       className={`${style.root?.className} flex flex-col gap-1`}
       style={{

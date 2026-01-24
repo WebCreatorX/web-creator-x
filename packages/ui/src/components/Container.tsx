@@ -11,6 +11,7 @@ export default function Container({
 
   return (
     <div
+      data-component-type={node.type}
       data-component-id={node.id}
       style={nodeStyleObj.root}
       className={style.root?.className}

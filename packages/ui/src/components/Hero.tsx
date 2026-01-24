@@ -28,6 +28,7 @@ export default function HeroComponent({
   return (
     //TODO - 노드들이 드래그 앤 드롭될때 위치가 자유롭게 변하게 할 수 있어야한다.
     <section
+      data-component-type={node.type}
       data-component-id={node.id}
       className={`${style.root?.className || ""} flex h-full w-full flex-col items-center justify-center gap-2 overflow-hidden`}
       style={{

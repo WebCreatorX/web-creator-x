@@ -57,6 +57,8 @@ const useEditorStore = create(
             return res;
             //TODO- 재귀 삭제 함수로 추출된 노드id는 deleteNodes에 담겨 있다. 이 데이터를 바탕으로 DB수정 시도
           },
+
+          //FIXME-🐛 버그 발견! -> 하위 노드에서 다른 가지로 넘어갈때 다시 상위 노드가 선택되는 버그 발견. 같은 계층의 자식 노드로 가지를 옮기려면 바로 선택될 수 있어야한다.
           selectNode(targetNodeId: string) {
             const path = get().selectedDepthPath;
             const nodes = get().nodes;

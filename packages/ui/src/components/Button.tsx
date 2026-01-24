@@ -33,6 +33,7 @@ export default function ButtonComponent({
   return (
     <button
       type="button"
+      data-component-type={node.type}
       data-component-id={node.id}
       style={nodeStyleObj.root}
       className={`${style.root?.className} ${mode === "editor" ? "cursor-default" : "cursor-pointer"} flex h-full w-full items-center justify-center transition-all active:scale-95`}

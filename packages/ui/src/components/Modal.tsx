@@ -46,12 +46,16 @@ export default function Modal({
 
   return (
     <motion.div
+      data-component-type={node.type}
       data-component-id={curNodeId}
       key={curNodeId}
       onClick={(e) => e.stopPropagation()}
       className={`${style.root?.className || ""} pointer-events-auto relative bg-white shadow-2xl`}
       style={nodeStyleObj.root}
-      variants={animationVariants[animationType as keyof typeof animationVariants] || animationVariants.default}
+      variants={
+        animationVariants[animationType as keyof typeof animationVariants] ||
+        animationVariants.default
+      }
       initial="hidden"
       animate="visible"
       exit="exit"
