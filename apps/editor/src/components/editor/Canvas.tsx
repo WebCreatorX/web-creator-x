@@ -1,21 +1,34 @@
+"use client";
+
 import {
   useCanvas,
   useCurNodes,
   useSelectedNodeId,
   useSelectNode,
-  useUpdateNode,
+  useSetCanvas,
+  useUpdateNodeLayout,
 } from "@/stores/useEditorStore";
-import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper.jsx";
-import NodeRenderer from "@repo/ui/core/NodeRenderer.jsx";
-import { WcxNode } from "@repo/ui/types/nodes.js";
-import React from "react";
+import {
+  handleMouseDown,
+  handleMouseMove,
+  handleMouseUp,
+} from "@/utils/editor/canvasMouseHandler";
+import handleWheel from "@/utils/editor/handleWheel";
+import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper";
+import NodeRenderer from "@repo/ui/core/NodeRenderer";
+import { WcxNode } from "@repo/ui/types/nodes";
+import React, { useRef } from "react";
 
 export default function Canvas() {
   const nodes = useCurNodes();
   const selectedNodeId = useSelectedNodeId();
   const selectNode = useSelectNode();
-  const updateNode = useUpdateNode();
+  const updateNode = useUpdateNodeLayout();
   const canvasState = useCanvas();
+  const setCanvas = useSetCanvas();
+
+  const isPanning = useRef(false);
+  const lastMousePos = useRef({ x: 0, y: 0 });
 
   //FIXME-각 노드들에 key속성 추가해주기. -> 리액트 경고 발생
   //FIXME-nodes가 비어있는 상황에서 에러발생. -> Base Condition에 Root가 들어간다.(Root는 단지 더미 노드일뿐 로직에 들어가면 안된다.)
@@ -74,5 +87,34 @@ export default function Canvas() {
     );
   }
 
-  return <div className="canvas-root relative">{renderTree({ id: null })}</div>;
+  return (
+    <div
+      className="relative h-full w-full flex-1 cursor-grab overflow-hidden bg-white active:cursor-grabbing"
+      onWheel={(e) => handleWheel({ canvas: canvasState, e, setCanvas })}
+      onMouseDown={(e) =>
+        handleMouseDown({ e, isPanning, lastMousePos, selectNode })
+      }
+      onMouseMove={(e) =>
+        handleMouseMove({ e, isPanning, lastMousePos, setCanvas, canvasState })
+      }
+      onMouseUp={() => handleMouseUp({ isPanning })}
+      onMouseLeave={() => handleMouseUp({ isPanning })}
+    >
+      <div
+        style={{
+          transform: `translate(${canvasState.dx}px, ${canvasState.dy}px) scale(${canvasState.scale})`,
+          transformOrigin: "0 0",
+          width: "100%",
+          height: "100%",
+        }}
+        className="relative h-full w-full"
+      >
+        {/* 배경 격자 (Helper Grid) */}
+        <div className="bg-grid-pattern pointer-events-none absolute inset-[-1000%] z-0 h-[3000%] w-[3000%]" />
+        <div className="relative z-10 h-full w-full">
+          {renderTree({ id: null })}
+        </div>
+      </div>
+    </div>
+  );
 }

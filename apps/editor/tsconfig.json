@@ -20,6 +20,7 @@
       }
     ],
     "paths": {
+      "@repo/ui/*": ["../../packages/ui/src/*"],
       "@/*": ["src/*"],
       "@editor/*": ["src/*"],
       "@components/*": ["src/packages/editor/components/*"],

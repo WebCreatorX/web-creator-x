@@ -16,9 +16,19 @@ export default function ImageComponent({
     <div
       data-component-id={node.id}
       className={`${style.root?.className} flex flex-col gap-1`}
-      style={{ ...nodeStyleObj.root, width: "100%", height: "100%" }}
+      style={{
+        ...nodeStyleObj.root,
+        width: "100%",
+        height: "100%",
+      }}
     >
-      <Image src={src} alt={alt} style={nodeStyleObj.image} />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        style={nodeStyleObj.image}
+        draggable={false}
+      />
       {caption && <div>{caption}</div>}
       {children}
     </div>
