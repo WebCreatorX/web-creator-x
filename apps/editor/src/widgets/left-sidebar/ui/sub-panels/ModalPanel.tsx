@@ -7,9 +7,9 @@ export const ModalPanel = () => {
 
   return (
     <PanelBaseLayout title="모달" description="목록">
-      <DynamicContent 
-        items={modals.map(m => ({ id: m.id, label: m.name }))} 
-        onItemClick={selectModal} 
+      <DynamicContent
+        items={modals.map(m => ({ id: m.id, label: m.name }))}
+        onItemClick={(item) => selectModal(item.id)}
       />
       {/* 추가 버튼 등 패널 고유 UI는 Layout 아래에 배치 */}
       <div className="p-3">

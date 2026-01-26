@@ -1,23 +1,35 @@
+import { SquareIcon, FileIcon, LayoutIcon, PlusSquareIcon, WindowIcon } from '@editor/shared';
+
 // 정적 데이터 (컴포넌트/위젯)
 export const STATIC_PANEL_DATA = {
-    component: {
-      title: "컴포넌트",
-      description: "기본",
-      items: [
-        { id: 'text', label: '텍스트' },
-        { id: 'image', label: '이미지' },
-        { id: 'icon', label: '아이콘' },
-        { id: 'button', label: '버튼' },
-        { id: 'divider', label: '구분선' },
-      ]
-    },
-    widget: {
-      title: "위젯",
-      description: "기본",
-      items: [
-        { id: 'header', label: '헤더' },
-        { id: 'footer', label: '푸터' },
-        { id: 'sidebar', label: '사이드바' },
-      ]
-    }
-  };
+  component: {
+    title: "컴포넌트",
+    description: "기본",
+    items: [
+      { id: 'Text', label: '텍스트' },
+      { id: 'Image', label: '이미지' },
+      { id: 'Heading', label: '제목' },
+      { id: 'Button', label: '버튼' },
+      { id: 'Hero', label: '히어로' },
+      { id: 'Modal', label: '모달' },
+      { id: 'Container', label: '컨테이너' },
+    ]
+  },
+  widget: {
+    title: "위젯",
+    description: "기본",
+    items: [
+      { id: 'header', label: '헤더' },
+      { id: 'footer', label: '푸터' },
+      { id: 'sidebar', label: '사이드바' },
+    ]
+  }
+};
+
+export const NAV_ITEMS = [
+  { id: 'component', label: '컴포넌트', icon: SquareIcon },
+  { id: 'page', label: '페이지', icon: FileIcon },
+  { id: 'section', label: '섹션', icon: LayoutIcon },
+  { id: 'widget', label: '위젯', icon: PlusSquareIcon },
+  { id: 'modal', label: '모달', icon: WindowIcon },
+] as const;

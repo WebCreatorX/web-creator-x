@@ -1,20 +1,12 @@
 import { cn } from '@repo/utils';
-import { SquareIcon, FileIcon, LayoutIcon, PlusSquareIcon, WindowIcon } from '@repo/ui';
 import { useNavigationStore } from '../model/store';
-
-const NAV_ITEMS = [
-  { id: 'component', label: '컴포넌트', icon: SquareIcon },
-  { id: 'page', label: '페이지', icon: FileIcon },
-  { id: 'section', label: '섹션', icon: LayoutIcon },
-  { id: 'widget', label: '위젯', icon: PlusSquareIcon },
-  { id: 'modal', label: '모달', icon: WindowIcon },
-] as const;
+import { NAV_ITEMS } from '../model/constants';
 
 export const NavigationBar = () => {
   const { activeTab, setActiveTab } = useNavigationStore();
 
   return (
-    <nav 
+    <nav
       className={cn(
         "w-[60px] h-full bg-white border-r border-zinc-200",
         "flex flex-col items-center py-4 px-2 gap-2"
@@ -31,8 +23,8 @@ export const NavigationBar = () => {
             className={cn(
               // 아이콘 크기 44x44, 곡률 6px 반영
               "w-11 h-11 flex items-center justify-center rounded-md transition-all duration-200",
-              isActive 
-                ? "bg-[#F4F4F5] text-zinc-900" 
+              isActive
+                ? "bg-[#F4F4F5] text-zinc-900"
                 : "text-zinc-500 hover:bg-[#F4F4F5] hover:text-zinc-900"
             )}
             title={item.label}

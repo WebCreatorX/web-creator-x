@@ -7,9 +7,9 @@ export const PagePanel = () => {
 
   return (
     <PanelBaseLayout title="페이지" description="목록">
-      <DynamicContent 
-        items={pages.map(p => ({ id: p.id, label: p.name, isActive: p.id === activePageId }))} 
-        onItemClick={selectPage} 
+      <DynamicContent
+        items={pages.map(p => ({ id: p.id, label: p.name, isActive: p.id === activePageId }))}
+        onItemClick={(item) => selectPage(item.id)}
       />
     </PanelBaseLayout>
   );

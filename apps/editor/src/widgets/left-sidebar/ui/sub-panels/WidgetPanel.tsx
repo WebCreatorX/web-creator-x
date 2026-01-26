@@ -7,9 +7,9 @@ export const WidgetPanel = () => {
 
   return (
     <PanelBaseLayout title={title} description={description}>
-      <StaticContent 
-        items={items} 
-        onItemClick={(id) => console.log(`${id} 위젯 추가`)} 
+      <StaticContent
+        items={items}
+        onItemClick={(item) => console.log(`${item.id} 위젯 추가`)}
       />
     </PanelBaseLayout>
   );
