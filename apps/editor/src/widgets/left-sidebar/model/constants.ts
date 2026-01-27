@@ -1,6 +1,11 @@
-import { SquareIcon, FileIcon, LayoutIcon, PlusSquareIcon, WindowIcon } from '@editor/shared';
+import {
+  Layers,
+  File,
+  PanelsTopLeft,
+  PlusCircle,
+  AppWindow
+} from 'lucide-react';
 
-// 정적 데이터 (컴포넌트/위젯)
 export const STATIC_PANEL_DATA = {
   component: {
     title: "컴포넌트",
@@ -27,9 +32,9 @@ export const STATIC_PANEL_DATA = {
 };
 
 export const NAV_ITEMS = [
-  { id: 'component', label: '컴포넌트', icon: SquareIcon },
-  { id: 'page', label: '페이지', icon: FileIcon },
-  { id: 'section', label: '섹션', icon: LayoutIcon },
-  { id: 'widget', label: '위젯', icon: PlusSquareIcon },
-  { id: 'modal', label: '모달', icon: WindowIcon },
+  { id: 'component', label: '컴포넌트', icon: Layers },
+  { id: 'page', label: '페이지', icon: File },
+  { id: 'section', label: '섹션', icon: PanelsTopLeft },
+  { id: 'widget', label: '위젯', icon: PlusCircle },
+  { id: 'modal', label: '모달', icon: AppWindow },
 ] as const;
