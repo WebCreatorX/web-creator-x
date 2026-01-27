@@ -15,7 +15,7 @@ export default async function EditorPage() {
       <EditorStoreInitializer initialNodes={nodes}>
         {/* 다른 에디터 관련 컴포넌트들은 이곳에서 렌더링 됩니다!(사이드바,매니패스트 수정 컴포넌트 등등...) */}
         <RuntimeProvider>
-          <div className="flex h-full w-full overflow-hidden border-2">
+          <div className="flex h-full w-full border-2">
             <LeftSidebar />
             <Canvas />
           </div>
