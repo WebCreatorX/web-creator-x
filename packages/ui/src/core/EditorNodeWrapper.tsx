@@ -1,12 +1,12 @@
 //에디터 모드전용 노드 렌더러 래퍼 컴포넌트
 import clsx from "clsx";
 import { Rnd } from "react-rnd";
-import { BaseNode } from "types";
+import { WcxNode } from "types";
 import { CanvasState, Layer } from "types/rnd";
 
 interface WrapperProps {
   children: React.ReactNode;
-  node: BaseNode;
+  node: WcxNode;
   selectedId: string | null;
   updateNode: (id: string, updates: Partial<Layer>) => void; //노드의 레이아웃 업데이트 함수 from editor의 스토어 액션
   selectNode: (id: string) => void;
@@ -24,6 +24,7 @@ export default function EditorNodeWrapper({
   canvas,
 }: WrapperProps) {
   const isSelected = selectedId === node.id;
+  const isGroup = node.type === "Group";
   const wrapperStyle: React.CSSProperties = {
     cursor: "move",
   };
@@ -64,7 +65,7 @@ export default function EditorNodeWrapper({
           ...pos,
         })
       }
-      enableResizing={isSelected ? undefined : false}
+      enableResizing={isGroup ? undefined : isSelected ? undefined : false}
       disableDragging={!isSelected}
       className={clsx("group cursor-pointer", isSelected && "z-50")}
       resizeHandleClasses={{

@@ -6,6 +6,7 @@ import ImageComponent from "components/Image";
 import Modal from "components/Modal";
 import TextComponent from "components/Text";
 import { WcxNode } from "types";
+import Group from "components/Group";
 
 export default function NodeRenderer({
   node,
@@ -74,6 +75,15 @@ export default function NodeRenderer({
     case "Modal":
       return (
         <Modal
+          node={node}
+          props={node.props}
+          style={node.style}
+          children={children}
+        />
+      );
+    case "Group":
+      return (
+        <Group
           node={node}
           props={node.props}
           style={node.style}
