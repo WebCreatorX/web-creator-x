@@ -3,7 +3,7 @@ import { DynamicContent } from './base/DynamicContent';
 import { useModalStore } from '@/entities/modal';
 
 export const ModalPanel = () => {
-  const { modals, selectModal, createModal }: any = useModalStore();
+  const { modals, selectModal, createModal } = useModalStore();
 
   return (
     <PanelBaseLayout title="모달" description="목록">

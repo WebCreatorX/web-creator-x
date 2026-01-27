@@ -3,7 +3,7 @@ import { DynamicContent } from './base/DynamicContent';
 import { useSectionStore } from '@/entities/section';
 
 export const SectionPanel = () => {
-  const { sections, selectSection }: any = useSectionStore();
+  const { sections, selectSection } = useSectionStore();
 
   return (
     <PanelBaseLayout title="섹션" description="페이지 이름">

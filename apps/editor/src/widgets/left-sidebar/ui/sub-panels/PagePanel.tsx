@@ -3,7 +3,7 @@ import { DynamicContent } from './base/DynamicContent';
 import { usePageStore } from '@/entities/page'; // 예시 엔티티 참조
 
 export const PagePanel = () => {
-  const { pages, activePageId, selectPage }: any = usePageStore();
+  const { pages, activePageId, selectPage } = usePageStore();
 
   return (
     <PanelBaseLayout title="페이지" description="목록">

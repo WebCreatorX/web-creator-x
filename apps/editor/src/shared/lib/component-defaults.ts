@@ -5,7 +5,7 @@ import { NodeStyle } from "@repo/ui/types/styles";
 // ComponentDefault Data Type
 // 추천 코드를 반영하여 layout 필드를 분리하고 타입 안정성을 강화했습니다.
 export interface ComponentDefaults {
-  props: any;            // 각 노드 타입에 맞는 props (통합 노드 타입에서 추론)
+  props: Record<string, unknown>; // 각 노드 타입에 맞는 props (통합 노드 타입에서 추론)
   style: NodeStyle;      // @repo/ui의 규격화된 스타일 구조 (root 등)
   layout: WcxNode['layout']; // x, y, width, height, zIndex
 }
