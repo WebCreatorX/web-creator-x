@@ -2,6 +2,7 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "exports": {
+    ".": "./src/index.ts",
     "./*": "./src/*"
   },
   "scripts": {
@@ -21,6 +22,8 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@repo/utils": "workspace:*",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
     "react-rnd": "^10.5.2"

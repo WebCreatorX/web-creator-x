@@ -1,6 +1,7 @@
 import getNodesFromDB from "@/actions/editor/getNodesFromDB";
 import Canvas from "@/components/editor/Canvas";
 import EditorStoreInitializer from "@/components/editor/EditorStoreInitializer";
+import { LeftSidebar } from "@/widgets/left-sidebar";
 import { RuntimeProvider } from "@repo/ui/context/runtimeContext";
 
 export default async function EditorPage() {
@@ -14,7 +15,8 @@ export default async function EditorPage() {
       <EditorStoreInitializer initialNodes={nodes}>
         {/* 다른 에디터 관련 컴포넌트들은 이곳에서 렌더링 됩니다!(사이드바,매니패스트 수정 컴포넌트 등등...) */}
         <RuntimeProvider>
-          <div className="relative h-full w-full border-2">
+          <div className="flex h-full w-full border-2">
+            <LeftSidebar />
             <Canvas />
           </div>
         </RuntimeProvider>
