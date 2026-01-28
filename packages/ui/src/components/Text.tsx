@@ -7,20 +7,18 @@ export default function TextComponent({
 }: NodeComponentProps<TextNode>) {
   const { text, level = "h2" } = node.props;
   const Tag = level;
-  const { style } = node;
 
-  const nodeStyleObj = processNodeStyles(style);
+  const cssProps = processNodeStyles(node.style);
 
   return (
-    <section
+    <Tag
       data-component-type={node.type}
       data-component-id={node.id}
-      className={style.root?.className}
-      style={{ ...nodeStyleObj.root, width: "100%", height: "100%" }}
+      className={`${node.style.className || ""} flex h-full w-full items-center justify-center`}
+      style={{ ...cssProps, width: "100%", height: "100%" }}
     >
-      <Tag style={nodeStyleObj.text}>{text}</Tag>
-      {/* TODO-만약 텍스트 컴포넌트가 사진같은 정적 파일도 렌더링 해야한다면? */}
+      {text}
       {children}
-    </section>
+    </Tag>
   );
 }

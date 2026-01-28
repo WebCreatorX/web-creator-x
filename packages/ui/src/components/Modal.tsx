@@ -39,10 +39,8 @@ export default function Modal({
 }: NodeComponentProps<ModalNode>) {
   const curNodeId = node.id;
   const animationType = node.props.animation || "default";
-  const { style } = node;
 
-  //스타일 변환
-  const nodeStyleObj = processNodeStyles(style);
+  const cssProps = processNodeStyles(node.style);
 
   return (
     <motion.div
@@ -50,8 +48,8 @@ export default function Modal({
       data-component-id={curNodeId}
       key={curNodeId}
       onClick={(e) => e.stopPropagation()}
-      className={`${style.root?.className || ""} pointer-events-auto relative bg-white shadow-2xl`}
-      style={nodeStyleObj.root}
+      className={`${node.style.className || ""} pointer-events-auto relative bg-white shadow-2xl`}
+      style={cssProps}
       variants={
         animationVariants[animationType as keyof typeof animationVariants] ||
         animationVariants.default

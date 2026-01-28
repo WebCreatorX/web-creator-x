@@ -1,7 +1,6 @@
 import ContainerComponent from "components/Container";
 import ButtonComponent from "components/Button";
 import HeadingComponent from "components/Heading";
-import HeroComponent from "components/Hero";
 import ImageComponent from "components/Image";
 import Modal from "components/Modal";
 import TextComponent from "components/Text";
@@ -16,12 +15,12 @@ export default function NodeRenderer({
   children?: React.ReactNode;
 }) {
   switch (node.type) {
-    case "Hero":
-      return <HeroComponent node={node} children={children} />;
+    // Hero는 레거시 - 추후 제거 예정
+    // case "Hero":
+    //   return <HeroComponent node={node} children={children} />;
 
     case "Container":
       return <ContainerComponent node={node} children={children} />;
-
     case "Image":
       return <ImageComponent node={node} children={children} />;
     case "Heading":
