@@ -35,11 +35,11 @@ const animationVariants = {
  */
 export default function Modal({
   node,
-  style,
   children, //모달안에 들어갈 버튼, 텍스트 등이 children으로 올 수 있습니다.
 }: NodeComponentProps<ModalNode>) {
   const curNodeId = node.id;
   const animationType = node.props.animation || "default";
+  const { style } = node;
 
   //스타일 변환
   const nodeStyleObj = processNodeStyles(style);

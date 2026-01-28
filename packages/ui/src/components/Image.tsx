@@ -5,11 +5,10 @@ import processNodeStyles from "utils/processNodeStyles";
 
 export default function ImageComponent({
   node,
-  props,
-  style,
   children,
 }: NodeComponentProps<ImageNode>) {
-  const { src, alt = "사용자의 이미지", caption } = props;
+  const { src, alt = "사용자의 이미지", caption } = node.props;
+  const { style } = node;
   const nodeStyleObj = processNodeStyles(style);
 
   return (

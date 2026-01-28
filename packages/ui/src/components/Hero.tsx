@@ -5,14 +5,13 @@ import { HeroNode, NodeComponentProps } from "types";
 
 export default function HeroComponent({
   node,
-  props,
-  style,
   children,
 }: NodeComponentProps<HeroNode>) {
   const { mode } = useBuilderMode(); //현재 모드 확인
 
   //이 props의 내부 Key에 따라서 하위에 렌더링될 요소들이 결정된다.
-  const { heading, subHeading, button, image } = props;
+  const { heading, subHeading, button, image } = node.props;
+  const { style } = node;
 
   //TODO - 🚨 style이나 node가 변경될 때만 재연산되게 useMemo로 메모이제이션 사용해야할 필요가 있다.
   const nodeStyleObj = processNodeStyles(style);

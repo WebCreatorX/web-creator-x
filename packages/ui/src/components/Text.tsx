@@ -3,12 +3,11 @@ import processNodeStyles from "utils/processNodeStyles";
 
 export default function TextComponent({
   node,
-  props,
-  style,
   children,
 }: NodeComponentProps<TextNode>) {
-  const { text, level = "h2" } = props;
+  const { text, level = "h2" } = node.props;
   const Tag = level;
+  const { style } = node;
 
   const nodeStyleObj = processNodeStyles(style);
 

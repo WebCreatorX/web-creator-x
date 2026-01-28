@@ -17,78 +17,22 @@ export default function NodeRenderer({
 }) {
   switch (node.type) {
     case "Hero":
-      return (
-        <HeroComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <HeroComponent node={node} children={children} />;
 
     case "Container":
-      return (
-        <ContainerComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <ContainerComponent node={node} children={children} />;
 
     case "Image":
-      return (
-        <ImageComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <ImageComponent node={node} children={children} />;
     case "Heading":
-      return (
-        <HeadingComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <HeadingComponent node={node} children={children} />;
     case "Text":
-      return (
-        <TextComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <TextComponent node={node} children={children} />;
     case "Button":
-      return (
-        <ButtonComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <ButtonComponent node={node} children={children} />;
     case "Modal":
-      return (
-        <Modal
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <Modal node={node} children={children} />;
     case "Group":
-      return (
-        <Group
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <Group node={node} children={children} />;
   }
 }
