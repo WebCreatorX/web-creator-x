@@ -3,10 +3,10 @@ import { NodeStyle } from "types";
 
 /**
  * 노드 스타일 처리 (간소화)
- * 
+ *
  * - className은 제외하고 CSS 속성만 반환
  * - 레이아웃 속성(width, height 등)은 EditorNodeWrapper가 담당하므로 필터링
- * 
+ *
  * @param style 노드의 style 객체
  * @returns CSS 속성만 포함된 객체 (className 제외, 레이아웃 속성 제외)
  */

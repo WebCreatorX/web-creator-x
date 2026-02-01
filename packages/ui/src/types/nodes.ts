@@ -27,11 +27,6 @@ export interface BaseNode {
 
 //type에 따라 props가 동적으로 정해져서 모두 다르게 타입 선언 해야함.
 // 2. 각 노드별 구체적 정의 (type과 props를 묶음)
-export interface HeroNode extends BaseNode {
-  type: "Hero";
-  props: componentProps.HeroProps;
-}
-
 export interface ImageNode extends BaseNode {
   type: "Image";
   props: componentProps.ImageProps;
@@ -71,7 +66,6 @@ export interface GroupNode extends BaseNode {
 // 3. 통합 노드 타입
 // 이제 WcxNode 타입을 쓰면 type 체크 시 props가 자동 추론.
 export type WcxNode =
-  | HeroNode
   | ImageNode
   | HeadingNode
   | ButtonNode

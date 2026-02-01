@@ -2,7 +2,7 @@ import { GroupNode, NodeComponentProps } from "types";
 import processNodeStyles from "utils/processNodeStyles";
 
 // Group.tsx
-export default function Group({
+export default function GroupComponent({
   children,
   node,
 }: NodeComponentProps<GroupNode>) {

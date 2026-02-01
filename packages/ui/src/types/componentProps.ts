@@ -3,21 +3,7 @@
 import { NodeAction } from "./nodeAction";
 import { WcxNode } from "./nodes";
 
-// 1. Hero 컴포넌트 Props
-export interface HeroProps {
-  heading: string;
-  subHeading?: string;
-  button?: {
-    text: string;
-    link: string;
-  };
-
-  //만약 사진이 없다면 null을 입력 해야합니다.
-  image?: {
-    url: string;
-    alt?: string;
-  };
-}
+// HeroProps 제거됨 - 레거시
 // 2. Image 컴포넌트 Props
 export interface ImageProps {
   src: string;

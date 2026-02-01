@@ -2,10 +2,10 @@ import ContainerComponent from "components/Container";
 import ButtonComponent from "components/Button";
 import HeadingComponent from "components/Heading";
 import ImageComponent from "components/Image";
-import Modal from "components/Modal";
 import TextComponent from "components/Text";
 import { WcxNode } from "types";
-import Group from "components/Group";
+import GroupComponent from "components/Group";
+import ModalComponent from "components/Modal";
 
 export default function NodeRenderer({
   node,
@@ -15,10 +15,6 @@ export default function NodeRenderer({
   children?: React.ReactNode;
 }) {
   switch (node.type) {
-    // Hero는 레거시 - 추후 제거 예정
-    // case "Hero":
-    //   return <HeroComponent node={node} children={children} />;
-
     case "Container":
       return <ContainerComponent node={node} children={children} />;
     case "Image":
@@ -30,8 +26,8 @@ export default function NodeRenderer({
     case "Button":
       return <ButtonComponent node={node} children={children} />;
     case "Modal":
-      return <Modal node={node} children={children} />;
+      return <ModalComponent node={node} children={children} />;
     case "Group":
-      return <Group node={node} children={children} />;
+      return <GroupComponent node={node} children={children} />;
   }
 }

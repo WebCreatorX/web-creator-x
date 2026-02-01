@@ -1,7 +1,7 @@
 import { ContainerNode, NodeComponentProps } from "types";
 import processNodeStyles from "utils/processNodeStyles";
 
-export default function Container({
+export default function ContainerComponent({
   node,
   children,
 }: NodeComponentProps<ContainerNode>) {
