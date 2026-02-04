@@ -1,4 +1,3 @@
-
 import { WcxNode } from "@repo/ui/types/nodes";
 import { NodeStyle } from "@repo/ui/types/styles";
 
@@ -6,51 +5,18 @@ import { NodeStyle } from "@repo/ui/types/styles";
 // 추천 코드를 반영하여 layout 필드를 분리하고 타입 안정성을 강화했습니다.
 export interface ComponentDefaults {
   props: Record<string, unknown>; // 각 노드 타입에 맞는 props (통합 노드 타입에서 추론)
-  style: NodeStyle;      // @repo/ui의 규격화된 스타일 구조 (root 등)
+  style: NodeStyle;      // @repo/ui의 규격화된 스타일 구조 (평탄화된 구조)
   layout: WcxNode['layout']; // x, y, width, height, zIndex
 }
 
 export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
-  Hero: {
-    props: {
-      heading: "Hero Heading",
-      subHeading: "Hero SubHeading",
-      image: {
-        url: "https://via.placeholder.com/800x400",
-      },
-      button: {
-        text: "Action",
-        link: "#",
-      },
-    },
-    style: {
-      root: {
-        layout: {
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        background: { backgroundColor: "#f0f0f0" },
-      },
-    },
-    layout: {
-      x: 0,
-      y: 0,
-      width: 1000, // WcxNode layout 타입에 맞춰 숫자로 지정
-      height: 400,
-      zIndex: 0,
-    },
-  },
   Image: {
     props: {
       src: "https://via.placeholder.com/400x300",
       alt: "Image",
       caption: "Image Caption",
     },
-    style: {
-      root: {},
-    },
+    style: {},
     layout: {
       x: 0,
       y: 0,
@@ -65,13 +31,9 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       level: "h2",
     },
     style: {
-      root: {
-        typography: {
-          color: "#000000",
-          fontSize: "24px",
-          fontWeight: "bold",
-        },
-      },
+      color: "#000000",
+      fontSize: "24px",
+      fontWeight: "bold",
     },
     layout: {
       x: 0,
@@ -87,12 +49,8 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       level: "h5",
     },
     style: {
-      root: {
-        typography: {
-          color: "#333333",
-          fontSize: "16px",
-        },
-      },
+      color: "#333333",
+      fontSize: "16px",
     },
     layout: {
       x: 0,
@@ -107,11 +65,12 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       text: "Button",
     },
     style: {
-      root: {
-        background: { backgroundColor: "#007bff" },
-        typography: { color: "#ffffff" },
-        effects: { borderRadius: "4px" },
-      },
+      backgroundColor: "#007bff",
+      color: "#ffffff",
+      borderRadius: "4px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
     layout: {
       x: 0,
@@ -126,9 +85,8 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       tagName: "div",
     },
     style: {
-      root: {
-        effects: { border: "1px dashed #ccc" },
-      },
+      border: "1px dashed #ccc",
+      backgroundColor: "#ffffff",
     },
     layout: {
       x: 0,
@@ -146,10 +104,9 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       closeOnOverlayClick: true,
     },
     style: {
-      root: {
-        background: { backgroundColor: "#ffffff" },
-        effects: { borderRadius: "8px" },
-      },
+      backgroundColor: "#ffffff",
+      borderRadius: "8px",
+      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
     },
     layout: {
       x: 0,
@@ -159,4 +116,36 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       zIndex: 100,
     },
   },
+  // Stack 추가
+  Stack: {
+    props: {},
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      padding: "20px",
+      backgroundColor: "#f9fafb",
+      border: "1px solid #e5e7eb",
+    },
+    layout: {
+      x: 0,
+      y: 0,
+      width: 300,
+      height: 300,
+      zIndex: 0,
+    },
+  },
+  // Group 추가
+  Group: {
+    props: {},
+    style: {},
+    layout: {
+      x: 0,
+      y: 0,
+      width: 200,
+      height: 200,
+      zIndex: 0,
+    },
+  },
 };
+
