@@ -147,6 +147,30 @@ const useEditorStore = create(
               state.canvas = { ...state.canvas, ...updates };
             });
           },
+
+          //TODO-'Node참조값 전달' vs nodeId 전달후 스코프 안에서 파싱 고민해보기
+          addItemToStack: (nodeId: string, stackId: string) =>
+            set((state) => {
+              if (!state.nodes) return state;
+              const node = state.nodes.find((n) => n.id === nodeId);
+              const stack = state.nodes.find((n) => n.id === stackId);
+              if (!node || !stack || stack.type !== "Stack") {
+                return state;
+              }
+
+              // Stack의 현재 items
+              //Stack노드의 하위 자식들을 'position'Props에 따라 오름차순 정렬
+              const currentItems = state.nodes
+                .filter((n) => n.parent_id === stackId)
+                .sort((a, b) => a.position - b.position);
+
+              //오름차순 정렬후 마지막 idx 배정
+              const insertIndex = currentItems.length;
+              // insertIndex 이후의 items position 업데이트
+              node.position = insertIndex;
+              node.parent_id = stackId;
+              node.style.position = "relative";
+            }),
         }),
       ),
     ),
