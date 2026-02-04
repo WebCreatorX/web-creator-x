@@ -47,3 +47,5 @@ next-env.d.ts
 apps/*/out
 apps/*/.next
 apps/*/dist
+
+docs
