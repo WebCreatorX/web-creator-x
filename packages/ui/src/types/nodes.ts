@@ -63,6 +63,11 @@ export interface GroupNode extends BaseNode {
   };
 }
 
+export interface StackNode extends BaseNode {
+  type: "Stack";
+  props: {};
+}
+
 // 3. 통합 노드 타입
 // 이제 WcxNode 타입을 쓰면 type 체크 시 props가 자동 추론.
 export type WcxNode =
@@ -72,4 +77,5 @@ export type WcxNode =
   | ContainerNode
   | TextNode
   | ModalNode
-  | GroupNode;
+  | GroupNode
+  | StackNode;

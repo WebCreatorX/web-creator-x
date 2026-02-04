@@ -6,6 +6,7 @@ import TextComponent from "components/Text";
 import { WcxNode } from "types";
 import GroupComponent from "components/Group";
 import ModalComponent from "components/Modal";
+import StackComponent from "components/Stack";
 
 export default function NodeRenderer({
   node,
@@ -29,5 +30,7 @@ export default function NodeRenderer({
       return <ModalComponent node={node} children={children} />;
     case "Group":
       return <GroupComponent node={node} children={children} />;
+      case "Stack":
+        return <StackComponent node={node} children={children} />;
   }
 }
