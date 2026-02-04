@@ -33,25 +33,27 @@ const animationVariants = {
  *
  * 해당 모달 렌더러를 에디터에서 보여주고 싶다면 기본 상태는 isOpen:flase 이므로 에디터에 한해서만 강제로 updateNodeState(id, { isOpen: true })를 호출해서 보여줘야합니다.
  */
-export default function Modal({
+export default function ModalComponent({
   node,
-  style,
   children, //모달안에 들어갈 버튼, 텍스트 등이 children으로 올 수 있습니다.
 }: NodeComponentProps<ModalNode>) {
   const curNodeId = node.id;
   const animationType = node.props.animation || "default";
 
-  //스타일 변환
-  const nodeStyleObj = processNodeStyles(style);
+  const cssProps = processNodeStyles(node.style);
 
   return (
     <motion.div
+      data-component-type={node.type}
       data-component-id={curNodeId}
       key={curNodeId}
       onClick={(e) => e.stopPropagation()}
-      className={`${style.root?.className || ""} pointer-events-auto relative bg-white shadow-2xl`}
-      style={nodeStyleObj.root}
-      variants={animationVariants[animationType as keyof typeof animationVariants] || animationVariants.default}
+      className={`${node.style.className || ""} pointer-events-auto relative bg-white shadow-2xl`}
+      style={cssProps}
+      variants={
+        animationVariants[animationType as keyof typeof animationVariants] ||
+        animationVariants.default
+      }
       initial="hidden"
       animate="visible"
       exit="exit"

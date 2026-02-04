@@ -1,23 +1,39 @@
 import { CSSProperties } from "react";
-import { NodeStyle, NodeStyleKey } from "types";
-import applyStyles from "./applyStyles";
+import { NodeStyle } from "types";
 
 /**
+ * 노드 스타일 처리 (간소화)
  *
- * @param style 평탄화 되지 않은 노드의 스타일 객체
- * @returns 노드의 하위 요소들에 대한 스타일이 css객체로 변환된 객체
+ * - className은 제외하고 CSS 속성만 반환
+ * - 레이아웃 속성(width, height 등)은 EditorNodeWrapper가 담당하므로 필터링
  *
- * 상위 노드객체를 받아서 각 키(노드의 내부 요소들)에 해당하는 스타일을 적용하고 CSSProperties 객체로 변환하는 역할을 수행.
- * 최종적으로 각 하위 요소별 스타일이 CSSProperties 객체로 매핑된 객체를 반환.
- * 이때 하위 요소별 스타일객체는 평탄화 되어있습니다.
+ * @param style 노드의 style 객체
+ * @returns CSS 속성만 포함된 객체 (className 제외, 레이아웃 속성 제외)
  */
-export default function processNodeStyles(style: NodeStyle) {
-  const nodeStyleObj: Partial<Record<NodeStyleKey, CSSProperties>> = {};
-  Object.entries(style).forEach(([key, value]) => {
-    if (!value) return;
-    const styleKey = key as NodeStyleKey;
-    nodeStyleObj[styleKey] = applyStyles(value);
-  });
+export default function processNodeStyles(style: NodeStyle): CSSProperties {
+  // EditorNodeWrapper가 제어하는 레이아웃 속성 목록
+  const LAYOUT_PROPERTIES = new Set([
+    "width",
+    "height",
+    "position",
+    "top",
+    "bottom",
+    "left",
+    "right",
+    "zIndex",
+    "transform",
+  ]);
 
-  return nodeStyleObj;
+  // className 제거
+  const { className, ...cssProps } = style;
+
+  // 레이아웃 속성 필터링
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(cssProps)) {
+    if (!LAYOUT_PROPERTIES.has(key)) {
+      result[key] = value;
+    }
+  }
+
+  return result as CSSProperties;
 }

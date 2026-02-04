@@ -2,6 +2,7 @@
 
 import {
   useCanvas,
+  useClearNode,
   useCurNodes,
   useSelectedNodeId,
   useSelectNode,
@@ -26,9 +27,16 @@ export default function Canvas() {
   const updateNode = useUpdateNodeLayout();
   const canvasState = useCanvas();
   const setCanvas = useSetCanvas();
+  const clearNode = useClearNode();
 
   const isPanning = useRef(false);
   const lastMousePos = useRef({ x: 0, y: 0 });
+
+  function getParentNode(parentId: string | null): WcxNode | undefined {
+    if (!parentId) return undefined;
+
+    return nodes?.find((n) => n.id === parentId);
+  }
 
   //FIXME-각 노드들에 key속성 추가해주기. -> 리액트 경고 발생
   //FIXME-nodes가 비어있는 상황에서 에러발생. -> Base Condition에 Root가 들어간다.(Root는 단지 더미 노드일뿐 로직에 들어가면 안된다.)
@@ -52,6 +60,7 @@ export default function Canvas() {
       return (
         <EditorNodeWrapper
           node={parentNode}
+          parentNode={getParentNode(parentNode.parent_id)}
           selectedId={selectedNodeId}
           updateNode={updateNode}
           selectNode={selectNode}
@@ -77,6 +86,7 @@ export default function Canvas() {
     return (
       <EditorNodeWrapper
         node={parentNode}
+        parentNode={getParentNode(parentNode.parent_id)}
         selectedId={selectedNodeId}
         updateNode={updateNode}
         selectNode={selectNode}
@@ -89,10 +99,11 @@ export default function Canvas() {
 
   return (
     <div
+      data-component-type="canvas"
       className="relative h-full w-full flex-1 cursor-grab overflow-hidden bg-white active:cursor-grabbing"
       onWheel={(e) => handleWheel({ canvas: canvasState, e, setCanvas })}
       onMouseDown={(e) =>
-        handleMouseDown({ e, isPanning, lastMousePos, selectNode })
+        handleMouseDown({ e, isPanning, lastMousePos, clearNode })
       }
       onMouseMove={(e) =>
         handleMouseMove({ e, isPanning, lastMousePos, setCanvas, canvasState })

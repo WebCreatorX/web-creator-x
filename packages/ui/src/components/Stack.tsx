@@ -1,10 +1,10 @@
-import { ContainerNode, NodeComponentProps } from "types";
+import { NodeComponentProps, StackNode } from "types";
 import processNodeStyles from "utils/processNodeStyles";
 
-export default function ContainerComponent({
+export default function StackComponent({
   node,
   children,
-}: NodeComponentProps<ContainerNode>) {
+}: NodeComponentProps<StackNode>) {
   const cssProps = processNodeStyles(node.style);
 
   return (
@@ -14,7 +14,6 @@ export default function ContainerComponent({
       style={cssProps}
       className={`${node.style.className || ""} h-full w-full`}
     >
-      {/* Container는 자식이 있을 경우 렌더링 */}
       {children}
     </div>
   );

@@ -9,9 +9,9 @@ const useEditorStore = create(
     immer(
       combine(
         {
-          selectedNodeId: null as string | null,
           nodes: null as null | WcxNode[], //TODO- 추후에 현재 페이지에 해당하는 노드들을 받아오는 로직을 통해 해당 상태가 업데이트 되야 한다. -> EditorStoreInitializer컴포넌트에서 담당
           canvas: { dx: 0, dy: 0, scale: 1 },
+          selectedDepthPath: [] as string[],
         },
         (set, get) => ({
           setNode(nodes: WcxNode[]) {
@@ -57,19 +57,41 @@ const useEditorStore = create(
             return res;
             //TODO- 재귀 삭제 함수로 추출된 노드id는 deleteNodes에 담겨 있다. 이 데이터를 바탕으로 DB수정 시도
           },
-          selectNode(id: string | null) {
-            set(
-              (state) => {
-                state.selectedNodeId = id;
-              },
-              false,
-              "editorStore/selectNode",
-            );
+
+          //FIXME-🐛 버그 발견! -> 하위 노드에서 다른 가지로 넘어갈때 다시 상위 노드가 선택되는 버그 발견. 같은 계층의 자식 노드로 가지를 옮기려면 바로 선택될 수 있어야한다.
+          selectNode(targetNodeId: string) {
+            const path = get().selectedDepthPath;
+            const nodes = get().nodes;
+            if (!nodes) return;
+
+            while (true) {
+              const targetNode = nodes.find((node) => node.id === targetNodeId);
+              if (!targetNode) return;
+              const parentNodeId = targetNode.parent_id;
+
+              if (parentNodeId === null) {
+                set((state) => {
+                  state.selectedDepthPath = [targetNodeId];
+                });
+                break;
+              }
+
+              const parentPos = path.indexOf(parentNodeId);
+
+              if (parentPos !== -1) {
+                set((state) => {
+                  state.selectedDepthPath.splice(parentPos + 1);
+                  state.selectedDepthPath.push(targetNodeId);
+                });
+                break;
+              }
+              targetNodeId = parentNodeId;
+            }
           },
           clearNode() {
             set(
               (state) => {
-                state.selectedNodeId = null;
+                state.selectedDepthPath = [];
               },
               false,
               "editorStore/clearNode",
@@ -125,6 +147,30 @@ const useEditorStore = create(
               state.canvas = { ...state.canvas, ...updates };
             });
           },
+
+          //TODO-'Node참조값 전달' vs nodeId 전달후 스코프 안에서 파싱 고민해보기
+          addItemToStack: (nodeId: string, stackId: string) =>
+            set((state) => {
+              if (!state.nodes) return state;
+              const node = state.nodes.find((n) => n.id === nodeId);
+              const stack = state.nodes.find((n) => n.id === stackId);
+              if (!node || !stack || stack.type !== "Stack") {
+                return state;
+              }
+
+              // Stack의 현재 items
+              //Stack노드의 하위 자식들을 'position'Props에 따라 오름차순 정렬
+              const currentItems = state.nodes
+                .filter((n) => n.parent_id === stackId)
+                .sort((a, b) => a.position - b.position);
+
+              //오름차순 정렬후 마지막 idx 배정
+              const insertIndex = currentItems.length;
+              // insertIndex 이후의 items position 업데이트
+              node.position = insertIndex;
+              node.parent_id = stackId;
+              node.style.position = "relative";
+            }),
         }),
       ),
     ),
@@ -165,7 +211,10 @@ export const useDeleteNode = () => useEditorStore((store) => store.deleteNode);
  * 선택된 노드가 없으면 null을 반환합니다.
  */
 export const useSelectedNodeId = () =>
-  useEditorStore((store) => store.selectedNodeId);
+  useEditorStore((store) => {
+    const path = store.selectedDepthPath;
+    return path.length > 0 ? path[path.length - 1] : null;
+  });
 
 /**
  * [Action] 특정 노드를 선택(포커스)하는 함수를 반환합니다.

@@ -9,7 +9,7 @@ interface handleMouseDown {
   e: React.MouseEvent;
   isPanning: IsPanning;
   lastMousePos: LastMousePos;
-  selectNode: (id: string | null) => void;
+  clearNode: () => void;
 }
 
 interface handleMouseMove {
@@ -28,10 +28,17 @@ export function handleMouseDown({
   e,
   isPanning,
   lastMousePos,
-  selectNode,
+  clearNode,
 }: handleMouseDown) {
   if (e.button === 0) {
-    selectNode(null);
+    const target = e.target as HTMLElement;
+    const componentElement = target.closest<HTMLElement>(
+      "[data-component-type]",
+    );
+    if (!componentElement) return;
+    if (componentElement.dataset.componentType !== "canvas") return;
+    clearNode();
+
     return;
   }
   e.preventDefault();

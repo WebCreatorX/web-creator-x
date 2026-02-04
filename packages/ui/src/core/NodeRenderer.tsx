@@ -1,11 +1,12 @@
 import ContainerComponent from "components/Container";
 import ButtonComponent from "components/Button";
 import HeadingComponent from "components/Heading";
-import HeroComponent from "components/Hero";
 import ImageComponent from "components/Image";
-import Modal from "components/Modal";
 import TextComponent from "components/Text";
 import { WcxNode } from "types";
+import GroupComponent from "components/Group";
+import ModalComponent from "components/Modal";
+import StackComponent from "components/Stack";
 
 export default function NodeRenderer({
   node,
@@ -15,70 +16,21 @@ export default function NodeRenderer({
   children?: React.ReactNode;
 }) {
   switch (node.type) {
-    case "Hero":
-      return (
-        <HeroComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
-
     case "Container":
-      return (
-        <ContainerComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
-
+      return <ContainerComponent node={node} children={children} />;
     case "Image":
-      return (
-        <ImageComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <ImageComponent node={node} children={children} />;
     case "Heading":
-      return (
-        <HeadingComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <HeadingComponent node={node} children={children} />;
     case "Text":
-      return (
-        <TextComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <TextComponent node={node} children={children} />;
     case "Button":
-      return (
-        <ButtonComponent
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <ButtonComponent node={node} children={children} />;
     case "Modal":
-      return (
-        <Modal
-          node={node}
-          props={node.props}
-          style={node.style}
-          children={children}
-        />
-      );
+      return <ModalComponent node={node} children={children} />;
+    case "Group":
+      return <GroupComponent node={node} children={children} />;
+      case "Stack":
+        return <StackComponent node={node} children={children} />;
   }
 }
