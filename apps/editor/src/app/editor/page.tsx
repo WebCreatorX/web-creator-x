@@ -2,6 +2,7 @@ import getNodesFromDB from "@/actions/editor/getNodesFromDB";
 import Canvas from "@/components/editor/Canvas";
 import EditorStoreInitializer from "@/components/editor/EditorStoreInitializer";
 import { LeftSidebar } from "@/widgets/left-sidebar";
+import { RightSidebar } from "@/widgets/right-sidebar";
 import { RuntimeProvider } from "@repo/ui/context/runtimeContext";
 
 export default async function EditorPage() {
@@ -18,6 +19,7 @@ export default async function EditorPage() {
           <div className="flex h-full w-full border-2">
             <LeftSidebar />
             <Canvas />
+            <RightSidebar />
           </div>
         </RuntimeProvider>
       </EditorStoreInitializer>
