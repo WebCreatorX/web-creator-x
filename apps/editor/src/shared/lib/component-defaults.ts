@@ -9,6 +9,14 @@ export interface ComponentDefaults {
   layout: WcxNode['layout']; // x, y, width, height, zIndex
 }
 
+// 모든 컴포넌트의 기본 레이아웃 스타일 (Flex Row 중앙 정렬)
+const DEFAULT_FLEX_STYLE: NodeStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
 export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
   Image: {
     props: {
@@ -16,7 +24,9 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       alt: "Image",
       caption: "Image Caption",
     },
-    style: {},
+    style: {
+      ...DEFAULT_FLEX_STYLE,
+    },
     layout: {
       x: 0,
       y: 0,
@@ -31,9 +41,10 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       level: "h2",
     },
     style: {
+      ...DEFAULT_FLEX_STYLE,
       color: "#000000",
       fontSize: "24px",
-      fontWeight: "bold",
+      fontWeight: "700",
     },
     layout: {
       x: 0,
@@ -49,8 +60,11 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       level: "h5",
     },
     style: {
+      ...DEFAULT_FLEX_STYLE,
       color: "#333333",
       fontSize: "16px",
+      background: 'white',
+      border: '1px solid #ccc',
     },
     layout: {
       x: 0,
@@ -65,12 +79,10 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       text: "Button",
     },
     style: {
+      ...DEFAULT_FLEX_STYLE,
       backgroundColor: "#007bff",
       color: "#ffffff",
       borderRadius: "4px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
     },
     layout: {
       x: 0,
@@ -85,6 +97,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       tagName: "div",
     },
     style: {
+      ...DEFAULT_FLEX_STYLE,
       border: "1px dashed #ccc",
       backgroundColor: "#ffffff",
     },
@@ -116,12 +129,10 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       zIndex: 100,
     },
   },
-  // Stack 추가
   Stack: {
     props: {},
     style: {
-      display: "flex",
-      flexDirection: "column",
+      ...DEFAULT_FLEX_STYLE,
       gap: "10px",
       padding: "20px",
       backgroundColor: "#f9fafb",
@@ -135,10 +146,11 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       zIndex: 0,
     },
   },
-  // Group 추가
   Group: {
     props: {},
-    style: {},
+    style: {
+      ...DEFAULT_FLEX_STYLE,
+    },
     layout: {
       x: 0,
       y: 0,
