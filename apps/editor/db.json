@@ -4,7 +4,7 @@
       "id": "1002",
       "page_id": 201,
       "parent_id": null,
-      "type": "Container",
+      "type": "Stack",
       "position": 1,
       "layout": { "x": 0, "y": 0, "width": 1440, "height": 800, "zIndex": 1 },
       "props": {},
@@ -71,7 +71,7 @@
       "id": "1005",
       "page_id": 201,
       "parent_id": null,
-      "type": "Container",
+      "type": "Stack",
       "position": 2,
       "layout": {
         "x": 0,
