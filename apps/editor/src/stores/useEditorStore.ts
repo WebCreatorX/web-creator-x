@@ -69,6 +69,7 @@ const useEditorStore = create(
               if (!targetNode) return;
               const parentNodeId = targetNode.parent_id;
 
+              //선택하려는 노드가 최상위 노드일 경우(부모가 ROOT)
               if (parentNodeId === null) {
                 set((state) => {
                   state.selectedDepthPath = [targetNodeId];
@@ -262,3 +263,6 @@ export const useSetCanvas = () => useEditorStore((store) => store.setCanvas);
  */
 export const useGetDescendantIds = () =>
   useEditorStore((store) => store.getDescendantIds);
+
+export const useAddItemToStack = () =>
+  useEditorStore((store) => store.addItemToStack);
