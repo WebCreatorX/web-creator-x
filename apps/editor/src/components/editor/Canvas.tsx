@@ -1,6 +1,8 @@
 "use client";
 
+import { useDragStore } from "@/stores/useDragStore";
 import {
+  useAddItemToStack,
   useCanvas,
   useClearNode,
   useCurNodes,
@@ -15,6 +17,7 @@ import {
   handleMouseUp,
 } from "@/utils/editor/canvasMouseHandler";
 import handleWheel from "@/utils/editor/handleWheel";
+import { DragProvider } from "@repo/ui/context/dragContext";
 import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper";
 import NodeRenderer from "@repo/ui/core/NodeRenderer";
 import { WcxNode } from "@repo/ui/types/nodes";
@@ -28,7 +31,9 @@ export default function Canvas() {
   const canvasState = useCanvas();
   const setCanvas = useSetCanvas();
   const clearNode = useClearNode();
+  const addItemToStack = useAddItemToStack();
 
+  //TODO-이거 뭐임?
   const isPanning = useRef(false);
   const lastMousePos = useRef({ x: 0, y: 0 });
 
@@ -65,6 +70,7 @@ export default function Canvas() {
           updateNode={updateNode}
           selectNode={selectNode}
           canvas={canvasState}
+          addItemToStack={addItemToStack}
         >
           <NodeRenderer node={parentNode} />
         </EditorNodeWrapper>
@@ -91,6 +97,7 @@ export default function Canvas() {
         updateNode={updateNode}
         selectNode={selectNode}
         canvas={canvasState}
+        addItemToStack={addItemToStack}
       >
         <NodeRenderer node={parentNode}>{children}</NodeRenderer>
       </EditorNodeWrapper>
@@ -123,7 +130,10 @@ export default function Canvas() {
         {/* 배경 격자 (Helper Grid) */}
         <div className="bg-grid-pattern pointer-events-none absolute inset-[-1000%] z-0 h-[3000%] w-[3000%]" />
         <div className="relative z-10 h-full w-full">
-          {renderTree({ id: null })}
+          {/* 실제 스토어 인스턴스를 주입 */}
+          <DragProvider value={useDragStore}>
+            {renderTree({ id: null })}
+          </DragProvider>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 //에디터 모드전용 노드 렌더러 래퍼 컴포넌트
 import clsx from "clsx";
+import { useDragStore } from "context/dragContext";
 import { Rnd } from "react-rnd";
 import { WcxNode } from "types";
 import { CanvasState, Layer } from "types/rnd";
@@ -12,6 +13,7 @@ interface WrapperProps {
   updateNode: (id: string, updates: Partial<Layer>) => void; //노드의 레이아웃 업데이트 함수 from editor의 스토어 액션
   selectNode: (id: string) => void;
   canvas: CanvasState;
+  addItemToStack: (draggedId: string, stackId: string) => void;
 }
 
 //에디터 전용 노드 렌더러 래퍼
@@ -24,6 +26,7 @@ export default function EditorNodeWrapper({
   updateNode,
   selectNode,
   canvas,
+  addItemToStack,
 }: WrapperProps) {
   const isStackItem = parentNode?.type === "Stack";
   const hasRelativePosition =
@@ -44,6 +47,42 @@ export default function EditorNodeWrapper({
     outline: "ring ring-2 ring-rnd-handle",
   };
 
+  // 필요한 데이터만 구독
+  const draggingId = useDragStore((s) => s.draggingNodeId);
+  const hoveredStackId = useDragStore((s) => s.hoveredStackId);
+  const setDraggingId = useDragStore((s) => s.setDraggingId);
+  const setHoveredStackId = useDragStore((s) => s.setHoveredStackId);
+
+  //데이터를 바탕으로 가이드 표시 여부 결정
+  const isDraggingMyself = draggingId === id;
+  const isHoveredStack = hoveredStackId === id;
+  const showGuide = isHoveredStack && draggingId && !isDraggingMyself;
+
+  //클릭된 좌표 기준 stack찾는 함수_재귀를 이용해 최상위의 Stack의 id를 반환합니다.
+  //TODO-노드 객체만 전달해도 되는거아닌가? -> 일단 노드의 id 반환으로 처리완료.(id vs 객체 반환)
+  function findRootStackId(e: any) {
+    const element = document.elementFromPoint(e.clientX, e.clientY);
+    if (!element) return null;
+
+    //현재 클릭된 지점의 제일 앞에(z-index기준)있는 노드중에 stack노드 찾기
+    let curStackNode = element.closest(
+      '[data-component-type="Stack"]',
+    ) as HTMLElement | null;
+    if (!curStackNode) return null;
+
+    if (curStackNode.getAttribute("data-component-id") === id) {
+      return null;
+    }
+
+    while (curStackNode) {
+      const parent: HTMLElement | undefined | null =
+        curStackNode.parentElement?.closest('[data-component-type="Stack"]');
+      if (!parent) break;
+      curStackNode = parent;
+    }
+    return curStackNode.getAttribute("data-component-id");
+  }
+
   //TODO- 노드 선택 로직 구현, 선택 ID 공유하는 zustand 스토어 구현 필요
 
   return (
@@ -51,15 +90,32 @@ export default function EditorNodeWrapper({
       size={{ width, height }}
       position={{ x, y }}
       scale={canvas.scale}
-      onDragStart={(e) => e.stopPropagation()}
-      //TODO-일단 이동중에 스토어 업데이트는 미루기 -> 성능 이슈
-      // onDrag={(e, d) => updateNode(id, { x: d.x, y: d.y })}
+      onDragStart={(e) => {
+        e.stopPropagation();
+        setDraggingId(id); //드래그 시작 알림
+      }}
+      //TODO-이동중에 로직 실행하면 성능상 부담이 될 수 있다... 최적화 고민 해보기
+      onDrag={(e, d) => {
+        const stackId = findRootStackId(e);
+        if (stackId !== hoveredStackId) {
+          setHoveredStackId(stackId);
+        }
+      }}
       onDragStop={(e, d) => {
+        const stackId = findRootStackId(e);
+
+        setDraggingId(null);
+        setHoveredStackId(null);
+
         if (isSwitchItems) {
           //현재 놓인 Y위치에 따라서 노드의 순서 변경을 고려해야한다.
           //TODO-Stack내부에서 Item 노드의 순서 변경 로직 실행
+        } else if (stackId) {
+          addItemToStack(id, stackId);
+          //addItemToStack 로직 실행
+        } else {
+          updateNode(id, { x: d.x, y: d.y });
         }
-        updateNode(id, { x: d.x, y: d.y });
       }}
       onResizeStart={(e) => e.stopPropagation()}
       //TODO-일단 리사이징중에 스토어 업데이트는 미루기 -> 성능 이슈
@@ -81,7 +137,10 @@ export default function EditorNodeWrapper({
       }
       enableResizing={isGroup ? undefined : isSelected ? undefined : false}
       disableDragging={!isSelected}
-      className={clsx("group cursor-pointer", isSelected && "z-50")}
+      className={clsx(
+        "group cursor-pointer",
+        // Allow pointer events to pass through during drag so elementFromPoint works for underlying stack
+      )}
       resizeHandleClasses={{
         bottomLeft: isSelected
           ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-bottom-1")
@@ -104,10 +163,14 @@ export default function EditorNodeWrapper({
         }}
         style={wrapperStyle}
         className={clsx(
-          "h-full w-full transition-shadow duration-200",
+          "relative h-full w-full transition-shadow duration-200",
           isSelected && selectedNodeGuideClasses.outline,
         )}
       >
+        {showGuide && (
+          <div className="absolute inset-x-0 bottom-0 h-1 bg-blue-500" />
+        )}
+
         {/* 실제 컴포넌트(Hero 등)는 이 안에 렌더링됨 */}
         {children}
       </div>
