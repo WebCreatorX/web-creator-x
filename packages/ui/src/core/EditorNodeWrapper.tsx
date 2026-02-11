@@ -60,27 +60,26 @@ export default function EditorNodeWrapper({
 
   //클릭된 좌표 기준 stack찾는 함수_재귀를 이용해 최상위의 Stack의 id를 반환합니다.
   //TODO-노드 객체만 전달해도 되는거아닌가? -> 일단 노드의 id 반환으로 처리완료.(id vs 객체 반환)
+  //클릭된 좌표 기준 stack찾는 함수_재귀를 이용해 최상위의 Stack의 id를 반환합니다.
   function findRootStackId(e: any) {
-    const element = document.elementFromPoint(e.clientX, e.clientY);
-    if (!element) return null;
+    const elements = document.elementsFromPoint(e.clientX, e.clientY);
 
-    //현재 클릭된 지점의 제일 앞에(z-index기준)있는 노드중에 stack노드 찾기
-    let curStackNode = element.closest(
-      '[data-component-type="Stack"]',
-    ) as HTMLElement | null;
-    if (!curStackNode) return null;
+    for (const element of elements) {
+      let curStackNode = element.closest(
+        '[data-component-type="Stack"]',
+      ) as HTMLElement | null;
 
-    if (curStackNode.getAttribute("data-component-id") === id) {
-      return null;
+      if (!curStackNode) continue;
+
+      // 드래그 중인 노드(=자기 자신)이거나 그 자손인 경우 건너뜁니다
+      if (curStackNode.closest(`[data-component-id="${id}"]`)) {
+        continue;
+      }
+
+      return curStackNode.getAttribute("data-component-id");
     }
 
-    while (curStackNode) {
-      const parent: HTMLElement | undefined | null =
-        curStackNode.parentElement?.closest('[data-component-type="Stack"]');
-      if (!parent) break;
-      curStackNode = parent;
-    }
-    return curStackNode.getAttribute("data-component-id");
+    return null;
   }
 
   //TODO- 노드 선택 로직 구현, 선택 ID 공유하는 zustand 스토어 구현 필요
@@ -97,6 +96,7 @@ export default function EditorNodeWrapper({
       //TODO-이동중에 로직 실행하면 성능상 부담이 될 수 있다... 최적화 고민 해보기
       onDrag={(e, d) => {
         const stackId = findRootStackId(e);
+
         if (stackId !== hoveredStackId) {
           setHoveredStackId(stackId);
         }
@@ -137,10 +137,7 @@ export default function EditorNodeWrapper({
       }
       enableResizing={isGroup ? undefined : isSelected ? undefined : false}
       disableDragging={!isSelected}
-      className={clsx(
-        "group cursor-pointer",
-        // Allow pointer events to pass through during drag so elementFromPoint works for underlying stack
-      )}
+      className={clsx("group cursor-pointer")}
       resizeHandleClasses={{
         bottomLeft: isSelected
           ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-bottom-1")
@@ -167,11 +164,6 @@ export default function EditorNodeWrapper({
           isSelected && selectedNodeGuideClasses.outline,
         )}
       >
-        {showGuide && (
-          <div className="absolute inset-x-0 bottom-0 h-1 bg-blue-500" />
-        )}
-
-        {/* 실제 컴포넌트(Hero 등)는 이 안에 렌더링됨 */}
         {children}
       </div>
     </Rnd>
