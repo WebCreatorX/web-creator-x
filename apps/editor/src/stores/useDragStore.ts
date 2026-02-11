@@ -23,5 +23,8 @@ export const useDragStore = createStore(
         }),
       ),
     ),
+    {
+      name: "dragStore",
+    },
   ),
 );
