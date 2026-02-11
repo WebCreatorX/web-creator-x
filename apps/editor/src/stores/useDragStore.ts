@@ -13,9 +13,13 @@ export const useDragStore = createStore(
         },
         (set, get) => ({
           setDraggingId: (id: string | null) =>
-            set((store) => (store.draggingNodeId = id)),
+            set((store) => {
+              store.draggingNodeId = id;
+            }),
           setHoveredStackId: (id: string | null) =>
-            set((store) => (store.hoveredStackId = id)),
+            set((store) => {
+              store.hoveredStackId = id;
+            }),
         }),
       ),
     ),
