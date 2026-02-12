@@ -85,6 +85,17 @@ export default function EditorNodeWrapper({
 
   return (
     <Rnd
+      style={
+        hasRelativePosition
+          ? {
+              position: "relative",
+            }
+          : {}
+      }
+      className={clsx(
+        "group cursor-pointer",
+        hasRelativePosition && !isDraggingMyself && "!transform-none",
+      )}
       size={{ width, height }}
       position={{ x, y }}
       scale={canvas.scale}
@@ -143,8 +154,7 @@ export default function EditorNodeWrapper({
         })
       }
       enableResizing={isGroup ? undefined : isSelected ? undefined : false}
-      disableDragging={!isSelected}
-      className={clsx("group cursor-pointer")}
+      disableDragging={!isSelected || hasRelativePosition}
       resizeHandleClasses={{
         bottomLeft: isSelected
           ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-bottom-1")
