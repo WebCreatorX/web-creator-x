@@ -94,14 +94,18 @@ export default function EditorNodeWrapper({
       }
       className={clsx(
         "group cursor-pointer",
-        hasRelativePosition && !isDraggingMyself && "!transform-none",
+        hasRelativePosition && !isDraggingMyself && "!transform-none", // relative인 경우에는 stack의 정렬을 지키기 위해 transform을 꺼놓는다.
       )}
       size={{ width, height }}
       position={{ x, y }}
       scale={canvas.scale}
-      onDragStart={(e) => {
+      onDragStart={(e, d) => {
         e.stopPropagation();
         setDraggingId(id); //드래그 시작 알림
+        if (hasRelativePosition) {
+          const { offsetLeft, offsetTop } = d.node;
+          updateNode(id, { x: offsetLeft, y: offsetTop });
+        }
       }}
       //TODO-이동중에 로직 실행하면 성능상 부담이 될 수 있다... 최적화 고민 해보기
       onDrag={(e, d) => {
@@ -154,7 +158,7 @@ export default function EditorNodeWrapper({
         })
       }
       enableResizing={isGroup ? undefined : isSelected ? undefined : false}
-      disableDragging={!isSelected || hasRelativePosition}
+      disableDragging={!isSelected}
       resizeHandleClasses={{
         bottomLeft: isSelected
           ? clsx(selectedNodeGuideClasses.handle, "!-left-1 !-bottom-1")
