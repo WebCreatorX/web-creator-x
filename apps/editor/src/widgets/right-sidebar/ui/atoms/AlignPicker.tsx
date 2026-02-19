@@ -19,9 +19,6 @@ interface AlignPickerProps {
 }
 
 export default function AlignPicker({ direction, value, onChange }: AlignPickerProps) {
-  // 교차축(Align)의 방향 결정
-  // Row(가로)일 때 교차축은 세로 정렬 아이콘이 필요함
-  // Column(세로)일 때 교차축은 가로 정렬 아이콘이 필요함
   const isDirectionRow = direction === "row";
 
   const options = isDirectionRow
@@ -37,7 +34,7 @@ export default function AlignPicker({ direction, value, onChange }: AlignPickerP
     ];
 
   return (
-    <div className="flex flex-row gap-1.5 bg-[#F4F4F5] p-1 rounded-[8px] w-fit">
+    <div className="flex flex-row gap-0.5 bg-[#F4F4F5] p-0.5 rounded-[8px] w-[140px] h-[26px]">
       {options.map((opt) => {
         const Icon = opt.icon;
         const isActive = value === opt.value;
@@ -48,14 +45,14 @@ export default function AlignPicker({ direction, value, onChange }: AlignPickerP
             type="button"
             onClick={() => onChange(opt.value)}
             className={cn(
-              "flex h-7 w-9 items-center justify-center rounded-[6px] transition-all",
+              "flex-1 flex h-full items-center justify-center rounded-[6px] transition-all",
               isActive
-                ? "bg-white shadow-sm text-[#8B5CF6]" // 이미지의 보라색 포인트 반영
+                ? "bg-white shadow-sm text-[#8B5CF6]"
                 : "text-zinc-400 hover:text-zinc-600"
             )}
             title={opt.label}
           >
-            <Icon size={18} />
+            <Icon size={15} />
           </button>
         );
       })}

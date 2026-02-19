@@ -4,7 +4,7 @@ import { ButtonNode } from "@repo/ui/types/nodes";
 import { useUpdateNode } from "@/stores/useEditorStore";
 import SidebarItem from "../atoms/SidebarItem";
 import TextInput from "../atoms/TextInput";
-import LayoutPanel from "./LayoutPanel";
+import LayoutSection from "../sections/LayoutSection";
 
 interface ButtonPanelProps {
   node: ButtonNode;
@@ -29,7 +29,7 @@ export default function ButtonPanel({ node }: ButtonPanelProps) {
       </SidebarItem>
 
       {/* Common Layout Section */}
-      <LayoutPanel node={node} />
+      <LayoutSection node={node} />
 
       {/* Button Specific Sections (State, Hover, Trigger etc.) */}
       <div className="pt-4 border-t border-gray-100 italic text-xs text-gray-400">

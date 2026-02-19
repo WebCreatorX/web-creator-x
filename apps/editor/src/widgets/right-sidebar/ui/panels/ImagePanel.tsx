@@ -4,7 +4,7 @@ import { WcxNode } from "@repo/ui/types/nodes";
 import { useUpdateNode } from "@/stores/useEditorStore";
 import SidebarItem from "../atoms/SidebarItem";
 import TextInput from "../atoms/TextInput";
-import LayoutPanel from "./LayoutPanel";
+import LayoutSection from "../sections/LayoutSection";
 
 interface ImagePanelProps {
   node: WcxNode;
@@ -24,7 +24,7 @@ export default function ImagePanel({ node }: ImagePanelProps) {
           placeholder="Image description..."
         />
       </SidebarItem>
-      <LayoutPanel node={node} />
+      <LayoutSection node={node} />
     </div>
   );
 }
