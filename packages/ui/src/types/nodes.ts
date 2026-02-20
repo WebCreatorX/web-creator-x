@@ -19,8 +19,12 @@ export interface BaseNode {
   layout: {
     x: number;
     y: number;
-    width: number; // 혹은 string ('100%')
-    height: number; // 혹은 string ('auto')
+    width: number | string;       // 숫자(px) 또는 문자열('100%', 'auto')
+    height: number | string;      // 숫자(px) 또는 문자열('100%', 'auto')
+    widthMode: 'fixed' | 'fill' | 'fit' | 'relative';   // Framer sizing 모드
+    heightMode: 'fixed' | 'fill' | 'fit' | 'relative';  // Framer sizing 모드
+    widthUnit: 'px' | '%';
+    heightUnit: 'px' | '%';
     zIndex: number;
   };
 }

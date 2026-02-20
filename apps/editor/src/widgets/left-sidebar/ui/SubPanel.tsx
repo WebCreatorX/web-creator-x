@@ -1,10 +1,11 @@
 import { useNavigationStore } from '../model/store';
-import { 
-  ComponentPanel, 
-  PagePanel, 
-  SectionPanel, 
-  WidgetPanel, 
-  ModalPanel 
+import {
+  ComponentPanel,
+  LayerPanel,
+  PagePanel,
+  SectionPanel,
+  WidgetPanel,
+  ModalPanel
 } from './sub-panels';
 
 export const SubPanel = () => {
@@ -15,11 +16,12 @@ export const SubPanel = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'component': return <ComponentPanel />;
-      case 'page':      return <PagePanel />;
-      case 'section':   return <SectionPanel />;
-      case 'widget':    return <WidgetPanel />;
-      case 'modal':     return <ModalPanel />;
-      default:          return null;
+      case 'layer': return <LayerPanel />;
+      case 'page': return <PagePanel />;
+      case 'section': return <SectionPanel />;
+      case 'widget': return <WidgetPanel />;
+      case 'modal': return <ModalPanel />;
+      default: return null;
     }
   };
 

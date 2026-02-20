@@ -10,7 +10,7 @@ interface SectionState {
   selectSection: (id: string) => void;
 }
 
-export const useSectionStore = create<SectionState>((set) => ({
+export const useSectionStore = create<SectionState>(() => ({
   sections: [
     { id: 's1', name: '히어로 섹션' },
     { id: 's2', name: '특징 소개' },
