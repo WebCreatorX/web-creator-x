@@ -3,7 +3,8 @@ import {
   File,
   PanelsTopLeft,
   PlusCircle,
-  AppWindow
+  AppWindow,
+  Plus
 } from 'lucide-react';
 
 export const STATIC_PANEL_DATA = {
@@ -32,7 +33,8 @@ export const STATIC_PANEL_DATA = {
 };
 
 export const NAV_ITEMS = [
-  { id: 'component', label: '컴포넌트', icon: Layers },
+  { id: 'layer', label: '레이어', icon: Layers },
+  { id: 'component', label: '컴포넌트', icon: Plus },
   { id: 'page', label: '페이지', icon: File },
   { id: 'section', label: '섹션', icon: PanelsTopLeft },
   { id: 'widget', label: '위젯', icon: PlusCircle },

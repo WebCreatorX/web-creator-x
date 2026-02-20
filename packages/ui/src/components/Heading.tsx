@@ -15,7 +15,7 @@ export default function HeadingComponent({
     <Tag
       data-component-type={node.type}
       data-component-id={node.id}
-      className={`${node.style.className || ""} flex h-full w-full items-center justify-center`}
+      className={node.style.className || ""}
       style={{ ...cssProps, width: "100%", height: "100%" }}
     >
       {text}

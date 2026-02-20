@@ -50,7 +50,7 @@ export default function EditorNodeWrapper({
   });
 
   const { id } = node;
-  const { width, height, x, y } = node.layout;
+  const { width, height, x, y, zIndex } = node.layout;
   const selectedNodeGuideClasses = {
     handle: "bg-white border-2 rounded-full border-rnd-handle !w-2 !h-2 ",
     outline: "ring ring-2 ring-rnd-handle",
@@ -108,6 +108,11 @@ export default function EditorNodeWrapper({
       )}
       size={{ width, height }}
       position={{ x, y }}
+      style={{
+        ...wrapperStyle,
+        position: node.style.position as any,
+        zIndex,
+      }}
       scale={canvas.scale}
       onDragStart={(e, d) => {
         e.stopPropagation();

@@ -1,4 +1,4 @@
-export type NavTabId = 'component' | 'page' | 'section' | 'widget' | 'modal';
+export type NavTabId = 'layer' | 'component' | 'page' | 'section' | 'widget' | 'modal';
 
 export interface NavigationState {
   activeTab: NavTabId | null;
