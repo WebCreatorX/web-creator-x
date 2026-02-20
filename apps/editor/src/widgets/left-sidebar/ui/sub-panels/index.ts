@@ -3,3 +3,4 @@ export * from './PagePanel';
 export * from './SectionPanel';
 export * from './WidgetPanel';
 export * from './ModalPanel';
+export * from './LayerPanel';
