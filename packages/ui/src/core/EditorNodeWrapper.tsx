@@ -95,13 +95,7 @@ export default function EditorNodeWrapper({
 
   return (
     <Rnd
-      style={
-        hasRelativePosition
-          ? {
-              position: "relative",
-            }
-          : {}
-      }
+
       className={clsx(
         "group cursor-pointer",
         hasRelativePosition && !isTransformActive && "!transform-none", // relative인 경우에는 stack의 정렬을 지키기 위해 transform을 꺼놓는다.
@@ -110,7 +104,7 @@ export default function EditorNodeWrapper({
       position={{ x, y }}
       style={{
         ...wrapperStyle,
-        position: node.style.position as any,
+        position: hasRelativePosition ? "relative" : (node.style.position as any),
         zIndex,
       }}
       scale={canvas.scale}
