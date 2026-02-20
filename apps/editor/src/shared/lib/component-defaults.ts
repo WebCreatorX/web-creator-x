@@ -17,6 +17,13 @@ const DEFAULT_FLEX_STYLE: NodeStyle = {
   alignItems: 'center',
 };
 
+const DEFAULT_LAYOUT_MODE = {
+  widthMode: 'fixed' as const,
+  heightMode: 'fixed' as const,
+  widthUnit: 'px' as const,
+  heightUnit: 'px' as const,
+};
+
 export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
   Image: {
     props: {
@@ -33,6 +40,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 400,
       height: 300,
       zIndex: 0,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
   Heading: {
@@ -52,6 +60,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 200,
       height: 50,
       zIndex: 1,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
   Text: {
@@ -72,6 +81,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 300,
       height: 100,
       zIndex: 1,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
   Button: {
@@ -90,6 +100,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 120,
       height: 40,
       zIndex: 2,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
   Container: {
@@ -107,6 +118,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 500,
       height: 200,
       zIndex: 0,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
   Modal: {
@@ -127,6 +139,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 400,
       height: 300,
       zIndex: 100,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
   Stack: {
@@ -144,6 +157,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 300,
       height: 300,
       zIndex: 0,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
   Group: {
@@ -157,6 +171,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
       width: 200,
       height: 200,
       zIndex: 0,
+      ...DEFAULT_LAYOUT_MODE,
     },
   },
 };
