@@ -69,6 +69,7 @@ const useEditorStore = create(
               if (!targetNode) return;
               const parentNodeId = targetNode.parent_id;
 
+              //선택하려는 노드가 최상위 노드일 경우(부모가 ROOT)
               if (parentNodeId === null) {
                 set((state) => {
                   state.selectedDepthPath = [targetNodeId];
@@ -129,7 +130,7 @@ const useEditorStore = create(
               // 1. 최상위 속성 업데이트 (type 등)
               // (주의: 객체 타입인 style, props, layout을 통째로 덮어쓰지 않도록 별도 처리)
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const { style, props, layout: _layout, ...rest } = updates;
+              const { style, props, layout, ...rest } = updates;
               Object.assign(targetNode, rest);
 
               // 2. 하위 객체 병합 업데이트
@@ -151,27 +152,31 @@ const useEditorStore = create(
 
           //TODO-'Node참조값 전달' vs nodeId 전달후 스코프 안에서 파싱 고민해보기
           addItemToStack: (nodeId: string, stackId: string) =>
-            set((state) => {
-              if (!state.nodes) return state;
-              const node = state.nodes.find((n) => n.id === nodeId);
-              const stack = state.nodes.find((n) => n.id === stackId);
-              if (!node || !stack || stack.type !== "Stack") {
-                return state;
-              }
+            set(
+              (state) => {
+                if (!state.nodes) return state;
+                const node = state.nodes.find((n) => n.id === nodeId);
+                const stack = state.nodes.find((n) => n.id === stackId);
+                if (!node || !stack || stack.type !== "Stack") {
+                  return state;
+                }
 
-              // Stack의 현재 items
-              //Stack노드의 하위 자식들을 'position'Props에 따라 오름차순 정렬
-              const currentItems = state.nodes
-                .filter((n) => n.parent_id === stackId)
-                .sort((a, b) => a.position - b.position);
+                // Stack의 현재 items
+                //Stack노드의 하위 자식들을 'position'Props에 따라 오름차순 정렬
+                const currentItems = state.nodes
+                  .filter((n) => n.parent_id === stackId)
+                  .sort((a, b) => a.position - b.position);
 
-              //오름차순 정렬후 마지막 idx 배정
-              const insertIndex = currentItems.length;
-              // insertIndex 이후의 items position 업데이트
-              node.position = insertIndex;
-              node.parent_id = stackId;
-              node.style.position = "relative";
-            }),
+                //오름차순 정렬후 마지막 idx 배정
+                const insertIndex = currentItems.length;
+                // insertIndex 이후의 items position 업데이트
+                node.position = insertIndex;
+                node.parent_id = stackId;
+                node.style.position = "relative";
+              },
+              false,
+              "editStore/addItemToStack",
+            ),
         }),
       ),
     ),
@@ -263,3 +268,19 @@ export const useSetCanvas = () => useEditorStore((store) => store.setCanvas);
  */
 export const useGetDescendantIds = () =>
   useEditorStore((store) => store.getDescendantIds);
+
+export const useAddItemToStack = () =>
+  useEditorStore((store) => store.addItemToStack);
+
+/**
+ * [Selector] ID를 기준으로 특정 노드 객체를 반환합니다.
+ * 해당 ID의 노드가 업데이트되면 이를 사용하는 컴포넌트만 리렌더링됩니다.
+ * @param nodeId - 찾고자 하는 노드의 ID
+ */
+export const useGetNodeById = (nodeId: string) => {
+  return useEditorStore((store) =>
+    store.nodes?.find(({ id }) => id === nodeId),
+  );
+};
+
+//노드 순서 바꾸는 훅 고민하기, 트리에서도 노드의 순서 바꿀 수 있도록 고려하기.
