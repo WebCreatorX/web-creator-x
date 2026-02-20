@@ -1,6 +1,7 @@
 //에디터 모드전용 노드 렌더러 래퍼 컴포넌트
 import clsx from "clsx";
 import { useDragStore } from "context/dragContext";
+import { useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import { WcxNode } from "types";
 import { CanvasState, Layer } from "types/rnd";
@@ -38,6 +39,15 @@ export default function EditorNodeWrapper({
   const wrapperStyle: React.CSSProperties = {
     cursor: "move",
   };
+
+  const [isTransformActive, setIsTransformActive] = useState(false);
+  const [dragPosition, setDragPosition] = useState<{
+    x: number;
+    y: number;
+  }>({
+    x: 0,
+    y: 0,
+  });
 
   const { id } = node;
   const { width, height, x, y } = node.layout;
@@ -94,7 +104,7 @@ export default function EditorNodeWrapper({
       }
       className={clsx(
         "group cursor-pointer",
-        hasRelativePosition && !isDraggingMyself && "!transform-none", // relative인 경우에는 stack의 정렬을 지키기 위해 transform을 꺼놓는다.
+        hasRelativePosition && !isTransformActive && "!transform-none", // relative인 경우에는 stack의 정렬을 지키기 위해 transform을 꺼놓는다.
       )}
       size={{ width, height }}
       position={{ x, y }}
@@ -105,6 +115,11 @@ export default function EditorNodeWrapper({
         if (hasRelativePosition) {
           const { offsetLeft, offsetTop } = d.node;
           updateNode(id, { x: offsetLeft, y: offsetTop });
+          setDragPosition({ x: offsetLeft, y: offsetTop });
+          setIsTransformActive(true);
+          console.log(
+            `좌표 보정 작동 offsetLeft - ${offsetLeft} // offsetTop - ${offsetTop} `,
+          );
         }
       }}
       //TODO-이동중에 로직 실행하면 성능상 부담이 될 수 있다... 최적화 고민 해보기
@@ -116,11 +131,17 @@ export default function EditorNodeWrapper({
         }
       }}
       onDragStop={(e, d) => {
+        setIsTransformActive(false);
         console.log(`현재 노드 ${id}- 포지션 ${node.style.position}`);
         const stackId = findStackId(e);
 
         setDraggingId(null);
         setHoveredStackId(null);
+
+        console.log(
+          `드래그 종료시 노드의 좌표 x:${d.node.offsetLeft}, y:${d.node.offsetTop}`,
+        );
+
         if (hasRelativePosition) {
           console.log("relative position");
           return;
@@ -133,9 +154,7 @@ export default function EditorNodeWrapper({
         } else if (stackId && node.parent_id !== stackId) {
           //스택 외부의 노드가 스택 안으로 새롭게 들어오는 경우에만 해당이 된다.
           addItemToStack(id, stackId);
-          //addItemToStack 로직 실행
         } else {
-          console.log("update node");
           updateNode(id, { x: d.x, y: d.y });
         }
       }}
@@ -154,7 +173,7 @@ export default function EditorNodeWrapper({
         updateNode(id, {
           width: parseInt(ref.style.width),
           height: parseInt(ref.style.height),
-          ...pos,
+          ...(hasRelativePosition ? {} : pos),
         })
       }
       enableResizing={isGroup ? undefined : isSelected ? undefined : false}
