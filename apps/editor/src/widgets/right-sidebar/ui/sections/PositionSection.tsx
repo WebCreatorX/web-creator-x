@@ -1,7 +1,7 @@
 "use client";
 
 import { WcxNode } from "@repo/ui/types/nodes";
-import { useUpdateNode } from "@/stores/useEditorStore";
+import { useUpdateNode, useUpdateNodeLayout } from "@/stores/useEditorStore";
 import FieldRow from "../atoms/FieldRow";
 import NumberInput from "../atoms/NumberInput";
 import SelectInput from "../atoms/SelectInput";
@@ -14,14 +14,20 @@ type PositionType = "relative" | "absolute" | "fixed" | "sticky";
 
 export default function PositionSection({ node }: PositionSectionProps) {
   const updateNode = useUpdateNode();
+  const updateNodeLayout = useUpdateNodeLayout();
   const positionType = (node.style.position as PositionType) || "relative";
 
   const handleStyleChange = (key: string, value: any) => {
     updateNode(node.id, { style: { ...node.style, [key]: value } });
   };
 
+  const handleLayoutChange = (key: string, value: any) => {
+    updateNodeLayout(node.id, { [key]: value });
+  };
+
   const handlePositionTypeChange = (type: PositionType) => {
     if (type === "relative") {
+      // relative 전환 시 스타일에서 위치 정보 제거
       updateNode(node.id, {
         style: {
           ...node.style,
@@ -32,6 +38,7 @@ export default function PositionSection({ node }: PositionSectionProps) {
           left: undefined,
         },
       });
+      // x, y 좌표는 유지하거나 필요에 따라 초기화할 수 있지만 일단 유지
     } else {
       handleStyleChange("position", type);
     }
@@ -42,42 +49,30 @@ export default function PositionSection({ node }: PositionSectionProps) {
 
   return (
     <>
-      {/* Absolute / Fixed → T R B L */}
+      {/* Absolute / Fixed → Top(y) / Left(x) (Layout 필드 사용) */}
       {showOffsets && (
         <>
           <FieldRow label="Top">
             <NumberInput
-              value={parseInt(String(node.style.top)) || 0}
-              onChange={(v) => handleStyleChange("top", v)}
-            />
-          </FieldRow>
-          <FieldRow label="Right">
-            <NumberInput
-              value={parseInt(String(node.style.right)) || 0}
-              onChange={(v) => handleStyleChange("right", v)}
-            />
-          </FieldRow>
-          <FieldRow label="Bottom">
-            <NumberInput
-              value={parseInt(String(node.style.bottom)) || 0}
-              onChange={(v) => handleStyleChange("bottom", v)}
+              value={node.layout.y ?? 0}
+              onChange={(v) => handleLayoutChange("y", v)}
             />
           </FieldRow>
           <FieldRow label="Left">
             <NumberInput
-              value={parseInt(String(node.style.left)) || 0}
-              onChange={(v) => handleStyleChange("left", v)}
+              value={node.layout.x ?? 0}
+              onChange={(v) => handleLayoutChange("x", v)}
             />
           </FieldRow>
         </>
       )}
 
-      {/* Sticky → Top only */}
+      {/* Sticky → Top only (y 사용) */}
       {showStickyTop && (
         <FieldRow label="Top">
           <NumberInput
-            value={parseInt(String(node.style.top)) || 0}
-            onChange={(v) => handleStyleChange("top", v)}
+            value={node.layout.y ?? 0}
+            onChange={(v) => handleLayoutChange("y", v)}
           />
         </FieldRow>
       )}
