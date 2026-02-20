@@ -11,7 +11,7 @@ export const useDragStore = createStore(
           draggingNodeId: null as null | string,
           hoveredStackId: null as null | string,
         },
-        (set, get) => ({
+        (set) => ({
           setDraggingId: (id: string | null) =>
             set((store) => {
               store.draggingNodeId = id;

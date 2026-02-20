@@ -129,6 +129,7 @@ const useEditorStore = create(
 
               // 1. 최상위 속성 업데이트 (type 등)
               // (주의: 객체 타입인 style, props, layout을 통째로 덮어쓰지 않도록 별도 처리)
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const { style, props, layout, ...rest } = updates;
               Object.assign(targetNode, rest);
 
