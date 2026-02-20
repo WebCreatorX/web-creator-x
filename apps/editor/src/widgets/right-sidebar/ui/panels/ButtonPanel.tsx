@@ -13,7 +13,7 @@ interface ButtonPanelProps {
 export default function ButtonPanel({ node }: ButtonPanelProps) {
   const updateNode = useUpdateNode();
 
-  const handlePropChange = (key: string, value: any) => {
+  const handlePropChange = (key: string, value: string | number | boolean | object) => {
     updateNode(node.id, { props: { ...node.props, [key]: value } });
   };
 

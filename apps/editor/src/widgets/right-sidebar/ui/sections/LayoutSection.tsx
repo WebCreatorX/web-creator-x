@@ -16,7 +16,7 @@ interface LayoutSectionProps {
 export default function LayoutSection({ node }: LayoutSectionProps) {
   const updateNode = useUpdateNode();
 
-  const handleStyleChange = (key: string, value: any) => {
+  const handleStyleChange = (key: string, value: string | number) => {
     updateNode(node.id, { style: { ...node.style, [key]: value } });
   };
 

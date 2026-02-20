@@ -12,6 +12,7 @@ import PropertySection from "./sections/PropertySection";
 import { WcxNode } from "@repo/ui/types/nodes";
 
 // 노드 타입별 Content 패널 매핑
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CONTENT_PANEL: Partial<Record<WcxNode["type"], React.ComponentType<{ node: any }>>> = {
   Text: TextPanel,
   Heading: TextPanel,

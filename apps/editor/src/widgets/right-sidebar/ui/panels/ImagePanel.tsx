@@ -17,7 +17,7 @@ export default function ImagePanel({ node }: ImagePanelProps) {
     <div className="flex flex-col gap-5">
       <SidebarItem label="Alt Text">
         <TextInput
-          value={(node.props as any).alt || ""}
+          value={(node.props as { alt?: string }).alt || ""}
           onChange={(val) =>
             updateNode(node.id, { props: { ...node.props, alt: val } })
           }
@@ -25,6 +25,6 @@ export default function ImagePanel({ node }: ImagePanelProps) {
         />
       </SidebarItem>
       <LayoutSection node={node} />
-    </div>
+    </div >
   );
 }

@@ -18,11 +18,11 @@ interface TextPanelProps {
 export default function TextPanel({ node }: TextPanelProps) {
   const updateNode = useUpdateNode();
 
-  const handlePropChange = (key: string, value: any) => {
+  const handlePropChange = (key: string, value: string | number | boolean | object) => {
     updateNode(node.id, { props: { ...node.props, [key]: value } });
   };
 
-  const handleStyleChange = (key: string, value: any) => {
+  const handleStyleChange = (key: string, value: string | number | boolean | object) => {
     updateNode(node.id, { style: { ...node.style, [key]: value } });
   };
 

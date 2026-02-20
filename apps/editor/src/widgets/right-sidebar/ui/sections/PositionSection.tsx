@@ -17,11 +17,11 @@ export default function PositionSection({ node }: PositionSectionProps) {
   const updateNodeLayout = useUpdateNodeLayout();
   const positionType = (node.style.position as PositionType) || "relative";
 
-  const handleStyleChange = (key: string, value: any) => {
+  const handleStyleChange = (key: string, value: string | number | undefined) => {
     updateNode(node.id, { style: { ...node.style, [key]: value } });
   };
 
-  const handleLayoutChange = (key: string, value: any) => {
+  const handleLayoutChange = (key: string, value: string | number) => {
     updateNodeLayout(node.id, { [key]: value });
   };
 

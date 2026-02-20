@@ -11,7 +11,8 @@ import {
   Component,
   ChevronRight,
   ChevronDown,
-  Layers
+  Layers,
+  LucideIcon
 } from 'lucide-react';
 import { useState } from 'react';
 import { WcxNode } from '@repo/ui/types/nodes';
@@ -19,7 +20,7 @@ import { WcxNode } from '@repo/ui/types/nodes';
 /**
  * 노드 타입별 아이콘 매핑
  */
-const NODE_TYPE_ICONS: Record<string, any> = {
+const NODE_TYPE_ICONS: Record<string, LucideIcon> = {
   Text: Type,
   Image: ImageIcon,
   Heading: Heading1,
@@ -62,9 +63,9 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, depth }: LayerItemProps)
    */
   const getNodeName = () => {
     if ('props' in node) {
-      const props = node.props as any;
-      if (props.text) return props.text;
-      if (props.alt) return props.alt;
+      const props = node.props as Record<string, unknown>;
+      if (props.text) return props.text as string;
+      if (props.alt) return props.alt as string;
     }
     return node.type;
   };

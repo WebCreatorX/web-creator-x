@@ -17,8 +17,8 @@ export default function SizeSection({ node }: SizeSectionProps) {
   const updateNode = useUpdateNode();
   const nodes = useCurNodes();
 
-  const widthMode: SizingMode = (node.layout as any).widthMode || "fixed";
-  const heightMode: SizingMode = (node.layout as any).heightMode || "fixed";
+  const widthMode: SizingMode = (node.layout as { widthMode: SizingMode }).widthMode || "fixed";
+  const heightMode: SizingMode = (node.layout as { heightMode: SizingMode }).heightMode || "fixed";
 
   const widthValue = typeof node.layout.width === "number"
     ? node.layout.width
@@ -28,7 +28,7 @@ export default function SizeSection({ node }: SizeSectionProps) {
     ? node.layout.height
     : parseInt(String(node.layout.height)) || 0;
 
-  const handleStyleChange = (key: string, value: any) => {
+  const handleStyleChange = (key: string, value: string | number) => {
     updateNode(node.id, { style: { ...node.style, [key]: value } });
   };
 
@@ -65,6 +65,7 @@ export default function SizeSection({ node }: SizeSectionProps) {
     const oldValue = isHeight ? heightValue : widthValue;
 
     const newValue = convertValue(oldValue, oldMode, newMode, isHeight);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updateLayout(node.id, { [key]: newMode, [sizeKey]: newValue } as any);
   };
 
