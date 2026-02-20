@@ -270,3 +270,16 @@ export const useGetDescendantIds = () =>
 
 export const useAddItemToStack = () =>
   useEditorStore((store) => store.addItemToStack);
+
+/**
+ * [Selector] ID를 기준으로 특정 노드 객체를 반환합니다.
+ * 해당 ID의 노드가 업데이트되면 이를 사용하는 컴포넌트만 리렌더링됩니다.
+ * @param nodeId - 찾고자 하는 노드의 ID
+ */
+export const useGetNodeById = (nodeId: string) => {
+  return useEditorStore((store) =>
+    store.nodes?.find(({ id }) => id === nodeId),
+  );
+};
+
+//노드 순서 바꾸는 훅 고민하기, 트리에서도 노드의 순서 바꿀 수 있도록 고려하기.
