@@ -1,7 +1,7 @@
 //에디터 모드전용 노드 렌더러 래퍼 컴포넌트
 import clsx from "clsx";
 import { useDragStore } from "context/dragContext";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Rnd } from "react-rnd";
 import { WcxNode } from "types";
 import { CanvasState, Layer } from "types/rnd";
@@ -52,8 +52,9 @@ export default function EditorNodeWrapper({
   const { id } = node;
   const { width, height, x, y, zIndex } = node.layout;
   const selectedNodeGuideClasses = {
-    handle: "bg-white border-2 rounded-full border-rnd-handle !w-2 !h-2 ",
-    outline: "ring ring-2 ring-rnd-handle",
+    // 시각적 핸들은 SelectionOverlay 포탈에서 렌더링.
+    // Rnd의 핸들은 인터랙션만 담당 (투명하게 유지)
+    handle: "opacity-0 !w-3 !h-3 ",
   };
 
   // 필요한 데이터만 구독
@@ -198,10 +199,7 @@ export default function EditorNodeWrapper({
           selectNode(id);
         }}
         style={wrapperStyle}
-        className={clsx(
-          "relative h-full w-full transition-shadow duration-200",
-          isSelected && selectedNodeGuideClasses.outline,
-        )}
+        className="relative h-full w-full"
       >
         {children}
       </div>
