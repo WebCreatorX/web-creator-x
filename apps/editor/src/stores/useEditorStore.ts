@@ -25,15 +25,35 @@ const useEditorStore = create(
               state.nodes?.push(node);
             });
           },
+          // 자식 노드까지 재귀적으로 삭제
           deleteNode(nodeId: string) {
-            set((state) => {
-              if (!state.nodes) return;
-              const targetNodeIdx = state.nodes?.findIndex(
-                (node) => node.id === nodeId,
-              );
-              if (targetNodeIdx === -1) return;
-              state.nodes.splice(targetNodeIdx, 1);
-            });
+            set(
+              (state) => {
+                if (!state.nodes) return;
+
+                // 삭제 대상 ID 수집 (자기 자신 + 모든 후손)
+                const idsToDelete = new Set<string>();
+                function collect(id: string) {
+                  idsToDelete.add(id);
+                  state.nodes!
+                    .filter((n) => n.parent_id === id)
+                    .forEach((n) => collect(n.id));
+                }
+                collect(nodeId);
+
+                // 일괄 삭제
+                state.nodes = state.nodes.filter(
+                  (n) => !idsToDelete.has(n.id),
+                );
+
+                // 삭제된 노드가 선택 경로에 있으면 선택 해제
+                if (state.selectedDepthPath.includes(nodeId)) {
+                  state.selectedDepthPath = [];
+                }
+              },
+              false,
+              "editStore/deleteNode",
+            );
           },
           getDescendantIds(nodeId: string): string[] {
             const nodes = get().nodes;
