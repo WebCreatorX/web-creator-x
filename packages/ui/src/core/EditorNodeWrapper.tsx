@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Rnd } from "react-rnd";
 import { WcxNode } from "types";
 import { CanvasState, Layer } from "types/rnd";
+import FlowNodeWrapper from "./FlowNodeWrapper";
 
 interface WrapperProps {
   children: React.ReactNode;
@@ -31,6 +32,23 @@ export default function EditorNodeWrapper({
 }: WrapperProps) {
   const isStackItem = parentNode?.type === "Stack";
   const hasRelativePosition = node.style.position === "relative";
+
+  // Stack 내부 flow 아이템은 FlowNodeWrapper로 렌더링
+  const isFlowItem = isStackItem && hasRelativePosition;
+  if (isFlowItem) {
+    return (
+      <FlowNodeWrapper
+        node={node}
+        parentNode={parentNode}
+        selectedId={selectedId}
+        updateNode={updateNode}
+        selectNode={selectNode}
+        canvas={canvas}
+      >
+        {children}
+      </FlowNodeWrapper>
+    );
+  }
 
   const isSwitchItems = isStackItem && hasRelativePosition;
 
