@@ -55,9 +55,9 @@ export default function Canvas() {
    */
   function renderTree(parentNode: WcxNode | { id: null }) {
     //parentNode의 자식 찾기
-    const childrenObjArr = nodes?.filter(
-      ({ parent_id }) => parent_id === parentNode.id,
-    );
+    const childrenObjArr = nodes
+      ?.filter(({ parent_id }) => parent_id === parentNode.id)
+      .sort((a, b) => a.position - b.position);
 
     //BaseCondition
     //FIXME-솔직히 !childrenArr만 있어도 될듯? 길이가 0일 수가 없다.
@@ -79,7 +79,6 @@ export default function Canvas() {
     }
 
     // 1. 자식들의 렌더링 결과물 (JSX 배열)
-    //현재 parentNode에 대해 NodeRenderer를 사용하려면 children이 필요한데, 재귀로 구해준다.
     const children = childrenObjArr.map((node) => {
       return <React.Fragment key={node.id}>{renderTree(node)}</React.Fragment>;
     });

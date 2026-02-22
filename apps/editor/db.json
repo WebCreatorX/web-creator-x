@@ -1,218 +1,393 @@
 {
   "nodes": [
     {
-      "id": "1002",
+      "id": "page",
       "page_id": 201,
       "parent_id": null,
       "type": "Stack",
-      "position": 1,
-      "layout": { "x": 0, "y": 0, "width": 1440, "height": 800, "zIndex": 1 },
-      "props": {},
-      "style": {
-        "display": "flex",
-        "flexDirection": "column",
-        "alignItems": "center",
-        "justifyContent": "center",
-        "gap": "20px",
-        "padding": "50px 24px",
-        "maxWidth": "1200px",
-        "backgroundColor": "#FFFFFF",
-        "className": "content-section"
-      },
-      "created_at": "2025-11-13T06:20:00Z"
-    },
-    {
-      "id": "1003",
-      "page_id": 201,
-      "parent_id": "1002",
-      "type": "Heading",
       "position": 0,
       "layout": {
-        "x": 0,
-        "y": 0,
-        "width": 1200,
-        "height": 100,
-        "zIndex": 2
-      },
-      "props": {
-        "text": "주요 기능 소개",
-        "level": "h2"
-      },
-      "style": {
-        "position": "relative",
-        "color": "#111827",
-        "fontSize": "36px",
-        "textAlign": "center",
-        "marginBottom": "30px"
-      },
-      "created_at": "2025-11-13T06:21:00Z"
-    },
-    {
-      "id": "1004",
-      "page_id": 201,
-      "parent_id": "1002",
-      "type": "Text",
-      "position": 1,
-      "layout": {
-        "x": 0,
-        "y": 0,
+        "x": 100,
+        "y": 100,
         "width": 800,
-        "height": 200,
-        "zIndex": 2
-      },
-      "props": {
-        "text": "직관적인 드래그 앤 드롭 인터페이스로 코딩 없이 웹사이트를 완성하세요. 모든 컴포넌트는 사용자가 원하는 대로 커스터마이징할 수 있습니다.",
-        "level": "p"
-      },
-      "style": {
-        "position": "relative",
-        "color": "#374151",
-        "fontSize": "18px",
-        "lineHeight": 1.6,
-        "textAlign": "center"
-      },
-      "created_at": "2025-11-13T06:22:00Z"
-    },
-    {
-      "id": "1005",
-      "page_id": 201,
-      "parent_id": null,
-      "type": "Stack",
-      "position": 2,
-      "layout": {
-        "x": 0,
-        "y": 800,
-        "width": 1440,
         "height": 600,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
         "zIndex": 1
       },
-      "props": { "id": "gallery" },
-      "style": {
-        "display": "flex",
-        "flexDirection": "row",
-        "flexWrap": "wrap",
-        "justifyContent": "center",
-        "gap": "20px",
-        "padding": "50px 24px",
-        "maxWidth": "1200px",
-        "backgroundColor": "#F9FAFB",
-        "className": "gallery-section"
-      },
-      "created_at": "2025-11-13T06:23:00Z"
-    },
-    {
-      "id": "1006",
-      "page_id": 201,
-      "parent_id": "1005",
-      "type": "Image",
-      "position": 0,
-      "layout": { "x": 0, "y": 0, "width": 600, "height": 300, "zIndex": 2 },
       "props": {
-        "src": "data:image/jpeg;base64,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",
-        "alt": "갤러리 이미지 1"
-      },
-      "style": {
-        "position": "relative",
-        "width": "100%",
-        "height": "300px",
-        "objectFit": "cover",
-        "borderRadius": "8px"
-      },
-      "created_at": "2025-11-13T06:24:00Z"
-    },
-    {
-      "id": "1007",
-      "page_id": 201,
-      "parent_id": "1005",
-      "type": "Image",
-      "position": 1,
-      "layout": { "x": 700, "y": 50, "width": 600, "height": 300, "zIndex": 2 },
-      "props": {
-        "src": "https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg",
-        "alt": "갤러리 이미지 2"
+        "direction": "column"
       },
       "style": {
         "position": "absolute",
-        "top": "50px",
-        "left": "700px",
-        "width": "600px",
-        "height": "300px",
-        "objectFit": "cover",
-        "borderRadius": "8px",
-        "zIndex": 10
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": "16px",
+        "padding": "24px",
+        "backgroundColor": "#f3f4f6"
       },
-      "created_at": "2025-11-13T06:25:00Z"
+      "created_at": "2025-01-01T00:00:00Z"
     },
     {
-      "id": "1008",
+      "id": "child-fixed",
       "page_id": 201,
-      "parent_id": "1005",
+      "parent_id": "page",
+      "type": "Stack",
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 80,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "zIndex": 2
+      },
+      "props": {
+        "direction": "column"
+      },
+      "style": {
+        "position": "relative",
+        "display": "flex",
+        "backgroundColor": "#3b82f6",
+        "borderRadius": "8px"
+      },
+      "created_at": "2025-01-01T00:01:00Z"
+    },
+    {
+      "id": "label-fixed",
+      "page_id": 201,
+      "parent_id": "child-fixed",
       "type": "Text",
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 40,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "zIndex": 3
+      },
+      "props": {
+        "text": "Fixed 200×80",
+        "level": "p"
+      },
+      "style": {
+        "position": "relative",
+        "color": "#ffffff",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "padding": "8px 16px"
+      },
+      "created_at": "2025-01-01T00:01:30Z"
+    },
+    {
+      "id": "child-fill",
+      "page_id": 201,
+      "parent_id": "page",
+      "type": "Stack",
+      "position": 1,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 80,
+        "widthMode": "fill",
+        "heightMode": "fixed",
+        "zIndex": 2
+      },
+      "props": {
+        "direction": "column"
+      },
+      "style": {
+        "position": "relative",
+        "display": "flex",
+        "backgroundColor": "#10b981",
+        "borderRadius": "8px"
+      },
+      "created_at": "2025-01-01T00:02:00Z"
+    },
+    {
+      "id": "label-fill",
+      "page_id": 201,
+      "parent_id": "child-fill",
+      "type": "Text",
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 40,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "zIndex": 3
+      },
+      "props": {
+        "text": "Fill (가로 꽉 참)",
+        "level": "p"
+      },
+      "style": {
+        "position": "relative",
+        "color": "#ffffff",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "padding": "8px 16px"
+      },
+      "created_at": "2025-01-01T00:02:30Z"
+    },
+    {
+      "id": "child-fit",
+      "page_id": 201,
+      "parent_id": "page",
+      "type": "Stack",
       "position": 2,
-      "layout": { "x": 0, "y": 0, "width": 600, "height": 50, "zIndex": 2 },
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 300,
+        "height": 300,
+        "widthMode": "fit",
+        "heightMode": "fit",
+        "zIndex": 2
+      },
       "props": {
-        "text": "이미지 설명 1",
-        "level": "p"
+        "direction": "column"
       },
       "style": {
         "position": "relative",
-        "textAlign": "center",
-        "fontSize": "14px",
-        "color": "#6B7280",
-        "marginTop": "10px"
+        "display": "flex",
+        "backgroundColor": "#f59e0b",
+        "borderRadius": "8px",
+        "padding": "12px"
       },
-      "created_at": "2025-11-13T06:26:00Z"
+      "created_at": "2025-01-01T00:03:00Z"
     },
     {
-      "id": "1009",
+      "id": "label-fit",
       "page_id": 201,
-      "parent_id": "1005",
+      "parent_id": "child-fit",
       "type": "Text",
-      "position": 3,
-      "layout": { "x": 0, "y": 0, "width": 600, "height": 50, "zIndex": 2 },
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 40,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "zIndex": 3
+      },
       "props": {
-        "text": "이미지 설명 2",
+        "text": "Fit (콘텐츠에 맞춤)",
         "level": "p"
       },
       "style": {
         "position": "relative",
-        "textAlign": "center",
+        "color": "#ffffff",
         "fontSize": "14px",
-        "color": "#6B7280",
-        "marginTop": "10px"
+        "fontWeight": "600",
+        "padding": "8px 16px"
       },
-      "created_at": "2025-11-13T06:27:00Z"
+      "created_at": "2025-01-01T00:03:30Z"
     },
     {
-      "id": "1010",
+      "id": "row-stack",
       "page_id": 201,
-      "parent_id": null,
-      "type": "Button",
+      "parent_id": "page",
+      "type": "Stack",
       "position": 3,
       "layout": {
-        "x": 600,
-        "y": 1500,
-        "width": 200,
-        "height": 60,
-        "zIndex": 1
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 120,
+        "widthMode": "fill",
+        "heightMode": "fixed",
+        "zIndex": 2
       },
       "props": {
-        "text": "더 알아보기",
-        "action": { "type": "navigate", "url": "/features" }
+        "direction": "row"
       },
       "style": {
-        "display": "block",
-        "padding": "15px 30px",
-        "width": "200px",
-        "backgroundColor": "#3B82F6",
-        "color": "#FFFFFF",
-        "fontSize": "16px",
-        "fontWeight": "bold",
-        "textAlign": "center",
-        "borderRadius": "5px",
-        "cursor": "pointer"
+        "position": "relative",
+        "display": "flex",
+        "flexDirection": "row",
+        "gap": "12px",
+        "backgroundColor": "#e5e7eb",
+        "borderRadius": "8px",
+        "padding": "12px"
       },
-      "created_at": "2025-11-13T06:28:00Z"
+      "created_at": "2025-01-01T00:04:00Z"
+    },
+    {
+      "id": "row-a",
+      "page_id": 201,
+      "parent_id": "row-stack",
+      "type": "Stack",
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 1,
+        "widthMode": "fixed",
+        "heightMode": "fill",
+        "zIndex": 3
+      },
+      "props": {
+        "direction": "column"
+      },
+      "style": {
+        "position": "relative",
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "backgroundColor": "#8b5cf6",
+        "borderRadius": "6px"
+      },
+      "created_at": "2025-01-01T00:05:00Z"
+    },
+    {
+      "id": "row-a-label",
+      "page_id": 201,
+      "parent_id": "row-a",
+      "type": "Text",
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 80,
+        "height": 30,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "zIndex": 4
+      },
+      "props": {
+        "text": "Fixed W",
+        "level": "p"
+      },
+      "style": {
+        "position": "relative",
+        "color": "#ffffff",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "textAlign": "center"
+      },
+      "created_at": "2025-01-01T00:05:30Z"
+    },
+    {
+      "id": "row-b",
+      "page_id": 201,
+      "parent_id": "row-stack",
+      "type": "Stack",
+      "position": 1,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+        "widthMode": "fill",
+        "heightMode": "fill",
+        "zIndex": 3
+      },
+      "props": {
+        "direction": "column"
+      },
+      "style": {
+        "position": "relative",
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "backgroundColor": "#ec4899",
+        "borderRadius": "6px"
+      },
+      "created_at": "2025-01-01T00:06:00Z"
+    },
+    {
+      "id": "row-b-label",
+      "page_id": 201,
+      "parent_id": "row-b",
+      "type": "Text",
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 80,
+        "height": 30,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "zIndex": 4
+      },
+      "props": {
+        "text": "Fill Both",
+        "level": "p"
+      },
+      "style": {
+        "position": "relative",
+        "color": "#ffffff",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "textAlign": "center"
+      },
+      "created_at": "2025-01-01T00:06:30Z"
+    },
+    {
+      "id": "row-c",
+      "page_id": 201,
+      "parent_id": "row-stack",
+      "type": "Stack",
+      "position": 2,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 150,
+        "height": 1,
+        "widthMode": "fit",
+        "heightMode": "fill",
+        "zIndex": 3
+      },
+      "props": {
+        "direction": "column"
+      },
+      "style": {
+        "position": "relative",
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "backgroundColor": "#06b6d4",
+        "borderRadius": "6px",
+        "padding": "8px"
+      },
+      "created_at": "2025-01-01T00:07:00Z"
+    },
+    {
+      "id": "row-c-label",
+      "page_id": 201,
+      "parent_id": "row-c",
+      "type": "Text",
+      "position": 0,
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 80,
+        "height": 30,
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "zIndex": 4
+      },
+      "props": {
+        "text": "Fit W, Fill H",
+        "level": "p"
+      },
+      "style": {
+        "position": "relative",
+        "color": "#ffffff",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "textAlign": "center"
+      },
+      "created_at": "2025-01-01T00:07:30Z"
     }
   ]
 }
