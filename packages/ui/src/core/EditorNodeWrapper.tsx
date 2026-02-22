@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Rnd } from "react-rnd";
 import { WcxNode } from "types";
 import { CanvasState, Layer } from "types/rnd";
-import FlowNodeWrapper from "./FlowNodeWrapper";
 
 interface WrapperProps {
   children: React.ReactNode;
@@ -53,24 +52,7 @@ export default function EditorNodeWrapper({
   const setDraggingId = useDragStore((s) => s.setDraggingId);
   const setHoveredStackId = useDragStore((s) => s.setHoveredStackId);
 
-  // Stack 내부 flow 아이템은 FlowNodeWrapper로 렌더링
-  const isFlowItem = isStackItem && hasRelativePosition;
-  if (isFlowItem) {
-    return (
-      <FlowNodeWrapper
-        node={node}
-        parentNode={parentNode}
-        selectedId={selectedId}
-        updateNode={updateNode}
-        selectNode={selectNode}
-        canvas={canvas}
-      >
-        {children}
-      </FlowNodeWrapper>
-    );
-  }
 
-  const isSwitchItems = isStackItem && hasRelativePosition;
 
   const wrapperStyle: React.CSSProperties = {
     cursor: "move",
@@ -162,17 +144,8 @@ export default function EditorNodeWrapper({
           `드래그 종료시 노드의 좌표 x:${d.node.offsetLeft}, y:${d.node.offsetTop}`,
         );
 
-        if (hasRelativePosition) {
-          console.log("relative position");
-          return;
-        }
-
-        //드래그가 종료될 경우에 외부 아이템이 스택으로 들어오는경우,스택 내부의 아이템이 이동할 경우(포지션 앱솔루트), 내부 아이템끼리 위치 이동할 경우,기본 위치 이동을 생각해야한다.
-        if (isSwitchItems) {
-          //현재 놓인 Y위치에 따라서 노드의 순서 변경을 고려해야한다.
-          //TODO-Stack내부에서 Item 노드의 순서 변경 로직 실행
-        } else if (stackId && node.parent_id !== stackId) {
-          //스택 외부의 노드가 스택 안으로 새롭게 들어오는 경우에만 해당이 된다.
+        // 드래그 종료: 스택에 드롭 vs 위치 이동
+        if (stackId && node.parent_id !== stackId) {
           addItemToStack(id, stackId);
         } else {
           updateNode(id, { x: d.x, y: d.y });
