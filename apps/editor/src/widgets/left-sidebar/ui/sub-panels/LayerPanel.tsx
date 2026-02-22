@@ -1,5 +1,5 @@
 import { PanelBaseLayout } from './base/PanelBaseLayout';
-import { useCurNodes, useSelectNode, useSelectedNodeId, useDeleteNode, useAddNode } from '../../../../stores/useEditorStore';
+import { useSelectNode, useSelectedNodeId, useDeleteNode, useAddNode, useChildrenMap, useNodeMap } from '../../../../stores/useEditorStore';
 import { COMPONENT_DEFAULTS } from '../../../../shared/lib/component-defaults';
 import { cn } from '@repo/utils';
 import {
@@ -37,19 +37,18 @@ const NODE_TYPE_ICONS: Record<string, LucideIcon> = {
 
 interface LayerItemProps {
   node: WcxNode;
-  nodes: WcxNode[];
+  childrenMap: Record<string, WcxNode[]>;
   selectedId: string | null;
   onSelect: (id: string) => void;
   onContextMenu: (e: React.MouseEvent, nodeId: string) => void;
   depth: number;
 }
 
-const LayerItem = ({ node, nodes, selectedId, onSelect, onContextMenu, depth }: LayerItemProps) => {
+const LayerItem = ({ node, childrenMap, selectedId, onSelect, onContextMenu, depth }: LayerItemProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const children = nodes
-    .filter((n) => n.parent_id === node.id)
-    .sort((a, b) => a.position - b.position);
+  // childrenMap에서 O(1) 조회 (filter+sort 제거)
+  const children = childrenMap[node.id] || [];
 
   const hasChildren = children.length > 0;
   const isSelected = selectedId === node.id;
@@ -117,7 +116,7 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, onContextMenu, depth }: 
             <LayerItem
               key={child.id}
               node={child}
-              nodes={nodes}
+              childrenMap={childrenMap}
               selectedId={selectedId}
               onSelect={onSelect}
               onContextMenu={onContextMenu}
@@ -133,7 +132,8 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, onContextMenu, depth }: 
 /* ─────────────────────── Layer Panel ─────────────────────── */
 
 export const LayerPanel = () => {
-  const nodes = useCurNodes() || [];
+  const nodeMap = useNodeMap();
+  const childrenMap = useChildrenMap();
   const selectedId = useSelectedNodeId();
   const selectNode = useSelectNode();
   const deleteNode = useDeleteNode();
@@ -150,7 +150,8 @@ export const LayerPanel = () => {
   const handleContextMenu = (e: React.MouseEvent, nodeId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    const targetNode = nodes.find((n) => n.id === nodeId);
+    // nodeMap에서 O(1) 조회
+    const targetNode = nodeMap[nodeId];
     if (!targetNode) return;
     setContextMenu({ x: e.clientX, y: e.clientY, nodeId, nodeType: targetNode.type });
   };
@@ -161,8 +162,9 @@ export const LayerPanel = () => {
       const defaults = COMPONENT_DEFAULTS[type];
       if (!defaults) return;
 
-      const siblingCount = nodes.filter((n) => n.parent_id === parentId).length;
-      const parentNode = nodes.find((n) => n.id === parentId);
+      // childrenMap에서 형제 수 조회
+      const siblingCount = (childrenMap[parentId] || []).length;
+      const parentNode = nodeMap[parentId];
 
       const newNode: WcxNode = {
         id: `${type.toLowerCase()}-${Date.now()}`,
@@ -181,12 +183,11 @@ export const LayerPanel = () => {
 
       addNode(newNode);
     },
-    [nodes, addNode],
+    [childrenMap, nodeMap, addNode],
   );
 
-  const rootNodes = nodes
-    .filter((node) => node.parent_id === null)
-    .sort((a, b) => a.position - b.position);
+  // 루트 노드: childrenMap["__root__"]에서 바로 조회 (이미 정렬됨)
+  const rootNodes = childrenMap["__root__"] || [];
 
   return (
     <PanelBaseLayout title="레이어" description="페이지 구성 요소 계층">
@@ -196,7 +197,7 @@ export const LayerPanel = () => {
             <LayerItem
               key={node.id}
               node={node}
-              nodes={nodes}
+              childrenMap={childrenMap}
               selectedId={selectedId}
               onSelect={selectNode}
               onContextMenu={handleContextMenu}
