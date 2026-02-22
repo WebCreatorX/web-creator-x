@@ -69,7 +69,7 @@ export interface GroupNode extends BaseNode {
 
 export interface StackNode extends BaseNode {
   type: "Stack";
-  props: {};
+  props: componentProps.StackProps;
 }
 
 // 3. 통합 노드 타입
