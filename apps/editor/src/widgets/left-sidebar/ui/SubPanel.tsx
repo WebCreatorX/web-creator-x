@@ -26,7 +26,10 @@ export const SubPanel = () => {
   };
 
   return (
-    <aside className="w-[260px] h-full bg-white border-r border-zinc-200 flex flex-col shadow-sm">
+    <aside
+      className="w-[260px] h-full bg-white border-r border-zinc-200 flex flex-col shadow-sm overflow-y-auto"
+      style={{ scrollbarWidth: 'none' }}
+    >
       {renderContent()}
     </aside>
   );
