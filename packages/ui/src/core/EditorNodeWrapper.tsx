@@ -33,6 +33,26 @@ export default function EditorNodeWrapper({
   const isStackItem = parentNode?.type === "Stack";
   const hasRelativePosition = node.style.position === "relative";
 
+  const { id } = node;
+  const isSelected = selectedId === node.id;
+  const isGroup = node.type === "Group";
+
+  // ─── 모든 hooks는 조건 분기(early return) 전에 호출 ───
+  const [isTransformActive, setIsTransformActive] = useState(false);
+  const [dragPosition, setDragPosition] = useState<{
+    x: number;
+    y: number;
+  }>({
+    x: 0,
+    y: 0,
+  });
+
+  // 필요한 데이터만 구독
+  const draggingId = useDragStore((s) => s.draggingNodeId);
+  const hoveredStackId = useDragStore((s) => s.hoveredStackId);
+  const setDraggingId = useDragStore((s) => s.setDraggingId);
+  const setHoveredStackId = useDragStore((s) => s.setHoveredStackId);
+
   // Stack 내부 flow 아이템은 FlowNodeWrapper로 렌더링
   const isFlowItem = isStackItem && hasRelativePosition;
   if (isFlowItem) {
@@ -52,34 +72,16 @@ export default function EditorNodeWrapper({
 
   const isSwitchItems = isStackItem && hasRelativePosition;
 
-  const isSelected = selectedId === node.id;
-  const isGroup = node.type === "Group";
   const wrapperStyle: React.CSSProperties = {
     cursor: "move",
   };
 
-  const [isTransformActive, setIsTransformActive] = useState(false);
-  const [dragPosition, setDragPosition] = useState<{
-    x: number;
-    y: number;
-  }>({
-    x: 0,
-    y: 0,
-  });
-
-  const { id } = node;
   const { width, height, x, y, zIndex } = node.layout;
   const selectedNodeGuideClasses = {
     // 시각적 핸들은 SelectionOverlay 포탈에서 렌더링.
     // Rnd의 핸들은 인터랙션만 담당 (투명하게 유지)
     handle: "opacity-0 !w-3 !h-3 ",
   };
-
-  // 필요한 데이터만 구독
-  const draggingId = useDragStore((s) => s.draggingNodeId);
-  const hoveredStackId = useDragStore((s) => s.hoveredStackId);
-  const setDraggingId = useDragStore((s) => s.setDraggingId);
-  const setHoveredStackId = useDragStore((s) => s.setHoveredStackId);
 
   //데이터를 바탕으로 가이드 표시 여부 결정
   const isDraggingMyself = draggingId === id;
