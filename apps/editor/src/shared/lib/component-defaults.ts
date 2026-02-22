@@ -143,7 +143,7 @@ export const COMPONENT_DEFAULTS: Record<WcxNode['type'], ComponentDefaults> = {
     },
   },
   Stack: {
-    props: {},
+    props: { direction: 'column' },
     style: {
       ...DEFAULT_FLEX_STYLE,
       gap: "10px",
