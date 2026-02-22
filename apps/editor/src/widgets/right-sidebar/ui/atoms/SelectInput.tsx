@@ -4,7 +4,7 @@ interface SelectInputProps {
   id?: string;
   name?: string;
   value: string;
-  options: { label: string; value: string }[];
+  options: { label: string; value: string; disabled?: boolean }[];
   onChange: (val: string) => void;
   size?: "single" | "small";
 }
@@ -29,7 +29,7 @@ export default function SelectInput({
         className="flex w-full h-[28px] appearance-none items-center px-2 py-0 bg-transparent border-transparent font-inter font-normal text-[13px] leading-none text-zinc-900 outline-none focus:border-zinc-400 transition-colors cursor-pointer"
       >
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
+          <option key={opt.value} value={opt.value} disabled={opt.disabled}>
             {opt.label}
           </option>
         ))}
