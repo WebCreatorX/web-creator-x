@@ -4,6 +4,39 @@ import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+// ── 인접 리스트 기반 노드 인덱스 구축 함수 ──
+function buildNodeMaps(nodes: WcxNode[] | null) {
+  const nodeMap: Record<string, WcxNode> = {};
+  const childrenMap: Record<string, WcxNode[]> = {};
+
+  if (!nodes) return { nodeMap, childrenMap };
+
+  // 1패스: 모든 노드를 순회하며 두 인덱스를 동시에 구축
+  for (const node of nodes) {
+    nodeMap[node.id] = node;
+
+    const parentKey = node.parent_id ?? "__root__";
+    if (!childrenMap[parentKey]) {
+      childrenMap[parentKey] = [];
+    }
+    childrenMap[parentKey].push(node);
+  }
+
+  // 2패스: 각 자식 배열을 position 기준 정렬
+  for (const key in childrenMap) {
+    childrenMap[key].sort((a, b) => a.position - b.position);
+  }
+
+  return { nodeMap, childrenMap };
+}
+
+// immer draft state에 인덱스를 적용하는 헬퍼
+function rebuildIndex(state: { nodes: WcxNode[] | null; nodeMap: Record<string, WcxNode>; childrenMap: Record<string, WcxNode[]> }) {
+  const maps = buildNodeMaps(state.nodes);
+  state.nodeMap = maps.nodeMap;
+  state.childrenMap = maps.childrenMap;
+}
+
 const useEditorStore = create(
   devtools(
     immer(
@@ -12,28 +45,56 @@ const useEditorStore = create(
           nodes: null as null | WcxNode[], //TODO- 추후에 현재 페이지에 해당하는 노드들을 받아오는 로직을 통해 해당 상태가 업데이트 되야 한다. -> EditorStoreInitializer컴포넌트에서 담당
           canvas: { dx: 0, dy: 0, scale: 1 },
           selectedDepthPath: [] as string[],
+          // ── 노드 인덱스 (인접 리스트) ──
+          nodeMap: {} as Record<string, WcxNode>,
+          childrenMap: {} as Record<string, WcxNode[]>,
         },
         (set, get) => ({
           setNode(nodes: WcxNode[]) {
             set((state) => {
               state.nodes = nodes;
+              rebuildIndex(state);
             });
           },
           //TODO-노드를 추가/삭제 하는 기능 필요(에디터 섹션에서 노드 추가, 삭제하는 경우 ) -> addNode & deleteNode(자식 노드까지 재귀적으로 삭제 필요!)
           addNode(node: WcxNode) {
             set((state) => {
               state.nodes?.push(node);
+              rebuildIndex(state);
             });
           },
+          // 자식 노드까지 재귀적으로 삭제 (childrenMap 활용)
           deleteNode(nodeId: string) {
-            set((state) => {
-              if (!state.nodes) return;
-              const targetNodeIdx = state.nodes?.findIndex(
-                (node) => node.id === nodeId,
-              );
-              if (targetNodeIdx === -1) return;
-              state.nodes.splice(targetNodeIdx, 1);
-            });
+            set(
+              (state) => {
+                if (!state.nodes) return;
+
+                // childrenMap을 활용한 후손 ID 수집 (O(1) 자식 조회)
+                const idsToDelete = new Set<string>();
+                function collect(id: string) {
+                  idsToDelete.add(id);
+                  const children = state.childrenMap[id];
+                  if (children) {
+                    children.forEach((child) => collect(child.id));
+                  }
+                }
+                collect(nodeId);
+
+                // 일괄 삭제
+                state.nodes = state.nodes.filter(
+                  (n) => !idsToDelete.has(n.id),
+                );
+
+                // 삭제된 노드가 선택 경로에 있으면 선택 해제
+                if (state.selectedDepthPath.includes(nodeId)) {
+                  state.selectedDepthPath = [];
+                }
+
+                rebuildIndex(state);
+              },
+              false,
+              "editStore/deleteNode",
+            );
           },
           getDescendantIds(nodeId: string): string[] {
             const nodes = get().nodes;
@@ -151,7 +212,7 @@ const useEditorStore = create(
           },
 
           //TODO-'Node참조값 전달' vs nodeId 전달후 스코프 안에서 파싱 고민해보기
-          addItemToStack: (nodeId: string, stackId: string) =>
+          addItemToStack(nodeId: string, stackId: string) {
             set(
               (state) => {
                 if (!state.nodes) return state;
@@ -173,10 +234,13 @@ const useEditorStore = create(
                 node.position = insertIndex;
                 node.parent_id = stackId;
                 node.style.position = "relative";
+
+                rebuildIndex(state);
               },
               false,
               "editStore/addItemToStack",
-            ),
+            );
+          },
         }),
       ),
     ),
@@ -274,13 +338,22 @@ export const useAddItemToStack = () =>
 
 /**
  * [Selector] ID를 기준으로 특정 노드 객체를 반환합니다.
- * 해당 ID의 노드가 업데이트되면 이를 사용하는 컴포넌트만 리렌더링됩니다.
+ * nodeMap을 활용한 O(1) 조회.
  * @param nodeId - 찾고자 하는 노드의 ID
  */
 export const useGetNodeById = (nodeId: string) => {
-  return useEditorStore((store) =>
-    store.nodes?.find(({ id }) => id === nodeId),
-  );
+  return useEditorStore((store) => store.nodeMap[nodeId]);
 };
+
+/**
+ * [Selector] 노드 인덱스 맵을 반환합니다. (id → 노드 O(1) 조회)
+ */
+export const useNodeMap = () => useEditorStore((store) => store.nodeMap);
+
+/**
+ * [Selector] 자식 인덱스 맵을 반환합니다. (parentId → 정렬된 자식 배열 O(1) 조회)
+ * 루트 노드는 key "__root__"로 접근합니다.
+ */
+export const useChildrenMap = () => useEditorStore((store) => store.childrenMap);
 
 //노드 순서 바꾸는 훅 고민하기, 트리에서도 노드의 순서 바꿀 수 있도록 고려하기.

@@ -30,9 +30,20 @@ export default function processNodeStyles(style: NodeStyle): CSSProperties {
   // 레이아웃 속성 필터링
   const result: Record<string, any> = {};
   for (const [key, value] of Object.entries(cssProps)) {
-    if (!LAYOUT_PROPERTIES.has(key)) {
+    if (!LAYOUT_PROPERTIES.has(key) && value !== undefined) {
       result[key] = value;
     }
+  }
+
+  // shorthand(padding)와 longhand(paddingTop 등)가 동시에 존재하면
+  // React가 경고를 띄우므로, longhand가 있으면 shorthand를 제거
+  const hasLonghandPadding =
+    "paddingTop" in result ||
+    "paddingRight" in result ||
+    "paddingBottom" in result ||
+    "paddingLeft" in result;
+  if (hasLonghandPadding && "padding" in result) {
+    delete result.padding;
   }
 
   return result as CSSProperties;

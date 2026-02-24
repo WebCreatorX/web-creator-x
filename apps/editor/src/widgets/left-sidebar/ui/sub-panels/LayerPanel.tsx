@@ -1,5 +1,6 @@
 import { PanelBaseLayout } from './base/PanelBaseLayout';
-import { useCurNodes, useSelectNode, useSelectedNodeId } from '../../../../stores/useEditorStore';
+import { useSelectNode, useSelectedNodeId, useDeleteNode, useAddNode, useChildrenMap, useNodeMap } from '../../../../stores/useEditorStore';
+import { COMPONENT_DEFAULTS } from '../../../../shared/lib/component-defaults';
 import { cn } from '@repo/utils';
 import {
   Type,
@@ -12,10 +13,11 @@ import {
   ChevronRight,
   ChevronDown,
   Layers,
-  LucideIcon
+  LucideIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { WcxNode } from '@repo/ui/types/nodes';
+import LayerContextMenu from '../LayerContextMenu';
 
 /**
  * 노드 타입별 아이콘 매핑
@@ -31,36 +33,27 @@ const NODE_TYPE_ICONS: Record<string, LucideIcon> = {
   Modal: Layout,
 };
 
+/* ─────────────────────── Layer Item ─────────────────────── */
+
 interface LayerItemProps {
-  node: WcxNode;        // 현재 렌더링할 노드
-  nodes: WcxNode[];     // 전체 노드 배열 (자식 탐색용)
-  selectedId: string | null; // 현재 선택된 노드 ID
-  onSelect: (id: string) => void; // 노드 선택 핸들러
-  depth: number;        // 계층 깊이 (들여쓰기 계산용)
+  node: WcxNode;
+  childrenMap: Record<string, WcxNode[]>;
+  selectedId: string | null;
+  onSelect: (id: string) => void;
+  onContextMenu: (e: React.MouseEvent, nodeId: string) => void;
+  depth: number;
 }
 
-/**
- * 개별 레이어 아이템 컴포넌트 (재귀적으로 자식 노드 렌더링)
- */
-const LayerItem = ({ node, nodes, selectedId, onSelect, depth }: LayerItemProps) => {
-  // 폴더 접기/펴기 상태
+const LayerItem = ({ node, childrenMap, selectedId, onSelect, onContextMenu, depth }: LayerItemProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  // 현재 노드를 부모로 가지는 자식 노드들을 필터링하고 position 순으로 정렬
-  const children = nodes
-    .filter((n) => n.parent_id === node.id)
-    .sort((a, b) => a.position - b.position);
+  // childrenMap에서 O(1) 조회 (filter+sort 제거)
+  const children = childrenMap[node.id] || [];
 
   const hasChildren = children.length > 0;
   const isSelected = selectedId === node.id;
   const Icon = NODE_TYPE_ICONS[node.type] || Box;
 
-  /**
-   * 레이어 리스트에 표시될 노드의 이름 결정
-   * 1. 텍스트 컴포넌트면 해당 텍스트 내용 우선
-   * 2. 이미지면 alt 텍스트 우선
-   * 3. 위 조건에 해당 없으면 노드 타입 표시
-   */
   const getNodeName = () => {
     if ('props' in node) {
       const props = node.props as Record<string, unknown>;
@@ -72,23 +65,22 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, depth }: LayerItemProps)
 
   return (
     <div className="flex flex-col">
-      {/* 레이어 행 (클릭 시 선택) */}
       <div
         className={cn(
           "group flex items-center gap-1.5 py-1 px-2 rounded-md cursor-pointer transition-all duration-200",
           isSelected
-            ? "bg-zinc-900 text-white" // 선택 시 어두운 테마
+            ? "bg-zinc-900 text-white"
             : "text-zinc-600 hover:bg-zinc-100"
         )}
-        style={{ paddingLeft: `${depth * 14 + 8}px` }} // 깊이에 따른 들여쓰기
+        style={{ paddingLeft: `${depth * 14 + 8}px` }}
         onClick={() => onSelect(node.id)}
+        onContextMenu={(e) => onContextMenu(e, node.id)}
       >
-        {/* 접기/펴기 버튼 (자식이 있을 때만 노출) */}
         <div className="w-4 h-4 flex items-center justify-center shrink-0">
           {hasChildren && (
             <button
               onClick={(e) => {
-                e.stopPropagation(); // 부모 행 클릭 이벤트(노드 선택) 막기
+                e.stopPropagation();
                 setIsExpanded(!isExpanded);
               }}
               className={cn(
@@ -101,7 +93,6 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, depth }: LayerItemProps)
           )}
         </div>
 
-        {/* 노드 타입 아이콘 */}
         <Icon
           size={14}
           strokeWidth={isSelected ? 2.5 : 2}
@@ -111,7 +102,6 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, depth }: LayerItemProps)
           )}
         />
 
-        {/* 노드 이름 */}
         <span className={cn(
           "text-[12px] truncate flex-1",
           isSelected ? "font-semibold" : "font-medium"
@@ -120,16 +110,16 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, depth }: LayerItemProps)
         </span>
       </div>
 
-      {/* 자식 노드 재귀 호출 */}
       {hasChildren && isExpanded && (
         <div className="flex flex-col mt-0.5">
           {children.map((child) => (
             <LayerItem
               key={child.id}
               node={child}
-              nodes={nodes}
+              childrenMap={childrenMap}
               selectedId={selectedId}
               onSelect={onSelect}
+              onContextMenu={onContextMenu}
               depth={depth + 1}
             />
           ))}
@@ -139,46 +129,100 @@ const LayerItem = ({ node, nodes, selectedId, onSelect, depth }: LayerItemProps)
   );
 };
 
-/**
- * 레이어 패널 메인 컴포넌트
- */
+/* ─────────────────────── Layer Panel ─────────────────────── */
+
 export const LayerPanel = () => {
-  // 스토어에서 전체 노드와 선택 정보 가져오기
-  const nodes = useCurNodes() || [];
+  const nodeMap = useNodeMap();
+  const childrenMap = useChildrenMap();
   const selectedId = useSelectedNodeId();
   const selectNode = useSelectNode();
+  const deleteNode = useDeleteNode();
+  const addNode = useAddNode();
 
-  // 최상위 노드(부모가 없는 노드)들만 먼저 추출
-  const rootNodes = nodes
-    .filter((node) => node.parent_id === null)
-    .sort((a, b) => a.position - b.position);
+  // 우클릭 컨텍스트 메뉴 상태
+  const [contextMenu, setContextMenu] = useState<{
+    x: number;
+    y: number;
+    nodeId: string;
+    nodeType: WcxNode["type"];
+  } | null>(null);
+
+  const handleContextMenu = (e: React.MouseEvent, nodeId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // nodeMap에서 O(1) 조회
+    const targetNode = nodeMap[nodeId];
+    if (!targetNode) return;
+    setContextMenu({ x: e.clientX, y: e.clientY, nodeId, nodeType: targetNode.type });
+  };
+
+  // 자식 노드 삽입 핸들러
+  const handleInsertChild = useCallback(
+    (parentId: string, type: WcxNode['type']) => {
+      const defaults = COMPONENT_DEFAULTS[type];
+      if (!defaults) return;
+
+      // childrenMap에서 형제 수 조회
+      const siblingCount = (childrenMap[parentId] || []).length;
+      const parentNode = nodeMap[parentId];
+
+      const newNode: WcxNode = {
+        id: `${type.toLowerCase()}-${Date.now()}`,
+        page_id: parentNode?.page_id ?? 1,
+        parent_id: parentId,
+        type,
+        position: siblingCount,
+        layout: { ...defaults.layout },
+        props: { ...defaults.props },
+        style: {
+          ...defaults.style,
+          position: 'relative',
+        },
+        created_at: new Date().toISOString(),
+      } as WcxNode;
+
+      addNode(newNode);
+    },
+    [childrenMap, nodeMap, addNode],
+  );
+
+  // 루트 노드: childrenMap["__root__"]에서 바로 조회 (이미 정렬됨)
+  const rootNodes = childrenMap["__root__"] || [];
 
   return (
-    <PanelBaseLayout
-      title="레이어"
-      description="페이지 구성 요소 계층"
-    >
+    <PanelBaseLayout title="레이어" description="페이지 구성 요소 계층">
       <div className="flex flex-col gap-0.5 p-2">
         {rootNodes.length > 0 ? (
-          // 최상위 노드부터 렌더링 시작 (이후 내부에서 자식들을 재귀적으로 그림)
           rootNodes.map((node) => (
             <LayerItem
               key={node.id}
               node={node}
-              nodes={nodes}
+              childrenMap={childrenMap}
               selectedId={selectedId}
               onSelect={selectNode}
-              depth={0} // 루트는 깊이 0
+              onContextMenu={handleContextMenu}
+              depth={0}
             />
           ))
         ) : (
-          // 노드가 없을 때의 빈 화면
           <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
             <Layers className="w-8 h-8 text-zinc-200 mb-2" />
             <p className="text-xs text-zinc-400">레이어가 없습니다.<br />컴포넌트를 추가해보세요.</p>
           </div>
         )}
       </div>
+
+      {contextMenu && (
+        <LayerContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          nodeId={contextMenu.nodeId}
+          nodeType={contextMenu.nodeType}
+          onDelete={deleteNode}
+          onInsert={handleInsertChild}
+          onClose={() => setContextMenu(null)}
+        />
+      )}
     </PanelBaseLayout>
   );
 };

@@ -49,3 +49,4 @@ apps/*/.next
 apps/*/dist
 
 docs
+.agent

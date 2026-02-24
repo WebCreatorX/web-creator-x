@@ -20,7 +20,7 @@ export default function LayoutSection({ node }: LayoutSectionProps) {
     updateNode(node.id, { style: { ...node.style, [key]: value } });
   };
 
-  const direction = (node.style.flexDirection as "row" | "column") || "row";
+  const direction = ((node.props as Record<string, unknown>).direction as "row" | "column") || "column";
   const wrap = node.style.flexWrap === "wrap";
 
   // Padding 파싱
@@ -74,7 +74,7 @@ export default function LayoutSection({ node }: LayoutSectionProps) {
       <FieldRow label="Direction">
         <DirectionToggle
           value={direction}
-          onChange={(v) => handleStyleChange("flexDirection", v)}
+          onChange={(v) => updateNode(node.id, { props: { ...node.props, direction: v } })}
         />
       </FieldRow>
 

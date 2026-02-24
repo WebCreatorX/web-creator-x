@@ -4,8 +4,9 @@ import { useDragStore } from "@/stores/useDragStore";
 import {
   useAddItemToStack,
   useCanvas,
+  useChildrenMap,
   useClearNode,
-  useCurNodes,
+  useNodeMap,
   useSelectedNodeId,
   useSelectNode,
   useSetCanvas,
@@ -19,12 +20,13 @@ import {
 import handleWheel from "@/utils/editor/handleWheel";
 import { DragProvider } from "@repo/ui/context/dragContext";
 import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper";
+import FlowNodeWrapper from "@repo/ui/core/FlowNodeWrapper";
 import NodeRenderer from "@repo/ui/core/NodeRenderer";
+import SelectionOverlay from "@repo/ui/core/SelectionOverlay";
 import { WcxNode } from "@repo/ui/types/nodes";
 import React, { useRef } from "react";
 
 export default function Canvas() {
-  const nodes = useCurNodes();
   const selectedNodeId = useSelectedNodeId();
   const selectNode = useSelectNode();
   const updateNode = useUpdateNodeLayout();
@@ -32,6 +34,8 @@ export default function Canvas() {
   const setCanvas = useSetCanvas();
   const clearNode = useClearNode();
   const addItemToStack = useAddItemToStack();
+  const nodeMap = useNodeMap();
+  const childrenMap = useChildrenMap();
 
   //TODO-이거 뭐임?
   const isPanning = useRef(false);
@@ -39,8 +43,7 @@ export default function Canvas() {
 
   function getParentNode(parentId: string | null): WcxNode | undefined {
     if (!parentId) return undefined;
-
-    return nodes?.find((n) => n.id === parentId);
+    return nodeMap[parentId];
   }
 
   //FIXME-각 노드들에 key속성 추가해주기. -> 리액트 경고 발생
@@ -53,32 +56,17 @@ export default function Canvas() {
    * parentNode만 주면 NodeTree함수가 알아서 ParentNode의 자식 노드 객체 배열(WcxNode[])을 찾아준다.
    */
   function renderTree(parentNode: WcxNode | { id: null }) {
-    //parentNode의 자식 찾기
-    const childrenObjArr = nodes?.filter(
-      ({ parent_id }) => parent_id === parentNode.id,
-    );
+    // parentNode의 자식 찾기 (O(1) lookup via childrenMap)
+    const childrenObjArr = childrenMap[parentNode.id ?? "__root__"];
 
     //BaseCondition
     //FIXME-솔직히 !childrenArr만 있어도 될듯? 길이가 0일 수가 없다.
     if (!childrenObjArr || childrenObjArr.length === 0) {
       if (parentNode.id === null) return;
-      return (
-        <EditorNodeWrapper
-          node={parentNode}
-          parentNode={getParentNode(parentNode.parent_id)}
-          selectedId={selectedNodeId}
-          updateNode={updateNode}
-          selectNode={selectNode}
-          canvas={canvasState}
-          addItemToStack={addItemToStack}
-        >
-          <NodeRenderer node={parentNode} />
-        </EditorNodeWrapper>
-      );
+      return renderWrappedNode(parentNode, <NodeRenderer node={parentNode} />);
     }
 
     // 1. 자식들의 렌더링 결과물 (JSX 배열)
-    //현재 parentNode에 대해 NodeRenderer를 사용하려면 children이 필요한데, 재귀로 구해준다.
     const children = childrenObjArr.map((node) => {
       return <React.Fragment key={node.id}>{renderTree(node)}</React.Fragment>;
     });
@@ -89,17 +77,48 @@ export default function Canvas() {
     }
 
     // 3. 일반 노드인 경우 -> Wrapper + NodeRenderer + children
+    return renderWrappedNode(
+      parentNode,
+      <NodeRenderer node={parentNode}>{children}</NodeRenderer>,
+    );
+  }
+
+  /**
+   * 노드 유형에 따라 적절한 래퍼를 선택하여 렌더링합니다.
+   * - Stack 내부 flow 아이템 → FlowNodeWrapper (Rnd 미사용, CSS 기반 크기)
+   * - 그 외 → EditorNodeWrapper (Rnd 기반 드래그/리사이즈)
+   */
+  function renderWrappedNode(node: WcxNode, content: React.ReactNode) {
+    const parent = getParentNode(node.parent_id);
+    const isFlowItem =
+      parent?.type === "Stack" && node.style.position === "relative";
+
+    if (isFlowItem) {
+      return (
+        <FlowNodeWrapper
+          node={node}
+          parentNode={parent}
+          selectedId={selectedNodeId}
+          updateNode={updateNode}
+          selectNode={selectNode}
+          canvas={canvasState}
+        >
+          {content}
+        </FlowNodeWrapper>
+      );
+    }
+
     return (
       <EditorNodeWrapper
-        node={parentNode}
-        parentNode={getParentNode(parentNode.parent_id)}
+        node={node}
+        parentNode={parent}
         selectedId={selectedNodeId}
         updateNode={updateNode}
         selectNode={selectNode}
         canvas={canvasState}
         addItemToStack={addItemToStack}
       >
-        <NodeRenderer node={parentNode}>{children}</NodeRenderer>
+        {content}
       </EditorNodeWrapper>
     );
   }
@@ -134,6 +153,11 @@ export default function Canvas() {
           <DragProvider value={useDragStore}>
             {renderTree({ id: null })}
           </DragProvider>
+          {/* 포탈 기반 선택 오버레이 — 노드 DOM 트리 바깥에서 렌더링 */}
+          <SelectionOverlay
+            selectedNodeId={selectedNodeId}
+            canvas={canvasState}
+          />
         </div>
       </div>
     </div>

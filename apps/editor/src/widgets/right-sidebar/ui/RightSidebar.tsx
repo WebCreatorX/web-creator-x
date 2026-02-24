@@ -31,7 +31,10 @@ export default function RightSidebar() {
   const ContentPanel = selectedNode ? CONTENT_PANEL[selectedNode.type] : undefined;
 
   return (
-    <div className="flex h-full w-[300px] flex-col border-l border-[#E4E4E7] bg-white px-5 py-5 overflow-y-auto">
+    <div
+      className="flex h-full w-[300px] shrink-0 flex-col border-l border-[#E4E4E7] bg-white px-5 py-5 overflow-y-auto overflow-x-hidden"
+      style={{ scrollbarWidth: 'none' }}
+    >
       <SettingsTitle type={selectedNode?.type} />
 
       {selectedNode ? (

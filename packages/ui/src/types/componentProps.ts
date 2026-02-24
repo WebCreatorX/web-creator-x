@@ -44,3 +44,7 @@ export interface ModalProps {
   // 애니메이션 프리셋
   animation?: "fade" | "slide-up" | "slide-left";
 }
+
+export interface StackProps {
+  direction?: "row" | "column";
+}

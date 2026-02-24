@@ -1,24 +1,31 @@
 "use client";
 
 import { WcxNode } from "@repo/ui/types/nodes";
-import { useUpdateNode, useUpdateNodeLayout, useCurNodes } from "@/stores/useEditorStore";
+import { useUpdateNode, useUpdateNodeLayout } from "@/stores/useEditorStore";
 import FieldRow from "../atoms/FieldRow";
 import NumberInput from "../atoms/NumberInput";
 import SelectInput from "../atoms/SelectInput";
+import { type SizingMode } from "../../lib/sizingConversion";
+import { getSizingModeOptions } from "../../lib/sizingOptions";
+import { useSizeModeChange } from "../../hooks/useSizeModeChange";
 
 interface SizeSectionProps {
   node: WcxNode;
 }
 
-type SizingMode = "fixed" | "fill" | "fit" | "relative";
-
 export default function SizeSection({ node }: SizeSectionProps) {
   const updateLayout = useUpdateNodeLayout();
   const updateNode = useUpdateNode();
-  const nodes = useCurNodes();
 
-  const widthMode: SizingMode = (node.layout as { widthMode: SizingMode }).widthMode || "fixed";
-  const heightMode: SizingMode = (node.layout as { heightMode: SizingMode }).heightMode || "fixed";
+  const {
+    handleModeChange,
+    isInStack,
+    parentWidthMode,
+    parentHeightMode,
+  } = useSizeModeChange(node);
+
+  const widthMode: SizingMode = node.layout.widthMode || "fixed";
+  const heightMode: SizingMode = node.layout.heightMode || "fixed";
 
   const widthValue = typeof node.layout.width === "number"
     ? node.layout.width
@@ -32,49 +39,8 @@ export default function SizeSection({ node }: SizeSectionProps) {
     updateNode(node.id, { style: { ...node.style, [key]: value } });
   };
 
-  const convertValue = (oldValue: number, oldMode: SizingMode, newMode: SizingMode, isHeight: boolean) => {
-    if (oldMode === newMode) return oldValue;
-    if (newMode === 'fill') return 1;
-    if (newMode === 'fit') return oldValue;
-
-    // Fixed -> Relative
-    if (oldMode === 'fixed' && newMode === 'relative') {
-      const parent = nodes?.find(n => n.id === node.parent_id);
-      const parentSize = isHeight
-        ? (typeof parent?.layout.height === 'number' ? parent.layout.height : 1000)
-        : (typeof parent?.layout.width === 'number' ? parent.layout.width : 1000);
-      return Math.round((oldValue / parentSize) * 100);
-    }
-
-    // Relative -> Fixed
-    if (oldMode === 'relative' && newMode === 'fixed') {
-      const parent = nodes?.find(n => n.id === node.parent_id);
-      const parentSize = isHeight
-        ? (typeof parent?.layout.height === 'number' ? parent.layout.height : 1000)
-        : (typeof parent?.layout.width === 'number' ? parent.layout.width : 1000);
-      return Math.round((oldValue / 100) * parentSize);
-    }
-
-    return oldValue;
-  };
-
-  const handleModeChange = (key: 'widthMode' | 'heightMode', newMode: SizingMode) => {
-    const isHeight = key === 'heightMode';
-    const sizeKey = isHeight ? 'height' : 'width';
-    const oldMode = isHeight ? heightMode : widthMode;
-    const oldValue = isHeight ? heightValue : widthValue;
-
-    const newValue = convertValue(oldValue, oldMode, newMode, isHeight);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    updateLayout(node.id, { [key]: newMode, [sizeKey]: newValue } as any);
-  };
-
-  const modeOptions = [
-    { label: "Fixed", value: "fixed" },
-    { label: "Rel", value: "relative" },
-    { label: "Fill", value: "fill" },
-    { label: "Fit", value: "fit" },
-  ];
+  const widthModeOptions = getSizingModeOptions({ parentMode: parentWidthMode, isInStack });
+  const heightModeOptions = getSizingModeOptions({ parentMode: parentHeightMode, isInStack });
 
   return (
     <>
@@ -89,7 +55,7 @@ export default function SizeSection({ node }: SizeSectionProps) {
         />
         <SelectInput
           value={widthMode}
-          options={modeOptions}
+          options={widthModeOptions}
           onChange={(v) => handleModeChange("widthMode", v as SizingMode)}
           size="small"
         />
@@ -106,7 +72,7 @@ export default function SizeSection({ node }: SizeSectionProps) {
         />
         <SelectInput
           value={heightMode}
-          options={modeOptions}
+          options={heightModeOptions}
           onChange={(v) => handleModeChange("heightMode", v as SizingMode)}
           size="small"
         />
