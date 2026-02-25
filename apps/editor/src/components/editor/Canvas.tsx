@@ -20,6 +20,7 @@ import handleWheel from "@/utils/editor/handleWheel";
 import { DragProvider } from "@repo/ui/context/dragContext";
 import EditorNodeWrapper from "@repo/ui/core/EditorNodeWrapper";
 import NodeRenderer from "@repo/ui/core/NodeRenderer";
+import SelectionOverlay from "@repo/ui/core/SelectionOverlay";
 import { WcxNode } from "@repo/ui/types/nodes";
 import React, { useRef } from "react";
 
@@ -134,6 +135,11 @@ export default function Canvas() {
           <DragProvider value={useDragStore}>
             {renderTree({ id: null })}
           </DragProvider>
+          {/* 포탈 기반 선택 오버레이 — 노드 DOM 트리 바깥에서 렌더링 */}
+          <SelectionOverlay
+            selectedNodeId={selectedNodeId}
+            canvas={canvasState}
+          />
         </div>
       </div>
     </div>

@@ -15,7 +15,6 @@
         "justifyContent": "center",
         "gap": "20px",
         "padding": "50px 24px",
-        "maxWidth": "1200px",
         "backgroundColor": "#FFFFFF",
         "className": "content-section"
       },
@@ -28,8 +27,8 @@
       "type": "Heading",
       "position": 0,
       "layout": {
-        "x": 0,
-        "y": 0,
+        "x": 1000,
+        "y": 1000,
         "width": 1200,
         "height": 100,
         "zIndex": 2
@@ -94,7 +93,6 @@
         "justifyContent": "center",
         "gap": "20px",
         "padding": "50px 24px",
-        "maxWidth": "1200px",
         "backgroundColor": "#F9FAFB",
         "className": "gallery-section"
       },
@@ -133,8 +131,8 @@
       },
       "style": {
         "position": "absolute",
-        "top": "50px",
-        "left": "700px",
+        "top": "0px",
+        "left": "0px",
         "width": "600px",
         "height": "300px",
         "objectFit": "cover",
