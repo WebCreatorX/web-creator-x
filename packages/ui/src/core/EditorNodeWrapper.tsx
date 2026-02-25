@@ -123,16 +123,18 @@ export default function EditorNodeWrapper({
         setDraggingId(id); //드래그 시작 알림
         console.log(d.node.offsetLeft);
         if (hasRelativePosition) {
+          rndRef.current?.updatePosition({ x: 0, y: 0 });
+
           const { offsetLeft, offsetTop } = d.node;
 
           setIsTransformActive(true);
           console.log(
             `[dragStart]_현재 추출된 노드 좌표 offsetLeft - ${offsetLeft} // offsetTop - ${offsetTop} `,
           );
-          flushSync(() => {
-            updateNode(id, { x: offsetLeft, y: offsetTop });
-            setDragPosition({ x: offsetLeft, y: offsetTop });
-          });
+          // flushSync(() => {
+          //   updateNode(id, { x: offsetLeft, y: offsetTop });
+          //   setDragPosition({ x: offsetLeft, y: offsetTop });
+          // });
         }
         console.log(
           `[dragStart]현재 노드의 실제 렌더링position - x:${x}, y:${y}`,
@@ -192,10 +194,10 @@ export default function EditorNodeWrapper({
         // 내부 position을 누적 변경한다. !transform-none으로 DOM에선 보이지 않지만
         // 드래그 시작 시 isTransformActive가 true로 바뀌면서 누적된 값이 한꺼번에 반영되어
         // 노드가 튀는 버그가 발생한다. → 리사이즈 종료 시 내부 position을 {x:0, y:0}으로 강제 동기화.
-        if (hasRelativePosition) {
-          setDragPosition({ x: 0, y: 0 });
-          rndRef.current?.updatePosition({ x: 0, y: 0 });
-        }
+        // if (hasRelativePosition) {
+        //   setDragPosition({ x: 0, y: 0 });
+        //   rndRef.current?.updatePosition({ x: 0, y: 0 });
+        // }
       }}
       enableResizing={isGroup ? undefined : isSelected ? undefined : false}
       disableDragging={!isSelected}
