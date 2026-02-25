@@ -1,7 +1,8 @@
 //에디터 모드전용 노드 렌더러 래퍼 컴포넌트
 import clsx from "clsx";
 import { useDragStore } from "context/dragContext";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { Rnd } from "react-rnd";
 import { WcxNode } from "types";
 import { CanvasState, Layer } from "types/rnd";
@@ -40,6 +41,7 @@ export default function EditorNodeWrapper({
     cursor: "move",
   };
 
+  const rndRef = useRef<Rnd>(null);
   const [isTransformActive, setIsTransformActive] = useState(false);
   const [dragPosition, setDragPosition] = useState<{
     x: number;
@@ -96,31 +98,45 @@ export default function EditorNodeWrapper({
 
   return (
     <Rnd
-
+      ref={rndRef}
       className={clsx(
         "group cursor-pointer",
         hasRelativePosition && !isTransformActive && "!transform-none", // relative인 경우에는 stack의 정렬을 지키기 위해 transform을 꺼놓는다.
       )}
       size={{ width, height }}
-      position={{ x, y }}
+      position={hasRelativePosition ? dragPosition : { x, y }}
       style={{
         ...wrapperStyle,
-        position: hasRelativePosition ? "relative" : (node.style.position as any),
+        position:
+          hasRelativePosition && !isTransformActive
+            ? "relative"
+            : (node.style.position as any) || "absolute",
+
+        top: hasRelativePosition && isTransformActive ? 0 : undefined,
+        left: hasRelativePosition && isTransformActive ? 0 : undefined,
         zIndex,
       }}
       scale={canvas.scale}
+      //FIXME-transform이 풀리는 순간 상태변화의 타이밍 순서 문제 때문에 버그 발생하는듯?
       onDragStart={(e, d) => {
         e.stopPropagation();
         setDraggingId(id); //드래그 시작 알림
+        console.log(d.node.offsetLeft);
         if (hasRelativePosition) {
           const { offsetLeft, offsetTop } = d.node;
-          updateNode(id, { x: offsetLeft, y: offsetTop });
-          setDragPosition({ x: offsetLeft, y: offsetTop });
+
           setIsTransformActive(true);
           console.log(
-            `좌표 보정 작동 offsetLeft - ${offsetLeft} // offsetTop - ${offsetTop} `,
+            `[dragStart]_현재 추출된 노드 좌표 offsetLeft - ${offsetLeft} // offsetTop - ${offsetTop} `,
           );
+          flushSync(() => {
+            updateNode(id, { x: offsetLeft, y: offsetTop });
+            setDragPosition({ x: offsetLeft, y: offsetTop });
+          });
         }
+        console.log(
+          `[dragStart]현재 노드의 실제 렌더링position - x:${x}, y:${y}`,
+        );
       }}
       //TODO-이동중에 로직 실행하면 성능상 부담이 될 수 있다... 최적화 고민 해보기
       onDrag={(e, d) => {
@@ -132,18 +148,15 @@ export default function EditorNodeWrapper({
       }}
       onDragStop={(e, d) => {
         setIsTransformActive(false);
-        console.log(`현재 노드 ${id}- 포지션 ${node.style.position}`);
+        console.log(`[dragStop]현재 노드 ${id}- 포지션 ${node.style.position}`);
         const stackId = findStackId(e);
 
         setDraggingId(null);
         setHoveredStackId(null);
 
-        console.log(
-          `드래그 종료시 노드의 좌표 x:${d.node.offsetLeft}, y:${d.node.offsetTop}`,
-        );
+        console.log(`[dragStop]노드의 좌표 x:${x}, y:${y}`);
 
         if (hasRelativePosition) {
-          console.log("relative position");
           return;
         }
 
@@ -169,13 +182,21 @@ export default function EditorNodeWrapper({
         })
       }
        */
-      onResizeStop={(e, dir, ref, delta, pos) =>
+      onResizeStop={(e, dir, ref, delta, pos) => {
         updateNode(id, {
           width: parseInt(ref.style.width),
           height: parseInt(ref.style.height),
           ...(hasRelativePosition ? {} : pos),
-        })
-      }
+        });
+        // [버그 수정] react-rnd는 리사이즈 중 top/left 방향 핸들 사용 시
+        // 내부 position을 누적 변경한다. !transform-none으로 DOM에선 보이지 않지만
+        // 드래그 시작 시 isTransformActive가 true로 바뀌면서 누적된 값이 한꺼번에 반영되어
+        // 노드가 튀는 버그가 발생한다. → 리사이즈 종료 시 내부 position을 {x:0, y:0}으로 강제 동기화.
+        if (hasRelativePosition) {
+          setDragPosition({ x: 0, y: 0 });
+          rndRef.current?.updatePosition({ x: 0, y: 0 });
+        }
+      }}
       enableResizing={isGroup ? undefined : isSelected ? undefined : false}
       disableDragging={!isSelected}
       resizeHandleClasses={{
