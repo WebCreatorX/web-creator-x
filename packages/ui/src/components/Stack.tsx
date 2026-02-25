@@ -18,7 +18,6 @@ export default function StackComponent({
       style={cssProps}
       className={cn("h-full w-full", {
         "node.style.className": node.style.className,
-        "ring-semantic-info ring-2": hoveredStackId === node.id,
       })}
     >
       {children}
