@@ -123,18 +123,13 @@ export default function EditorNodeWrapper({
         setDraggingId(id); //드래그 시작 알림
         console.log(d.node.offsetLeft);
         if (hasRelativePosition) {
-          rndRef.current?.updatePosition({ x: 0, y: 0 });
-
           const { offsetLeft, offsetTop } = d.node;
+          rndRef.current?.updatePosition({ x: 0, y: 0 });
 
           setIsTransformActive(true);
           console.log(
             `[dragStart]_현재 추출된 노드 좌표 offsetLeft - ${offsetLeft} // offsetTop - ${offsetTop} `,
           );
-          // flushSync(() => {
-          //   updateNode(id, { x: offsetLeft, y: offsetTop });
-          //   setDragPosition({ x: offsetLeft, y: offsetTop });
-          // });
         }
         console.log(
           `[dragStart]현재 노드의 실제 렌더링position - x:${x}, y:${y}`,
